@@ -1,0 +1,103 @@
+html, body {
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+body, html, p {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#header {
+  height: 10vh;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+#title {
+  font-size: 300% !important;
+  line-height: 10vh !important;
+}
+
+#transparent {
+  display: none;
+}
+
+#lsbtable {
+  position: absolute;
+  left: 10%;
+  text-align: center;
+}
+
+#lsbExtractPopup {
+  display: none;
+  position: absolute;
+  top: 15%;
+  left: 12%;
+  margin: 0 auto;
+  width: 75%;
+  height: 75%;
+  background-color: white;
+  border: solid black 5px;
+  padding: 0;
+}
+
+#lsbOptions {
+  position: absolute;
+  right: 15%;
+  top: 5%;
+}
+
+#lsbBottomBar {
+  position: absolute;
+  left: 10%;
+  bottom: 20%;
+}
+
+label {
+  font-size: 75%;
+}
+
+#results {
+  position: absolute;
+  bottom: 7%;
+  left: 25%;
+}
+
+.inline {
+  display: inline-block;
+}
+
+textarea {
+  resize: none;
+  font-family: monospace;
+}
+
+#lsbError {
+  position: absolute;
+  bottom: 22%;
+  right: 0%;
+  color: red;
+}
+
+#close {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: black;
+  color: white;
+  width: 10%;
+  text-align: center;
+}
+#close:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#rgbaPlanes {
+  display: none;
+}
