@@ -65,16 +65,6 @@ function removeAlpha() {
 }
 
 
-function restore() {
-  /*
-    Uses global r, g, b & a constants.
-    Draws regular loaded image onto canvas, and resets RGBA planes
-  */
-  planeNo = 0;
-  generateImage(r, g, b, a);
-}
-
-
 function xor(isTransparent) {
   /*
     Uses global r, g, b & a constants.

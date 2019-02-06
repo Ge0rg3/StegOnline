@@ -22,6 +22,8 @@ function handleFileSelect(evt) {
     return;
   }
 
+  $("#controls").fadeIn();
+
   var reader = new FileReader();
 
   reader.readAsDataURL(f);
@@ -36,6 +38,19 @@ function handleFileSelect(evt) {
 
 }
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+
+function restore() {
+  /*
+    Uses global r, g, b & a constants.
+    Draws regular loaded image onto canvas, and resets RGBA planes
+  */
+  planeNo = 0;
+  generateImage(r, g, b, a);
+  $("#planesTestBtn").show();
+  $("#rgbaPlanes").hide();
+}
+
 
 function run(imageObj, width, height) {
   /*
@@ -72,21 +87,10 @@ function run(imageObj, width, height) {
 
 }
 
-function planes() {
-  /*
-    Uses the displayPlane helper function to show the planes.
-    Cycles through values in "transforms" const.
-  */
-  let transformKeys = Object.keys(transforms);
-  $("#currentPlane").html(transformKeys[planeNo]);
-
-  displayPlane(...transforms[transformKeys[planeNo]]);
-
-  if (++planeNo >= 32) planeNo = 0;
-
-}
-
 function initPlanes() {
+  /*
+    Shows the planes viewer, and displays the initial plane.
+  */
   $("#planesTestBtn").hide();
   $("#rgbaPlanes").show();
 
@@ -102,10 +106,10 @@ function browsePlanes(action, direction) {
       - action ('next' or 'skip'): Go to next plane, or skip to next colour
       - direction ('forward' or 'backward'): Traverse forwards or backwards
   */
-  if (planeNo >= 32) planeNo = 0;
-  if (planeNo < 0) planeNo = 31;
   if (action == 'next') {
     planeNo += (direction == 'forward' ? 1 : -1);
+    if (planeNo >= 32) planeNo = 0;
+    if (planeNo < 0) planeNo = 31;
   }
   else if (action == 'skip') {
     if (direction == 'forward') {

@@ -23,6 +23,10 @@ body, html, p {
   line-height: 10vh !important;
 }
 
+#controls {
+  display: none;
+}
+
 #transparent {
   display: none;
 }
