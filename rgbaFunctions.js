@@ -75,7 +75,7 @@ function xor(isTransparent) {
   let xorR = r.map(_ => _^255);
   let xorG = g.map(_ => _^255);
   let xorB = b.map(_ => _^255);
-  let xorA = isTransparent ? xorA = a.map(_ => _^255) : new Array(a.length).fill(255);
+  let xorA = isTransparent ? a.map(_ => _^255) : new Array(a.length).fill(255);
   generateImage(xorR, xorG, xorB, xorA);
 }
 

@@ -20,10 +20,9 @@ Upload any image file, and the relevant options will be displayed.
 * main.js: Acts as a bridge between the UI and the core Stegonography functions
 * rgbaFunctions.js: The core functions of the program. This should contain no references to the webpage itself.
 
-## What's going on with the PHP!?
-Read [this](https://stackoverflow.com/questions/39744072/how-to-get-rgb-from-transparent-pixel-in-js) first!  
-This took me a while to wrap my head around, but bear with me.
-In JavaScript, in order to read the RGBA values of an image, we must first put it on a canvas, and then read the values off a canvas.
-However, when an image is **transparent**, the transparent RGBA values are always read as [0, 0, 0, 0] even though the RGB values could be anything.
-Take [this challenge](https://xapax.github.io/blog/assets/pragyanctf/transmission.png) for example. Although there's actually a hidden image revealed when you set all Alpha values to 255, the Canvas API ignores the RGB values, meaning that the transparency would just appear black when the Alpha is set to 255.
-While the probability of data being hidden in these alpha values is low, it's not worth ignoring. As such, we calculate the A values in PHP, and pass them into the JS code.
+## Working with transparency in JavaScript
+Read [this](https://stackoverflow.com/questions/39744072/how-to-get-rgb-from-transparent-pixel-in-js) and [this](https://stackoverflow.com/questions/28917518/reading-pixeldata-from-images-in-javascript-returns-unexpected-results-for-semi) first!  
+Essentially, it's impossible to read correct RGBA values of transparent pixels through the Image class in JavaScript.
+To work around this, I used the pngtoy library, which manually parses the file bitmap to find accurate RGBA values.
+Take [this challenge](https://xapax.github.io/blog/assets/pragyanctf/transmission.png) for example. Although there's actually a hidden image revealed when you set all Alpha values to 255, regular JavaScript image parsing would just show all transparent pixels as black.
+pngtoy was a hard library to find, as it has in fact been deleted by it's original creator (Epistmex). As such, I'm using a copy hosted [here](https://github.com/neshume/pngtoy).

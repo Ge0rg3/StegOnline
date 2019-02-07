@@ -1,4 +1,4 @@
-var planeNo = 0;
+var planeNo = 0, isTransparent = false;
 
 $(document).ready(function(){
 
@@ -31,7 +31,7 @@ function handleFileSelect(evt) {
   reader.onloadend = function(){
     let imageObj = new Image();
     imageObj.onload = function() {
-      run(imageObj, this.width, this.height);
+      run(imageObj, this.width, this.height, reader.result);
     }
     imageObj.src = reader.result;
   }
@@ -52,14 +52,15 @@ function restore() {
 }
 
 
-function run(imageObj, width, height) {
+async function run(imageObj, width, height, src) {
   /*
     Main control function
-    Input: Image object, image width, image height
+    Input: Image object, image width, image height, image source
     If image has transparency, send to new page
     If not, display image control features.
   */
   //Initialise canvas
+  $("#image").html("");
   canvas = document.createElement("canvas");
   ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
@@ -69,22 +70,47 @@ function run(imageObj, width, height) {
   //Get image data
   ctx.drawImage(imageObj, 0, 0);
   rgbaData = ctx.getImageData(0, 0, width, height).data;
+  a = rgbaData.filter((val, index) => (index-3) % 4 == 0); //Get just alpha values
+
+  //If image has transparency, we must use pngtoy to correctly load RGB values
+  if (a.filter(_ => _ < 255).length > 0) {
+    $(".alpha").show();
+    let pngtoyObj = new PngImage();
+    pngtoyObj.onload = function() {
+      runTransparent(pngtoyObj, src);
+    }
+    pngtoyObj.src = src;
+    return;
+  }
+
+  r = rgbaData.filter((val, index) => index % 4 == 0);
+  g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
+  b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
+
+  restore();
+  isTransparent = false;
+  $("#image").append(canvas);
+  $(".alpha").hide();
+
+}
+
+async function runTransparent(pngtoyObj) {
+  /*
+    A child function of run(), for images with transparency.
+    Since it's impossible to read the correct RGB values of transparent images in JS, we use pngtoy to find them
+    Input:
+      -A loaded PngImage from pngtoy
+  */
+  pngtoyObj = pngtoyObj.pngtoy;
+  pngData = await pngtoyObj.decode();
+  rgbaData = pngData.bitmap;
   r = rgbaData.filter((val, index) => index % 4 == 0);
   g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
   b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
   a = rgbaData.filter((val, index) => (index-3) % 4 == 0);
-
-  $("#image").html("");
-
-  if (a.filter(_ => _ < 255).length > 0) {
-    $("#transparent").show();
-    return;
-  }
-
+  isTransparent = true;
   restore();
-  $("#transparent").hide();
   $("#image").append(canvas);
-
 }
 
 function initPlanes() {
@@ -108,13 +134,16 @@ function browsePlanes(action, direction) {
   */
   if (action == 'next') {
     planeNo += (direction == 'forward' ? 1 : -1);
-    if (planeNo >= 32) planeNo = 0;
-    if (planeNo < 0) planeNo = 31;
+    if (planeNo > 31) planeNo = 0;
+    else if (planeNo > 23 && !isTransparent) planeNo = 0;
+    else if (planeNo < 0 && isTransparent) planeNo = 31;
+    else if (planeNo < 0 && !isTransparent) planeNo = 23;
   }
   else if (action == 'skip') {
     if (direction == 'forward') {
       if (planeNo >= 24) planeNo = 0;
-      else if (planeNo >= 16) planeNo = 24;
+      else if (planeNo >= 16 && isTransparent) planeNo = 24;
+      else if (planeNo >= 16 && !isTransparent) planeNo = 0;
       else if (planeNo >= 8) planeNo = 16;
       else if (planeNo >= 0) planeNo = 8;
     }
@@ -122,7 +151,8 @@ function browsePlanes(action, direction) {
       if (planeNo >= 24) planeNo = 16;
       else if (planeNo >= 16) planeNo = 8;
       else if (planeNo >= 8) planeNo = 0;
-      else if (planeNo >= 0) planeNo = 24;
+      else if (planeNo >= 0 && isTransparent) planeNo = 24;
+      else if (planeNo >= 0 && !isTransparent) planeNo = 16;
     }
   }
 
