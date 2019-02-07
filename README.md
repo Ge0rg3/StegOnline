@@ -8,9 +8,17 @@ Upload any image file, and the relevant options will be displayed.
 
 ## How can I contribute?
 * The front-end design could use a lot of love
+* An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver would be a good addition
 * Since there's **no** way to read Alpha values of images in pure Javascript without manually parsing the file, we have to use PHP. Any method of speeding this process up would be great
 * When extracting data through LSB by columns instead of rows, the entire RGBA arrays must be rearranged. Although I temporary cache is stored, the process should be smoother
 * The LSB Extraction popup window isn't friendly on really large/really small screens :(
+* We need a "Gray bits" feature, as seen on StegSolve
+
+## General Code Structure
+* live.php: The 'homepage' of the website.
+* assets/: External libraries + our custom stylesheet.
+* main.js: Acts as a bridge between the UI and the core Stegonography functions
+* rgbaFunctions.js: The core functions of the program. This should contain no references to the webpage itself.
 
 ## What's going on with the PHP!?
 This took me a while to wrap my head around, but bear with me.
