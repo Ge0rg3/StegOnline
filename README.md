@@ -8,7 +8,7 @@ Upload any image file, and the relevant options will be displayed.
 
 ## How can I contribute?
 * The front-end design could use a lot of love
-* An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver would be a good addition
+* An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver would be a good addition ([interesting solution](https://www.cs.bgu.ac.il/~ben-shahar/Teaching/Computational-Vision/StudentProjects/ICBV131/ICBV-2013-1-KatyaGroisman/FinalProjectReport.pdf))
 * Since there's **no** way to read Alpha values of images in pure Javascript without manually parsing the file, we have to use PHP. Any method of speeding this process up would be great
 * When extracting data through LSB by columns instead of rows, the entire RGBA arrays must be rearranged. Although I temporary cache is stored, the process should be smoother
 * The LSB Extraction popup window isn't friendly on really large/really small screens :(
