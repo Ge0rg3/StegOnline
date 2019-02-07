@@ -102,6 +102,23 @@ textarea {
   cursor: pointer;
 }
 
+.alpha {
+  display: none;
+}
+
 #rgbaPlanes {
   display: none;
+}
+
+button {
+  background-color: white;
+  border: solid black 2px;
+}
+
+button:hover {
+  font-weight: bold;
+}
+
+button:disabled:hover {
+  font-weight: lighter;
 }

@@ -143,6 +143,7 @@ function parseTable() {
   let lsbParams = [[],[], 0, 0];
   let oldOrder = [];
   $("#lsbError").html("");
+  $("#loadingColumn").html("");
 
   //Bit planes
   for (let i=0; i < order.length; i++) {
@@ -190,16 +191,20 @@ async function extractLsb() {
   /*
     Bridge between extracting table data, runnig lsb function and outputting hex into text box
   */
+  $("#loadingColumn").html("<b>Loading...</b>");
   let tableParams = parseTable();
+  await sleep(0);
   let hex = await lsb(tableParams[0], tableParams[1], tableParams[2], tableParams[3], tableParams[4]);
   let ascii = hexToAscii(hex);
   //Split ascii into chunks
   ascii = ascii.match(/.{1,8}/g).join(' ');
   $("#asciioutput").val(ascii);
   $("#hexoutput").val(hex);
+  $("#loadingColumn").html("<b>Success!</b>");
 }
 
 
 function showExtractPopup() {
   $("#lsbExtractPopup").fadeIn();
+  $("#loadingColumn").html("");
 }
