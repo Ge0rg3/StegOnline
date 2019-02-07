@@ -54,10 +54,10 @@ function restore() {
 
 function run(imageObj, width, height) {
   /*
-  Main control function
-  Input: Image object, image width, image height
-  If image has transparency, send to new page
-  If not, display image control features.
+    Main control function
+    Input: Image object, image width, image height
+    If image has transparency, send to new page
+    If not, display image control features.
   */
   //Initialise canvas
   canvas = document.createElement("canvas");
@@ -136,7 +136,6 @@ function parseTable() {
     TODO: Rework into JQuery
     Parses the table on the page, to produce an array ready to be parsed into lsb() function
     For more info on the lsb function, see rgbaFunctions.js
-
   */
   var table = document.getElementById("lsbtable");
   let order = ['R','G','B','A'];
@@ -192,8 +191,8 @@ async function extractLsb() {
     Bridge between extracting table data, runnig lsb function and outputting hex into text box
   */
   $("#loadingColumn").html("<b>Loading...</b>");
-  let tableParams = parseTable();
   await sleep(0);
+  let tableParams = parseTable();
   let hex = await lsb(tableParams[0], tableParams[1], tableParams[2], tableParams[3], tableParams[4]);
   let ascii = hexToAscii(hex);
   //Split ascii into chunks

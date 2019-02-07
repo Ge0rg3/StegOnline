@@ -21,6 +21,7 @@ Upload any image file, and the relevant options will be displayed.
 * rgbaFunctions.js: The core functions of the program. This should contain no references to the webpage itself.
 
 ## What's going on with the PHP!?
+Read [this](https://stackoverflow.com/questions/39744072/how-to-get-rgb-from-transparent-pixel-in-js) first!  
 This took me a while to wrap my head around, but bear with me.
 In JavaScript, in order to read the RGBA values of an image, we must first put it on a canvas, and then read the values off a canvas.
 However, when an image is **transparent**, the transparent RGBA values are always read as [0, 0, 0, 0] even though the RGB values could be anything.
