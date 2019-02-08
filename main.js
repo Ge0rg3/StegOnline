@@ -164,7 +164,7 @@ function browsePlanes(action, direction) {
 function parseTable() {
   /*
     TODO: Rework into JQuery
-    Parses the table on the page, to produce an array ready to be parsed into lsb() function
+    Parses the table on the page, to produce an array ready to be parsed into extractlsb() function
     For more info on the lsb function, see rgbaFunctions.js
   */
   var table = document.getElementById("lsbtable");
@@ -216,14 +216,14 @@ function parseTable() {
 }
 
 
-async function extractLsb() {
+async function findlsb() {
   /*
     Bridge between extracting table data, runnig lsb function and outputting hex into text box
   */
   $("#loadingColumn").html("<b>Loading...</b>");
   await sleep(0);
   let tableParams = parseTable();
-  let hex = await lsb(tableParams[0], tableParams[1], tableParams[2], tableParams[3], tableParams[4]);
+  let hex = await extractlsb(tableParams[0], tableParams[1], tableParams[2], tableParams[3], tableParams[4]);
   let ascii = hexToAscii(hex);
   //Split ascii into chunks
   ascii = ascii.match(/.{1,8}/g).join(' ');

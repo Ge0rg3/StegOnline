@@ -92,7 +92,7 @@ function full(colour) {
   let newG = colour == 'g' ? g : Array(g.length).fill(0);
   let newB = colour == 'b' ? b : Array(b.length).fill(0);
   if (colour == 'a') {
-    let tempA = a.map(_ => _^255);
+    let tempA = a.map(_=>_);
     newR = newG = newB = tempA;
   };
   let newA = Array(r.length).fill(255);
@@ -168,7 +168,7 @@ function hexToAscii(hex) {
 }
 
 
-async function lsb(colours, bits, extractBy='row', bitOrder='msb') {
+async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
   /*
     TODO: Speed up columnar version
 
@@ -181,9 +181,9 @@ async function lsb(colours, bits, extractBy='row', bitOrder='msb') {
     Output:
       -Hex LSB data
     Example uses:
-    let lsbHex = await lsb([r], [[5,4,3,2,1,0]]);
-      let lsbHex = await lsb([r, g], [[0], [0]]);
-      let lsbHex = await lsb([g,b,r], [[1,2],[1,2]])
+    let lsbHex = await extractlsb([r], [[5,4,3,2,1,0]]);
+      let lsbHex = await extractlsb([r, g], [[0], [0]]);
+      let lsbHex = await extractlsb([g,b,r], [[1,2],[1,2]])
   */
   //Only do one extraction at a time!
   if (extracting) return;
