@@ -92,7 +92,7 @@ function full(colour) {
   let newG = colour == 'g' ? g : Array(g.length).fill(0);
   let newB = colour == 'b' ? b : Array(b.length).fill(0);
   if (colour == 'a') {
-    let tempA = a.splice();
+    let tempA = a.map(_ => _^255);
     newR = newG = newB = tempA;
   };
   let newA = Array(r.length).fill(255);
