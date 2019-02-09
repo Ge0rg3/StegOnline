@@ -46,6 +46,7 @@ function restore() {
     Draws regular loaded image onto canvas, and resets RGBA planes
   */
   planeNo = 0;
+  rC=gC=bC=aC=undefined; //I know, I know.
   generateImage(r, g, b, a);
   $("#planesTestBtn").show();
   $("#rgbaPlanes").hide();
@@ -170,7 +171,8 @@ function parseTable() {
   var table = document.getElementById("lsbtable");
   let order = ['R','G','B','A'];
   let lsbParams = [[],[], 0, 0];
-  let oldOrder = [];
+  let unsortedColours = [];
+  let unsortedBitSelection = [];
   $("#lsbError").html("");
   $("#loadingColumn").html("");
 
@@ -182,35 +184,36 @@ function parseTable() {
       if (checked) selectedBits.push(8-j);
     }
     if (selectedBits.length > 0) {
-      oldOrder.push(order[i]);
-      lsbParams[1].push(selectedBits);
+      unsortedColours.push(order[i]);
+      unsortedBitSelection.push(selectedBits);
     }
+    else unsortedBitSelection.push([]);
   }
   //Extra options
   lsbParams[2] = $("#extractRow").is(":checked") ? 'row' : 'column';
   lsbParams[3] = $("#orderMSB").is(":checked") ? 'msb' : 'lsb';
     //Custom order
-  planeOrder = [$("#rgbaOne").val(),$("#rgbaTwo").val(),$("#rgbaThree").val(),$("#rgbaFour").val()];
+  customOrderColours = [$("#rgbaOne").val(),$("#rgbaTwo").val(),$("#rgbaThree").val(),$("#rgbaFour").val()];
     //Error if duplicate, or if no entries
-  let sorted = planeOrder.sort();
+  let sorted = customOrderColours.slice().sort();
   if (sorted[0] != "A" || sorted[1] != "B" || sorted[2] != "G" || sorted[3] != "R") {
     $("#lsbError").html("Error: Duplicate colours in Bit Plane Order.&nbsp;&nbsp;");
     return;
   }
-  if (oldOrder.length == 0) {
+  if (unsortedColours.length == 0) {
     $("#lsbError").html("Error: No bit planes selected!&nbsp;&nbsp;&nbsp;");
     return;
   }
   let newOrder = [];
-  for (colour of planeOrder) {
-    if (oldOrder.indexOf(colour) != -1) newOrder.push(colour);
+  for (colour of customOrderColours) {
+    if (unsortedColours.indexOf(colour) != -1) newOrder.push(colour);
   }
     //Replace letters with actual RGBA arrays
   for (colour of newOrder) {
-    if (colour == "R") lsbParams[0].push(r);
-    if (colour == "G") lsbParams[0].push(g);
-    if (colour == "B") lsbParams[0].push(b);
-    if (colour == "A") lsbParams[0].push(a);
+    if (colour == "R") lsbParams[0].push(r), lsbParams[1].push(unsortedBitSelection[0]);
+    if (colour == "G") lsbParams[0].push(g), lsbParams[1].push(unsortedBitSelection[1]);
+    if (colour == "B") lsbParams[0].push(b), lsbParams[1].push(unsortedBitSelection[2]);
+    if (colour == "A") lsbParams[0].push(a), lsbParams[1].push(unsortedBitSelection[3]);
   }
   return lsbParams;
 }
