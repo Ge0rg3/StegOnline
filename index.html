@@ -1,0 +1,250 @@
+<!DOCTYLE html>
+<head>
+
+  <title>StegOnline</title>
+  <script src="assets/external/jquery-3.3.1.min.js"></script>
+  <link href="assets/external/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/custom/style.css">
+  <script src="assets/external/pngtoy.js"></script>
+  <script src="assets/custom/rgbaFunctions.js"></script>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Navbar -->
+    <div class="header clearfix">
+      <nav>
+        <ul class="nav nav-pills float-right">
+          <li class="row-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="row-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+          <li class="row-item">
+            <a class="nav-link" href="https://github.com/Ge0rg3/StegOnline">Contribute</a>
+          </li>
+        </ul>
+      </nav>
+      <h3 class="text-muted">StegOnline</h3>
+    </div>
+
+    <!-- Back button for data extraction/embedding -->
+    <div class="dataEmbedExtract d-none">
+      <button class="btn btn-danger" onclick="exitEmbedExtract()">Back to menu</button>
+    </div>
+      <!-- Input -->
+    <div class="input-group">
+      <label class="input-group-btn">
+          <span class="btn btn-primary">
+              Upload File<input type="file" id="files" style="display: none;">
+          </span>
+      </label>
+      <input type="text" class="form-control" id="filename" readonly>
+    </div>
+
+    <!-- Controls -->
+    <div id="imageControls" class="bubble notdata d-none">
+      <div class="row justify-content-center">
+        <button type="button" class="btn btn-outline-danger col-md-2" onclick="full('r')">Full Red</button>
+        <button type="button" class="btn btn-outline-success col-md-2" onclick="full('g')">Full Green</button>
+        <button type="button" class="btn btn-outline-primary col-md-2" onclick="full('b')">Full Blue</button>
+        <button type="button" class="btn btn-outline-dark col-md-2" onclick="full('a')">Full Alpha</button>
+        <button type="button" class="btn btn-outline-dark col-md-2" disabled><strike>Grey Bits</strike></button>
+      </div>
+      <div class="row justify-content-center">
+        <button type="button" class="btn btn-outline-dark col-md-3" onclick="xor(false)">Inverse (RGB)</button>
+        <button type="button" class="btn btn-outline-dark col-md-3" onclick="xor(true)">Inverse (RGBA)</button>
+        <button type="button" class="btn btn-outline-dark col-md-2" onclick="half('msb')">MSB Half</button>
+        <button type="button" class="btn btn-outline-dark col-md-2" onclick="half('lsb')">LSB Half</button>
+      </div>
+      <div class="row justify-content-center" style="margin-bottom: 5px;">
+        <button type="button" class="btn btn-outline-dark col-md-10" onclick="restore()">Restore</button>
+      </div>
+    </div>
+
+    <!-- Bit plane Browser -->
+    <div id="bitPlaneBrowser" class="bubble row justify-content-center notdata d-none">
+      <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('skip','backward')">&lt;&lt;</button>
+      <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('next','backward')">&lt;</button>
+      <span class="col-md-3" style="text-align: center">
+        <button class="btn btn-primary" id="planesbtn" onclick="initPlanes()">Explore Bit Planes</button>
+        <p id="browseplanetext"></p>
+      </span>
+      <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('next','forward')">&gt;</button>
+      <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('skip','forward')">&gt;&gt;</button>
+    </div>
+
+    <!-- Extract/Embed Data-->
+    <div class="bubble row justify-content-center notdata d-none">
+      <button type="button" class="btn btn-outline-dark" onclick="openEmbedExtract('extract')">Extract Files/Text</button>
+      <button type="button" class="btn btn-outline-dark" onclick="openEmbedExtract('embed')">Embed Files/Text </button>
+    </div>
+
+    <!-- Data extraction/embed page -->
+    <div class="dataEmbedExtract d-none">
+      <h3 id="extractorembed">Extract Data</h3> <!-- Will be filled by JS with either extract or embed -->
+      <h5>Bits</h5>
+      <div class="table-responsive"> <!-- Wrapper for repsponsive table -->
+        <table class="table thead-dark table-striped table-bordered table-hover table-sm" cellpadding="0" id="lsbtable">
+          <thead class="thead-dark">
+            <tr>
+              <th></th>
+              <th>R</th>
+              <th>G</th>
+              <th>B</th>
+              <th class="extractOnly">A</th>
+            </tr>
+            <tr>
+              <th class="thead-dark">7</th>
+              <td><label><input type="checkbox" id="7r"></label></td>
+              <td><label><input type="checkbox" id="7g"></label></td>
+              <td><label><input type="checkbox" id="7b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="7a"></label></td>
+            </tr>
+            <tr>
+              <th class="thead-dark">6</th>
+              <td><label><input type="checkbox" id="6r"></label></td>
+              <td><label><input type="checkbox" id="6g"></label></td>
+              <td><label><input type="checkbox" id="6b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="6a"></label></td>
+            </tr>
+            <tr>
+              <th class="thead-dark">5</th>
+              <td><label><input type="checkbox" id="5r"></label></td>
+              <td><label><input type="checkbox" id="5g"></label></td>
+              <td><label><input type="checkbox" id="5b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="5a"></label></td>
+            </tr>
+            <tr>
+              <th class="thead-dark">4</th>
+              <td><label><input type="checkbox" id="4r"></label></td>
+              <td><label><input type="checkbox" id="4g"></label></td>
+              <td><label><input type="checkbox" id="4b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="4a"></label></td>
+            </tr>
+            <tr>
+              <th class="thead-dark">3</th>
+              <td><label><input type="checkbox" id="3r"></label></td>
+              <td><label><input type="checkbox" id="3g"></label></td>
+              <td><label><input type="checkbox" id="3b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="3a"></label></td>
+            </tr>
+            <tr>
+              <th class="thead-dark">2</th>
+              <td><label><input type="checkbox" id="2r"></label></td>
+              <td><label><input type="checkbox" id="2g"></label></td>
+              <td><label><input type="checkbox" id="2b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="2a"></label></td>
+            </tr>
+            <tr>
+              <th class="thead-dark">1</th>
+              <td><label><input type="checkbox" id="1r"></label></td>
+              <td><label><input type="checkbox" id="1g"></label></td>
+              <td><label><input type="checkbox" id="1b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="1a"></label></td>
+            </tr>
+            <tr>
+              <th class="thead-dark">0</th>
+              <td><label><input type="checkbox" id="0r"></label></td>
+              <td><label><input type="checkbox" id="0g"></label></td>
+              <td><label><input type="checkbox" id="0b"></label></td>
+              <td class="extractOnly"><label><input type="checkbox" id="0a"></label></td>
+            </tr>
+        </table>
+      </div>
+
+      <!-- Other options -->
+      <div id="extractEmbedOptions" class="row justify-content-center">
+        <div class="col-md-4">
+          <h5>Pixel Order</h5>
+          <div class="radio">
+            <label><input type="radio" name="pixelOrder" id="pixelOrderRow" checked>Row</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" name="pixelOrder">Column (<b>Slow</b>)</label>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <h5>Bit Order</h5>
+          <div class="radio">
+            <label><input type="radio" name="bitOrder" id="bitOrderMSB" checked>MSB</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" name="bitOrder">LSB</label>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <h5>Bit Plane Order</h5>
+          <select class="input-small" id="rgbaOne">
+            <option value="R" selected>R</option>
+            <option value="G">G</option>
+            <option value="B">B</option>
+            <option value="A" class="extractOnly">A</option>
+          </select>
+          <select class="input-small" id="rgbaTwo">
+            <option value="R">R</option>
+            <option value="G" selected>G</option>
+            <option value="B">B</option>
+            <option value="A" class="extractOnly">A</option>
+          </select>
+          <select class="input-small" id="rgbaThree">
+            <option value="R" selected>R</option>
+            <option value="G">G</option>
+            <option value="B" selected>B</option>
+            <option value="A" class="extractOnly">A</option>
+          </select>
+          <select class="input-small extractOnly" id="rgbaFour">
+            <option value="R" selected>R</option>
+            <option value="G">G</option>
+            <option value="B">B</option>
+            <option value="A" selected>A</option>
+          </select>
+        </div>
+      </div> <!-- /extractEmbedOptions -->
+
+      <div class="embedOnly d-none">
+        <h5 style="color: grey">Enter text <b style="color: black">or</b> a file.</h5>
+        <div class="md-form">
+          <label for="textinput">Text:</label>
+          <textarea cols="3" rows="2" class="md-textarea form-control" id="textinput"></textarea>
+        </div>
+        File:<br/>
+        <div class="input-group">
+          <label class="input-group-btn">
+              <span class="btn btn-primary">
+                  Upload File<input type="file" id="hidefile" style="display: none;">
+              </span>
+          </label>
+          <input type="text" class="form-control" id="hidefilename" readonly>
+        </div>
+      </div>
+
+      <!-- Error / Loading -->
+      <div class="row justify-content-center bubble d-none"  id="lsbStatus">
+        <div id="statusText" class="col-md-4" style="text-align: center; color: red">Loading...</div>
+      </div>
+      <!-- Go! -->
+      <center><button type="button" class="btn btn-primary d-none" id="embedbtn" onclick="startEmbed()">Go</button></center>
+      <center><button type="button" class="btn btn-primary d-none" id="extractbtn" onclick="startExtract()">Go</button></center>
+
+      <div class="d-none extractOnly">
+        <div class="md-form">
+          <label for="asciioutput">Ascii (readable only):</label>
+          <textarea cols="3" rows="3" class="md-textarea form-control" id="asciioutput"></textarea>
+        </div>
+        <div class="md-form">
+          <label for="hexoutput">Hex (Accurate):</label>
+          <textarea cols="3" rows="3" class="md-textarea form-control" id="hexoutput"></textarea>
+        </div>
+      </div>
+
+    </div> <!-- /dataEmbedExtract -->
+
+  <div id="image"></div> <!-- Image will be added here -->
+  </div> <!-- /container -->
+  <script src="assets/custom/main.js"></script>
+</body>
