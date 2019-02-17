@@ -1,6 +1,5 @@
 <!DOCTYLE html>
 <head>
-
   <title>StegOnline</title>
   <script src="assets/external/jquery-3.3.1.min.js"></script>
   <link href="assets/external/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +37,7 @@
     <div class="input-group">
       <label class="input-group-btn">
           <span class="btn btn-primary">
-              Upload File<input type="file" id="files" style="display: none;">
+              Upload Image<input type="file" id="files" style="display: none;">
           </span>
       </label>
       <input type="text" class="form-control" id="filename" readonly>
@@ -84,7 +83,7 @@
 
     <!-- Data extraction/embed page -->
     <div class="dataEmbedExtract d-none">
-      <h3 id="extractorembed">Extract Data</h3> <!-- Will be filled by JS with either extract or embed -->
+      <h3><span class="extractOnly d-none">Extract</span><span class="embedOnly">Embed</span> Data</h3>
       <h5>Bits</h5>
       <div class="table-responsive"> <!-- Wrapper for repsponsive table -->
         <table class="table thead-dark table-striped table-bordered table-hover table-sm" cellpadding="0" id="lsbtable">
@@ -225,11 +224,11 @@
 
       <!-- Error / Loading -->
       <div class="row justify-content-center bubble d-none"  id="lsbStatus">
-        <div id="statusText" class="col-md-4" style="text-align: center; color: red">Loading...</div>
+        <div id="statusText" class="col-md-10" style="text-align: center; color: red">Loading...</div>
       </div>
       <!-- Go! -->
-      <center><button type="button" class="btn btn-primary d-none" id="embedbtn" onclick="startEmbed()">Go</button></center>
-      <center><button type="button" class="btn btn-primary d-none" id="extractbtn" onclick="startExtract()">Go</button></center>
+      <center><button type="button" class="btn btn-primary embedOnly d-none" id="embedbtn" onclick="startEmbed()">Go</button></center>
+      <center><button type="button" class="btn btn-primary extractOnly d-none" id="extractbtn" onclick="startExtract()">Go</button></center>
 
       <div class="d-none extractOnly">
         <div class="md-form">

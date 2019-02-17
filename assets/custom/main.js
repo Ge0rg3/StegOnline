@@ -180,9 +180,11 @@ function openEmbedExtract(type) {
   $(".notdata").addClass("d-none");
   $("#image").addClass("d-none");
   $(".dataEmbedExtract").removeClass("d-none");
+  $(".extractOnly").addClass("d-none");
+  $(".embedOnly").addClass("d-none");
   //Extract specific stuff
-  if (type == 'extract') $(".extractOnly").removeClass("d-none"), $("#extractbtn").removeClass("d-none");
-  else if (type == 'embed') $(".embedOnly").removeClass("d-none"), $("#embedbtn").removeClass("d-none");
+  if (type == 'extract') $(".extractOnly").removeClass("d-none");
+  else if (type == 'embed') $(".embedOnly").removeClass("d-none"), $("#extractorembed").text("Embed Data");
   else throw "Invalid Type. Only 'extract' or 'embed' accepted.";
 }
 
@@ -272,6 +274,12 @@ async function startEmbed() {
   }
   var toHide = textToBin(tableData['textInput']);
   if (tableData['byteInput']) toHide = textToBin(tableData['byteInput']);
+  //Check if enough space
+  let requiredLength = ([].concat.apply([], tableData['selectedBits']).length * r.length);
+  if (toHide.length > requiredLength) {
+    $("#lsbStatus").removeClass("d-none");
+    $("#statusText").html("Not enough space to fit data... Cropping after "+requiredLength+" bits.");
+  }
   await hidelsb(toHide, tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder']);
   $("#image").removeClass("d-none");
 }

@@ -7,18 +7,18 @@ Upload any image file, and the relevant options will be displayed.
 * Extract data using LSB steganography techniques
 
 ## How can I contribute?
-* The front-end design could use a lot of love <3
 * An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver would be a good addition ([interesting solution](https://www.cs.bgu.ac.il/~ben-shahar/Teaching/Computational-Vision/StudentProjects/ICBV131/ICBV-2013-1-KatyaGroisman/FinalProjectReport.pdf)).
 * There is **no** way to read correct RGBA values of transparent/semi-transparent pixels with the Canvas API, so we use pngtoy. It would be great to have a lightweight version of pngtoy just for obtaining RGBA values.
 * When extracting data through LSB by columns instead of rows, the entire RGBA arrays must be rearranged. Although I temporary cache is stored, the process should be smoother.
-* The LSB Extraction popup window isn't friendly on really large/really small screens :(
 * We need a "Gray bits" feature, as seen on StegSolve.
 
 ## General Code Structure
-* live.php: The 'homepage' of the website.
-* assets/: External libraries + our custom stylesheet.
+* index.php: All HTML code of the website
+* assets/custom: Custom scripts/stylesheets
+* assets/external: External scripts/stylesheets (bootstrap, jquery, pngtoy)
 * main.js: Acts as a bridge between the UI and the core Stegonography functions
 * rgbaFunctions.js: The core functions of the program. This should contain no references to the webpage itself.
+* style.css: Our custom styleshet
 
 ## Working with transparency in JavaScript
 Read [this](https://stackoverflow.com/questions/39744072/how-to-get-rgb-from-transparent-pixel-in-js) and [this](https://stackoverflow.com/questions/28917518/reading-pixeldata-from-images-in-javascript-returns-unexpected-results-for-semi) first!  
