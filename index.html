@@ -67,8 +67,10 @@
     <div id="bitPlaneBrowser" class="bubble row justify-content-center notdata d-none">
       <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('skip','backward')">&lt;&lt;</button>
       <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('next','backward')">&lt;</button>
-      <span class="col-md-3" style="text-align: center">
-        <button class="btn btn-primary" id="planesbtn" onclick="initPlanes()">Explore Bit Planes</button>
+      <span id="planesbtn" class="col-md-4" style="text-align: center">
+        <button class="btn btn-primary" onclick="initPlanes()">Explore Bit Planes</button>
+      </span>
+      <span id="browseplanefield" class="col-md-3 d-none" style="text-align: center">
         <p id="browseplanetext"></p>
       </span>
       <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('next','forward')">&gt;</button>
@@ -84,6 +86,7 @@
     <!-- Data extraction/embed page -->
     <div class="dataEmbedExtract d-none">
       <h3><span class="extractOnly d-none">Extract</span><span class="embedOnly">Embed</span> Data</h3>
+      <h5 class="embedOnly d-none"><i>Warning: All opacity will be lost</i></h5>
       <h5>Bits</h5>
       <div class="table-responsive"> <!-- Wrapper for repsponsive table -->
         <table class="table thead-dark table-striped table-bordered table-hover table-sm" cellpadding="0" id="lsbtable">

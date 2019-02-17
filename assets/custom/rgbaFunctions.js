@@ -1,5 +1,5 @@
 //Calculating columns within lsb() takes forever, so we only want to do it once
-var rC, gC, bC, aC, extracting=false;
+var rC, gC, bC, aC, inprogress=false;
 
 const transforms = {
   "Red plane 0" : ['r',0], //0
@@ -210,8 +210,8 @@ async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
       let lsbHex = await lsb([g,b,r], [[1,2],[1,2]])
   */
   //Only do one extraction at a time!
-  if (extracting) return;
-  else extracting = true;
+  if (inprogress) return;
+  else inprogress = true;
   //This part is very slow, and the algorithm can probably be improved
   //We have to turn the flat Uint8ClampedArray from one long joined list of rows to one long joined list of columns
   if (extractBy == 'column') {
@@ -270,7 +270,7 @@ async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
   if (bin.length > 0) {
     hex += parseInt(bin, 2).toString(16);
   }
-  extracting = false;
+  inprogress = false;
   return hex;
 }
 
@@ -292,6 +292,10 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb')
       hidelsb(textToBin("hi"), [r],[[0]], 'column') //Hides data in the LSB of the R channel by columns instead of rows
       hidelsb(textToBin("hi"), [r],[[3,2,1,0]], 'row', 'lsb') //Hides data in the LSBs of various bits in the R channel, where the data is embedded from LSB -> MSB
   */
+  //Only do one embed at a time!
+  if (inprogress) return;
+  else inprogress = true;
+
   let colourCopies = [];
   let inputtedColours = [];
 
@@ -386,5 +390,6 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb')
     if (inputtedColours[i] == 'a') toDraw[3] = colourCopies[i];
   }
 
+  inprogress = false;
   generateImage(toDraw[0], toDraw[1], toDraw[2], toDraw[3]);
 }

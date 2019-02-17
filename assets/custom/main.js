@@ -105,6 +105,7 @@ function restore() {
   $(".bitbutton").addClass("d-none");
   $("#browseplanetext").text("");
   $("#planesbtn").removeClass("d-none");
+  $("#browseplanefield").addClass("d-none");
   generateImage(r, g, b, a);
 }
 
@@ -115,6 +116,7 @@ function initPlanes() {
   */
   $("#planesbtn").addClass("d-none");
   $(".bitbutton").removeClass("d-none");
+  $("#browseplanefield").removeClass("d-none");
 
   let transformKeys = Object.keys(transforms);
   $("#browseplanetext").html(transformKeys[planeNo]);
@@ -165,8 +167,8 @@ function exitEmbedExtract() {
   $(".dataEmbedExtract").addClass("d-none");
   $(".extractOnly").addClass("d-none");
   $(".embedOnly").addClass("d-none");
-  $("#extractbtn").addClass("d-none");
-  $("#embedbtn").addClass("d-none");
+  $("#extractbtn").prop("disabled", false);
+  $("#embedbtn").prop("disabled", false);
   $(".notdata").removeClass("d-none");
   $("#image").removeClass("d-none");
 }
@@ -212,6 +214,8 @@ function parseTable() {
   if (Object.keys(totalBits).length == 0) {
     $("#lsbStatus").removeClass("d-none");
     $("#statusText").html("No bits selected in table.");
+    $("#embedbtn").prop("disabled", false);
+    $("#extractbtn").prop("disabled", false);
     return;
   }
 
@@ -226,6 +230,8 @@ function parseTable() {
   if (sorted[0] != "A" || sorted[1] != "B" || sorted[2] != "G" || sorted[3] != "R") {
     $("#lsbStatus").removeClass("d-none");
     $("#statusText").html("Duplicate colours in Bit Plane Order.");
+    $("#embedbtn").prop("disabled", false);
+    $("#extractbtn").prop("disabled", false);
     return;
   }
   lsbParams['selectedBits'] = [];
@@ -255,11 +261,13 @@ async function startExtract() {
   /*
     Controller for the extraction process.
   */
+  $("#extractbtn").prop("disabled", true);
   var tableData = parseTable();
   var hexResult = await extractlsb(tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder']);
   var asciiResult = hexToAscii(hexResult).match(/.{1,8}/g).join(' ');
   $("#hexoutput").val(hexResult);
   $("#asciioutput").val(asciiResult);
+  $("#extractbtn").prop("disabled", false);
 }
 
 
@@ -267,6 +275,7 @@ async function startEmbed() {
   /*
   Controller for the embed process.
   */
+  $("#embedbtn").prop("disabled", true);
   var tableData = parseTable();
   //Remove alpha
   if (tableData['selectedColours'].indexOf(a) != -1) {
@@ -275,12 +284,16 @@ async function startEmbed() {
   var toHide = textToBin(tableData['textInput']);
   if (tableData['byteInput']) toHide = textToBin(tableData['byteInput']);
   //Check if enough space
-  let requiredLength = ([].concat.apply([], tableData['selectedBits']).length * r.length);
-  if (toHide.length > requiredLength) {
+  let selectedLength = [].concat.apply([], tableData['selectedBits']).length;
+  let minimumRequired = Math.ceil(toHide.length / r.length);
+  if (selectedLength < minimumRequired) {
     $("#lsbStatus").removeClass("d-none");
-    $("#statusText").html("Not enough space to fit data... Cropping after "+requiredLength+" bits.");
+    if (minimumRequired < 21) $("#statusText").html("Not enough space to fit data. Please select at least "+minimumRequired+" bits in table.<br/>Cropping at "+selectedLength*r.length+" bits.");
+    else $("#statusText").html("Data too large!<br/>Cropping at "+selectedLength*r.length+" bits.");
+    // $("#statusText").html("Not enough space to fit data... Cropping after "+selectedLength+" bits.");
   }
   await hidelsb(toHide, tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder']);
+  $("#embedbtn").prop("disabled", false);
   $("#image").removeClass("d-none");
 }
 
