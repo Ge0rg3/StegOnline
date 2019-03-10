@@ -1,5 +1,7 @@
 var planeNo = 0;
 var inputBytes = false;
+var isPng = false;
+var isTransparent = false;
 
 function handleFileSelect(evt) {
   /*
@@ -8,7 +10,7 @@ function handleFileSelect(evt) {
   */
 
   //Reset current settings
-  inputBytes = false;
+  inputBytes = isPng = false;
   $("#image").html("");
 
   var f = evt.target.files[0];
@@ -16,6 +18,9 @@ function handleFileSelect(evt) {
   if (!f.type.match('image.*')) {
     alert("Please enter valid image file.");
     return;
+  }
+  if (f.type == "image/png") {
+    isPng = true;
   }
 
   //Show controls
@@ -107,7 +112,7 @@ function hideImageFileReader(evt) {
 document.getElementById('hideimagefile').addEventListener('change', hideImageFileReader, false);
 
 
-function run(imageObj, width, height, src) {
+async function run(imageObj, width, height, src) {
   /*
     Main control function
     Input: Image object, image width, image height
@@ -120,17 +125,38 @@ function run(imageObj, width, height, src) {
   ctx.imageSmoothingEnabled = false;
   canvas.width = width;
   canvas.height = height;
+  isTransparent = false;
 
   //Get image data
   ctx.drawImage(imageObj, 0, 0);
   rgbaData = ctx.getImageData(0, 0, width, height).data;
   a = rgbaData.filter((val, index) => (index-3) % 4 == 0); //Get just alpha values
+  if (a.filter(_ => _ < 255).length > 0) {
+    isTransparent = true;
+  }
 
   //If image has transparency, we must use pngtoy to correctly load RGB values
- if (a.filter(_ => _ < 255).length > 0) {
+  //PngToy also allows us to easily view other png blocks
+ if (isPng) {
    let pngtoyObj = new PngImage();
-   pngtoyObj.onload = function() {
-     runTransparent(pngtoyObj, src);
+   pngtoyObj.onload = async function() {
+     pngtoyObj = pngtoyObj.pngtoy;
+     pngData = await pngtoyObj.decode();
+     rgbaData = pngData.bitmap;
+     if (isTransparent) {
+       r = rgbaData.filter((val, index) => index % 4 == 0);
+       g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
+       b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
+       a = rgbaData.filter((val, index) => (index-3) % 4 == 0);
+     }
+     else {
+       r = rgbaData.filter((val, index) => index % 3 == 0);
+       g = rgbaData.filter((val, index) => (index-1) % 3 == 0);
+       b = rgbaData.filter((val, index) => (index-2) % 3 == 0);
+       a = new Array(r.length).fill(255);
+     }
+     $("#image").append(canvas);
+     restore();
    }
    pngtoyObj.src = src;
    return;
@@ -140,30 +166,13 @@ function run(imageObj, width, height, src) {
   r = rgbaData.filter((val, index) => index % 4 == 0);
   g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
   b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
+  a = new Array(r.length).fill(255);
   restore();
   isTransparent = false;
   $("#image").append(canvas);
 
 }
 
-async function runTransparent(pngtoyObj) {
-  /*
-    A child function of run(), for images with transparency.
-    Since it's impossible to read the correct RGB values of transparent images in JS, we use pngtoy to find them
-    Input:
-      -A loaded PngImage from pngtoy
-  */
-  pngtoyObj = pngtoyObj.pngtoy;
-  pngData = await pngtoyObj.decode();
-  rgbaData = pngData.bitmap;
-  r = rgbaData.filter((val, index) => index % 4 == 0);
-  g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
-  b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
-  a = rgbaData.filter((val, index) => (index-3) % 4 == 0);
-  isTransparent = true;
-  restore();
-  $("#image").append(canvas);
-}
 
 
 function restore() {
@@ -246,6 +255,7 @@ function back() {
   $("#image").removeClass("d-none");
   $("#back").addClass("d-none");
   $("#hideImageUpload").addClass("d-none");
+  $("#extractResults").addClass("d-none");
 }
 
 function openEmbedExtract(type) {
