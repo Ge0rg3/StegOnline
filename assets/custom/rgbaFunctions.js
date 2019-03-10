@@ -215,6 +215,7 @@ async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
   //This part is very slow, and the algorithm can probably be improved
   //We have to turn the flat Uint8ClampedArray from one long joined list of rows to one long joined list of columns
   if (extractBy == 'column') {
+    $("#lsbStatus").removeClass("d-none");
     for (let i=0; i < colours.length; i++) {
       let colour = colours[i];
       //Use cached version if available
@@ -228,11 +229,11 @@ async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
       let tempArr = [];
       for (let j=0; j < canvas.width; j++) {
         //Show loading every 100 runs
-        if (j%100==0) $("#loadingColumn").text(`${i+1}/${colours.length} : ${j}/${canvas.width}`), await sleep(0);
+        if (j%100==0) $("#statusText").text(`${i+1}/${colours.length} : ${j}/${canvas.width}`), await sleep(0);
         let filtered = Array.from(colour.filter((val, index) => index % canvas.width == j));
         tempArr = tempArr.concat(filtered);
       }
-      $("#loadingColumn").text("Complete!");
+      $("#lsbStatus").addClass("d-none");
       colours[i] = new Uint8ClampedArray(tempArr);
       //Create cached version
       if (colour == r) rC = tempArr;
@@ -309,6 +310,7 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb',
 
   //Rotate for columns
   if (hideBy == 'column') {
+    $("#lsbStatus").removeClass("d-none");
     for (let i=0; i < colourCopies.length; i++) {
       let colour = colourCopies[i];
       //Use cached version if available
@@ -321,7 +323,7 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb',
       //If not, rotate
       let tempArr = [];
       for (let j=0; j < canvas.width; j++) {
-        if (j%100==0) $("#lsbExtractPopup .loadingColumn").text(`${i+1}/${colours.length} : ${j}/${canvas.width}`), await sleep(0);
+        if (j%100==0) $("#statusText").text(`${i+1}/${colours.length} : ${j}/${canvas.width}`), await sleep(0);
         let filtered = Array.from(colour.filter((val, index) => index % canvas.width == j));
         tempArr = tempArr.concat(filtered);
       }
@@ -333,7 +335,7 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb',
       //Assign to colourcopies!
       colourCopies[i] = new Uint8ClampedArray(tempArr);
     }
-    $("#lsbExtractPopup .loadingColumn").text("Complete!");
+    $("#lsbStatus").addClass("d-none");
   }
   //If column selected, then the values have now been rotated
 
@@ -344,7 +346,7 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb',
   var binIndex = 0;
     //If padding, increase toHide binary with 0s
   if (padBits) {
-    toHide += "0".repeat(r.length - toHide.length);
+    toHide += "0".repeat((r.length*bits.flat().length) - toHide.length);
   }
 
   for (let i=0; i < toHide.length; i++) { //For each pixel
@@ -372,12 +374,13 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb',
 
   //If column selected, then the we now need to rotate back
   if (hideBy == 'column') {
+    $("#lsbStatus").removeClass("d-none");
     for (let i=0; i < colourCopies.length; i++) {
       let colour = colourCopies[i];
       //No cache this time :)
       let tempArr = [];
       for (let j=0; j < canvas.height; j++) {
-        if (j%100==0) $("#lsbExtractPopup .loadingColumn").text(`${i+1}/${colourCopies.length} : ${j}/${canvas.height}`), await sleep(0);
+        if (j%100==0) $("#statusText").text(`${i+1}/${colourCopies.length} : ${j}/${canvas.height}`), await sleep(0);
         let filtered = Array.from(colour.filter((val, index) => index % canvas.height == j));
         tempArr = tempArr.concat(filtered);
       }
@@ -395,6 +398,7 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb',
   }
 
   inprogress = false;
+  $("#lsbStatus").addClass("d-none");
   generateImage(toDraw[0], toDraw[1], toDraw[2], toDraw[3]);
 }
 
@@ -460,4 +464,14 @@ function hideImageInBitPlane(plane, bit) {
     }
   }
   generateImage(colours[0], colours[1], colours[2], a);
+}
+
+function viewStrings(stringData, minimumLength) {
+  /*
+    This function returns a list of strings found inside of the image data.
+    Input:
+      -stringData: A string of binary data
+      -minimumLength: Mimimum Length of String
+  */
+  return stringData.match(/\w{5}\b/g);
 }

@@ -22,15 +22,22 @@ function handleFileSelect(evt) {
   $(".notdata").removeClass("d-none");
 
   //Read file
-  var reader = new FileReader();
-  reader.readAsDataURL(f);
+  var reader = new FileReader(); //For RGB data and main program
+  var stringReader = new FileReader(); //For "View Strings" function
 
-  reader.onloadend = function(){
+  reader.readAsDataURL(f);
+  stringReader.readAsBinaryString(f);
+
+  reader.onloadend = function() {
     let imageObj = new Image();
     imageObj.onload = function() {
       run(imageObj, this.width, this.height, reader.result);
     }
     imageObj.src = reader.result;
+  }
+
+  stringReader.onloadend = function() {
+    imageStringData = stringReader.result; //GLobal var set
   }
 
 }
@@ -165,6 +172,7 @@ function restore() {
     Draws regular loaded image onto canvas, and resets RGBA planes
   */
   planeNo = 0;
+  hideStrings();
   $(".bitbutton").addClass("d-none");
   $("#browseplanetext").text("");
   $("#planesbtn").removeClass("d-none");
@@ -387,4 +395,30 @@ function embedImageInImage() {
   var bit = parseInt($("#hideBitPlaneBit").val());
   hideImageInBitPlane(plane, bit);
   $("#image").removeClass("d-none");
+}
+
+function viewStringController() {
+  /*
+    Interface between rgbaFunction.js' viewStrings function and the UI.
+  */
+  $("#hideStringsBtn").removeClass("d-none");
+  $("#viewStringsBtn").addClass("d-none");
+
+  var strings = viewStrings(imageStringData, 5);
+  var columnCount = Math.ceil(strings.length / 3);
+  var stringsChunks = [strings.slice(0, columnCount), strings.slice(columnCount, columnCount*2), strings.slice(columnCount*2, strings.length)];
+
+  $("#stringsDataOne").html(stringsChunks[0].join("<br/>"));
+  $("#stringsDataTwo").html(stringsChunks[1].join("<br/>"));
+  $("#stringsDataThree").html(stringsChunks[2].join("<br/>"));
+  $("#stringsBox").removeClass("d-none");
+}
+
+function hideStrings() {
+  /*
+    Used to hide the Strings box. Called whenever the hideStringsBtn is pressed, or a reset is issued.
+  */
+  $("#stringsBox").addClass("d-none");
+  $("#hideStringsBtn").addClass("d-none");
+  $("#viewStringsBtn").removeClass("d-none");
 }

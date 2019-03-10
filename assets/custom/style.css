@@ -99,3 +99,8 @@ button {
 #extractEmbedOptions {
   margin-bottom: 2%;
 }
+
+#stringsBox {
+  max-height: 20%;
+  overflow-y: auto;
+}

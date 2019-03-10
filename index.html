@@ -84,6 +84,15 @@
       <button type="button" class="btn btn-outline-dark col-md-3 col-sm-12" onclick="openEmbedExtract('extract')">Extract Files/Text</button>
       <button type="button" class="btn btn-outline-dark col-md-3 col-sm-12" onclick="openEmbedExtract('embed')">Embed Files/Text</button>
       <button type="button" class="btn btn-outline-dark col-md-4 col-sm-12" onclick="openHideImage()">Hide Image in Bit Plane</button>
+      <button type="button" class="btn btn-outline-dark col-md-3 col-sm-12" onclick="viewStringController()" id="viewStringsBtn">View Strings</button>
+      <button type="button" class="btn btn-danger col-md-3 col-sm-12 d-none" onclick="hideStrings()" id="hideStringsBtn">Hide Strings</button>
+    </div>
+
+    <div id="stringsBox" class="bubble d-none row">
+      <h4 class="col-md-12">Strings:</h4>
+      <span id="stringsDataOne" class="col-md-4"></span>
+      <span id="stringsDataTwo" class="col-md-4"></span>
+      <span id="stringsDataThree" class="col-md-4"></span>
     </div>
 
     <!-- Data extraction/embed page -->
