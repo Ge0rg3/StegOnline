@@ -128,14 +128,14 @@ function displayPlane(colour, number) {
     let bin = intToBin(planeView[i]).split('');
     //If the nth LSB in the binary string is 1, print black
     if (bin[bin.length-1-number] == "1") {
-      newR.push(255);
-      newG.push(255);
-      newB.push(255);
-    }
-    else {
       newR.push(0);
       newG.push(0);
       newB.push(0);
+    }
+    else {
+      newR.push(255);
+      newG.push(255);
+      newB.push(255);
     }
   }
 
@@ -392,4 +392,68 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb')
 
   inprogress = false;
   generateImage(toDraw[0], toDraw[1], toDraw[2], toDraw[3]);
+}
+
+
+function combineImages() {
+  /*
+    This function uses the global hideR, hideG, hideB, hideA, r, g, b, a values.
+    It combines two images, and draws them onto the canvas.
+    We do this by hiding the second image in the 4 LSBs of the original image.
+  */
+  var colours = [r.slice(0), g.slice(0), b.slice(0)];
+  var toHide = [hideR, hideG, hideB];
+
+  let maxH = hideHeight > canvas.height ? hideHeight : canvas.height;
+  let maxW = hideWidth > canvas.width ? hideWidth : canvas.width;
+
+  for (let i=0; i < maxH; i++) { //rows
+    for (let j=0; j < maxW; j++) { //cols
+      //Get nth pixel
+      let hideNth = (i*hideWidth)+j;
+      let hideOriginal = (i*canvas.width)+j;
+      for (let k=0; k < colours.length; k++) { //colours
+        //Convert rgb value of original pixel to binary
+        let binaryCol = intToBin(colours[k][hideOriginal]);
+        //Convert rgb value of new image pixel to binary
+        let newBinaryCol = intToBin(toHide[k][hideNth]);
+        //Insert new value into original binary
+        binaryCol = binaryCol.substr(0, 4) + newBinaryCol.substr(0, 4);
+        colours[k][hideOriginal] = parseInt(binaryCol, 2);
+      }
+    }
+  }
+  generateImage(colours[0], colours[1], colours[2], hideA);
+}
+
+function hideImageInBitPlane(plane, bit) {
+  /*
+    This function hides a second image inside of a chosen bit plane of an original image.
+    We use the global r, g, b, a, hideR, hideG, hideB and hideA values to do this.
+    Input:
+      -plane: Either 'R', 'G' or 'B'
+      -bit: Any number from 0 to 7.
+  */
+  var colours = [r.slice(0), g.slice(0), b.slice(0)];
+  var editColour = ['R','G','B'].indexOf(plane);
+  var toHide = [hideR, hideG, hideB];
+  bit = 7-bit;
+
+  let maxH = hideHeight < canvas.height ? hideHeight : canvas.height;
+  let maxW = hideWidth < canvas.width ? hideWidth : canvas.width;
+
+  for (let i=0; i < maxH; i++) { //rows
+    for (let j=0; j < maxW; j++) { //cols
+      //Get nth pixel
+      let hideNth = (i*hideWidth)+j;
+      let hideOriginal = (i*canvas.width)+j;
+      //Convert rgb value of original pixel to binary
+      let binaryCol = intToBin(colours[editColour][hideOriginal]).split('');
+      //Get BW value of image to hide
+      binaryCol[bit] = toHide[editColour][hideNth] > 127 ? 0 : 1;
+      //Put edited value into original image
+      colours[editColour][hideOriginal] = parseInt(binaryCol.join(''), 2);
+    }
+  }
+  generateImage(colours[0], colours[1], colours[2], a);
 }

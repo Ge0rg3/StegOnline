@@ -5,6 +5,8 @@ Upload any image file, and the relevant options will be displayed.
 ## Features:
 * Browse through the 32 bit planes of the image
 * Extract data using LSB steganography techniques
+* Embed data in any bit pattern
+* Hide one image inside of another's bit planes
 
 ## How can I contribute?
 * An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver would be a good addition ([interesting solution](https://www.cs.bgu.ac.il/~ben-shahar/Teaching/Computational-Vision/StudentProjects/ICBV131/ICBV-2013-1-KatyaGroisman/FinalProjectReport.pdf)).

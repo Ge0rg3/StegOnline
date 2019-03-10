@@ -37,6 +37,69 @@ function handleFileSelect(evt) {
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 
+function hideDataFileReader(evt) {
+  /*
+    Live file reader management for the file input when hiding data inside of images.
+    Sets the image data to global var: inputBytes
+  */
+  var file = evt.target.files[0];
+  $("#hidefilename").val(file.name);
+
+  //Read file
+  var bytereader = new FileReader();
+
+  bytereader.onloadend = function(){
+    inputBytes = new Uint8Array(this.result);
+    inputBytes = Array.from(inputBytes).map(c => String.fromCharCode(c));
+  }
+  bytereader.readAsArrayBuffer(this.files[0]);
+
+}
+document.getElementById('hidefile').addEventListener('change', hideDataFileReader, false);
+
+
+function hideImageFileReader(evt) {
+  /*
+    Live file reader management for the file input when hiding images inside of images.
+    Sets global vars: hideR, hideG, hideB, hideA
+  */
+  var f = evt.target.files[0];
+  $("#hideimagefilename").val(f.name);
+
+  if (!f.type.match('image.*')) {
+    alert("Please enter valid image file.");
+    return;
+  }
+
+  //Read file
+  var reader = new FileReader();
+  reader.readAsDataURL(f);
+
+  reader.onloadend = function(){
+    let imageObj = new Image();
+    imageObj.onload = function() {
+      var tempcanvas = document.createElement("canvas");
+      var tempctx = tempcanvas.getContext("2d");
+      tempctx.imageSmoothingEnabled = false;
+      tempcanvas.width = this.width;
+      tempcanvas.height = this.height;
+      tempctx.drawImage(imageObj, 0, 0);
+      temprgbaData = tempctx.getImageData(0, 0, this.width, this.height).data;
+      hideR = temprgbaData.filter((val, index) => index % 4 == 0);
+      hideG = temprgbaData.filter((val, index) => (index-1) % 4 == 0);
+      hideB = temprgbaData.filter((val, index) => (index-2) % 4 == 0);
+      hideA = new Array(r.length).fill(255);
+      hideWidth = this.width;
+      hideHeight = this.height;
+      $(".hideBitPlaneOptions").removeClass("d-none");
+    }
+    imageObj.src = reader.result;
+  }
+
+}
+document.getElementById('hideimagefile').addEventListener('change', hideImageFileReader, false);
+
+
 function run(imageObj, width, height, src) {
   /*
     Main control function
@@ -160,17 +223,20 @@ function browsePlanes(action, direction) {
   displayPlane(...transforms[transformKeys[planeNo]]);
 }
 
-function exitEmbedExtract() {
+function back() {
   /*
-    Hides the embedextract menu, and shows the main page again.
+    Hides the embedextract menu/hide image menu and shows the main page again.
   */
-  $(".dataEmbedExtract").addClass("d-none");
+  $("#dataEmbedExtract").addClass("d-none");
   $(".extractOnly").addClass("d-none");
   $(".embedOnly").addClass("d-none");
+  $("#hideImage").addClass("d-none");
   $("#extractbtn").prop("disabled", false);
   $("#embedbtn").prop("disabled", false);
   $(".notdata").removeClass("d-none");
   $("#image").removeClass("d-none");
+  $("#back").addClass("d-none");
+  $("#hideImageUpload").addClass("d-none");
 }
 
 function openEmbedExtract(type) {
@@ -181,13 +247,24 @@ function openEmbedExtract(type) {
   //Standard table stuff
   $(".notdata").addClass("d-none");
   $("#image").addClass("d-none");
-  $(".dataEmbedExtract").removeClass("d-none");
+  $("#dataEmbedExtract").removeClass("d-none");
   $(".extractOnly").addClass("d-none");
   $(".embedOnly").addClass("d-none");
+  $("#back").removeClass("d-none");
   //Extract specific stuff
   if (type == 'extract') $(".extractOnly").removeClass("d-none");
   else if (type == 'embed') $(".embedOnly").removeClass("d-none"), $("#extractorembed").text("Embed Data");
   else throw "Invalid Type. Only 'extract' or 'embed' accepted.";
+}
+
+function openHideImage() {
+  /*
+    Opens the Image Hiding menu
+  */
+  $(".notdata").addClass("d-none");
+  $("#image").addClass("d-none");
+  $("#hideImage").removeClass("d-none");
+  $("#back").removeClass("d-none");
 }
 
 function parseTable() {
@@ -298,22 +375,12 @@ async function startEmbed() {
 }
 
 
-function hideFileReader(evt) {
+function embedImageInImage() {
   /*
-    Live file reader management for the file input when hiding data inside of images.
-    Sets the image data to global var: inputBytes
+    Parses options in "Embed Image in Bit Plane" page, and calls the hideImageInBitPlane function with the relevant parameters.
   */
-  var file = evt.target.files[0];
-  $("#hidefilename").val(file.name);
-
-  //Read file
-  var bytereader = new FileReader();
-
-  bytereader.onloadend = function(){
-    inputBytes = new Uint8Array(this.result);
-    inputBytes = Array.from(inputBytes).map(c => String.fromCharCode(c));
-  }
-  bytereader.readAsArrayBuffer(this.files[0]);
-
+  var plane = $("#hideBitPlanePlane").val();
+  var bit = parseInt($("#hideBitPlaneBit").val());
+  hideImageInBitPlane(plane, bit);
+  $("#image").removeClass("d-none");
 }
-document.getElementById('hidefile').addEventListener('change', hideFileReader, false);
