@@ -161,28 +161,24 @@
       </div>
 
       <!-- Other options -->
-      <div id="extractEmbedOptions" class="row justify-content-center">
-        <div class="col-md-4">
+      <div id="extractEmbedOptions" class="row">
+        <div class="col-md-3">
           <h5>Pixel Order</h5>
-          <div class="radio">
-            <label><input type="radio" name="pixelOrder" id="pixelOrderRow" checked>Row</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="pixelOrder">Column (<b>Slow</b>)</label>
-          </div>
+          <select class="input-small" id="pixelOrderRow">
+            <option value="row" selected>Row</option>
+            <option value="column">Column (<b>Slow</b>)</option> <!-- Bold text does not work in Chrome -->
+          </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
           <h5>Bit Order</h5>
-          <div class="radio">
-            <label><input type="radio" name="bitOrder" id="bitOrderMSB" checked>MSB</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="bitOrder">LSB</label>
-          </div>
+          <select class="input-small" id="bitOrderMSB">
+            <option value="msb" selected>MSB</option>
+            <option value="lsb">LSB</option>
+          </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <h5>Bit Plane Order</h5>
           <select class="input-small" id="rgbaOne">
             <option value="R" selected>R</option>
@@ -207,6 +203,14 @@
             <option value="G">G</option>
             <option value="B">B</option>
             <option value="A" selected>A</option>
+          </select>
+        </div>
+
+        <div class="col-md-4 embedOnly d-none">
+          <h5>Pad Remaining Bits</h5>
+          <select class="input-small" id="padBits">
+            <option value="Yes">Yes</option>
+            <option value="No" selected>No</option>
           </select>
         </div>
       </div> <!-- /extractEmbedOptions -->
@@ -236,14 +240,14 @@
       <center><button type="button" class="btn btn-success embedOnly d-none" id="embedbtn" onclick="startEmbed()">Go</button></center>
       <center><button type="button" class="btn btn-success extractOnly d-none" id="extractbtn" onclick="startExtract()">Go</button></center>
 
-      <div class="d-none extractOnly">
+      <div id="extractResults" class="d-none">
         <div class="md-form">
           <label for="asciioutput">Ascii (readable only):</label>
-          <textarea cols="3" rows="3" class="md-textarea form-control" id="asciioutput"></textarea>
+          <textarea cols="3" rows="3" class="md-textarea form-control" id="asciioutput" readonly></textarea>
         </div>
         <div class="md-form">
           <label for="hexoutput">Hex (Accurate):</label>
-          <textarea cols="3" rows="3" class="md-textarea form-control" id="hexoutput"></textarea>
+          <textarea cols="3" rows="3" class="md-textarea form-control" id="hexoutput" readonly></textarea>
         </div>
       </div>
 
@@ -252,7 +256,7 @@
     <!-- Hide image menu -->
     <div id="hideImage" class="d-none">
       <h3>Embed Image in Bit Plane</h3>
-
+        <h5><i>Warning: All opacity will be lost</i></h5>
         <p>Upload a black and white image that will be embedded into the selected <a href="https://en.wikipedia.org/wiki/Bit_plane">bit plane</a>. This image can be later extracted by using the "Browse Bit Planes" option on the homepage.</p>
         <p>Make sure that the image you want to hide is roughly the same size as the original image.</p>
         <p>For the best results, use planes 0-2.</p>
@@ -282,14 +286,14 @@
                 Select Bit:
                 <br/>
                 <select class="input-small" id="hideBitPlaneBit">
-                  <option value="7" selected>7</option>
+                  <option value="7">7</option>
                   <option value="6">6</option>
                   <option value="5">5</option>
                   <option value="4">4</option>
                   <option value="3">3</option>
                   <option value="2">2</option>
                   <option value="1">1</option>
-                  <option value="0">0</option>
+                  <option value="0" selected>0</option>
                 </select>
               </center></div>
             </div>

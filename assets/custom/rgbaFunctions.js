@@ -275,7 +275,7 @@ async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
 }
 
 
-async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb') {
+async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb', padBits=false) {
   /*
     This function hides data inside of the current image, and draws it to the screen.
     Inputs:
@@ -342,6 +342,10 @@ async function hidelsb(binaryInput, colours, bits, hideBy='row', bitOrder='msb')
   var hex = "";
   var toHide = binaryInput;
   var binIndex = 0;
+    //If padding, increase toHide binary with 0s
+  if (padBits) {
+    toHide += "0".repeat(r.length - toHide.length);
+  }
 
   for (let i=0; i < toHide.length; i++) { //For each pixel
     if (binIndex > toHide.length) break;

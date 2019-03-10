@@ -169,6 +169,7 @@ function restore() {
   $("#browseplanetext").text("");
   $("#planesbtn").removeClass("d-none");
   $("#browseplanefield").addClass("d-none");
+  $("#extractResults").addClass("d-none");
   generateImage(r, g, b, a);
 }
 
@@ -297,9 +298,11 @@ function parseTable() {
   }
 
   //2) Pixel order
-  lsbParams['pixelOrder'] = $("#pixelOrderRow").is(":checked") ? 'row' : 'column';
+  lsbParams['pixelOrder'] = $("#pixelOrderRow").val();
   //3) Bit order
-  lsbParams['bitOrder'] = $("#bitOrderMSB").is(":checked") ? 'msb' : 'lsb';
+  lsbParams['bitOrder'] = $("#bitOrderMSB").val();
+  //4) Pad remaining bits
+  lsbParams['padBits'] = ($("#padBits").val() == "Yes");
   //Get bit plane order
   var planeOrder = [$("#rgbaOne").val(),$("#rgbaTwo").val(),$("#rgbaThree").val(),$("#rgbaFour").val()];
   let sorted = planeOrder.slice(0).sort();
@@ -322,9 +325,9 @@ function parseTable() {
     lsbParams['selectedBits'].push(totalBits[colour]);
   }
 
-  //4) Text input
+  //5) Text input
   lsbParams['textInput'] = $("#textinput").val();
-  //5) File input - from global var declared within hideFileRead()
+  //6) File input - from global var declared within hideFileRead()
   if (inputBytes) lsbParams['byteInput'] = inputBytes;
   else lsbParams['byteInput'] = false;
 
@@ -342,6 +345,7 @@ async function startExtract() {
   var tableData = parseTable();
   var hexResult = await extractlsb(tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder']);
   var asciiResult = hexToAscii(hexResult).match(/.{1,8}/g).join(' ');
+  $("#extractResults").removeClass("d-none");
   $("#hexoutput").val(hexResult);
   $("#asciioutput").val(asciiResult);
   $("#extractbtn").prop("disabled", false);
@@ -369,7 +373,7 @@ async function startEmbed() {
     else $("#statusText").html("Data too large!<br/>Cropping at "+selectedLength*r.length+" bits.");
     // $("#statusText").html("Not enough space to fit data... Cropping after "+selectedLength+" bits.");
   }
-  await hidelsb(toHide, tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder']);
+  await hidelsb(toHide, tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder'], tableData['padBits']);
   $("#embedbtn").prop("disabled", false);
   $("#image").removeClass("d-none");
 }

@@ -95,3 +95,7 @@ button {
   display: inline-block;
   font-size: 120%;
 }
+
+#extractEmbedOptions {
+  margin-bottom: 2%;
+}
