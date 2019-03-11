@@ -90,7 +90,7 @@ button {
   margin: 2px;
 }
 
-#bitPlaneBrowser p {
+#bitPlaneBrowser p, #browsepalettefield p {
   text-align: center;
   display: inline-block;
   font-size: 120%;

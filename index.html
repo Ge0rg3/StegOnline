@@ -65,6 +65,24 @@
       <!-- </div> -->
     </div>
 
+    <!-- Colourmap Explorer -->
+    <div id="customColourPalette" class="bubble d-none">
+      <center><p><b>This image contains a custom colour palette.</b></p></center>
+      <div class="row justify-content-center">
+        <button type="button" class="btn btn-outline-dark col-md-4 col-sm-6" onclick="randomizeColourmap()">Randomize Colour Palette</button>
+        <button type="button" class="btn btn-outline-dark col-md-4 col-sm-6" onclick="initBrowseColourPalette()">Browse Colour Palette</button>
+      </div>
+      <div id="browsePaletteDisplay" class="row justify-content-center">
+        <button type="button" class="btn btn-primary col-md-1" onclick="browseColourPaletteController(-5)">&lt;5</button>
+        <button type="button" class="btn btn-primary col-md-1" onclick="browseColourPaletteController(-1)">&lt;</button>
+          <span id="browsepalettefield" class="col-md-3" style="text-align: center">
+            <p id="browsepalettetext"></p>
+          </span>
+        <button type="button" class="btn btn-primary col-md-1" onclick="browseColourPaletteController(1)">&gt;</button>
+        <button type="button" class="btn btn-primary col-md-1" onclick="browseColourPaletteController(5)">5&gt;</button>
+      </div>
+    </div>
+
     <!-- Bit plane Browser -->
     <div id="bitPlaneBrowser" class="bubble row justify-content-center notdata d-none">
       <button type="button" class="btn btn-primary col-md-1 bitbutton d-none" onclick="browsePlanes('skip','backward')">&lt;&lt;</button>

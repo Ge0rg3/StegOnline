@@ -1,4 +1,5 @@
 var planeNo = 0;
+var paletteNo = 0;
 var inputBytes = false;
 var isPng = false;
 var isTransparent = false;
@@ -126,6 +127,7 @@ async function run(imageObj, width, height, src) {
   canvas.width = width;
   canvas.height = height;
   isTransparent = false;
+  $("#customColourPalette").addClass("d-none");
 
   //Get image data
   ctx.drawImage(imageObj, 0, 0);
@@ -143,13 +145,32 @@ async function run(imageObj, width, height, src) {
      pngtoyObj = pngtoyObj.pngtoy;
      pngData = await pngtoyObj.decode();
      rgbaData = pngData.bitmap;
-     if (isTransparent) {
+     try {
+       pngPalette = pngtoyObj.get_PLTE().palette
+     } catch (ex) {
+       pngPalette = false;
+     }
+     if (pngPalette) {
+        pngPaletteColours = [];
+        //If given a pallete, then rgbaData just contains an array of index in the palette
+        for (let i=0; i < pngPalette.length; i += 3) {
+          pngPaletteColours.push([pngPalette[i], pngPalette[i+1], pngPalette[i+2]]);
+        }
+        r = rgbaData.map(index => pngPaletteColours[index][0]);
+        g = rgbaData.map(index => pngPaletteColours[index][1]);
+        b = rgbaData.map(index => pngPaletteColours[index][2]);
+        a = new Array(r.length).fill(255);
+        $("#customColourPalette").removeClass("d-none");
+     }
+     else if (isTransparent) {
+       //If the image has transparency, alpha is included in the array
        r = rgbaData.filter((val, index) => index % 4 == 0);
        g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
        b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
        a = rgbaData.filter((val, index) => (index-3) % 4 == 0);
      }
      else {
+       //If the image has no transparency, alpha is not included in the array
        r = rgbaData.filter((val, index) => index % 3 == 0);
        g = rgbaData.filter((val, index) => (index-1) % 3 == 0);
        b = rgbaData.filter((val, index) => (index-2) % 3 == 0);
@@ -187,6 +208,7 @@ function restore() {
   $("#planesbtn").removeClass("d-none");
   $("#browseplanefield").addClass("d-none");
   $("#extractResults").addClass("d-none");
+  $("#browsePaletteDisplay").addClass("d-none");
   generateImage(r, g, b, a);
 }
 
@@ -195,6 +217,8 @@ function initPlanes() {
   /*
     Shows the planes viewer, and displays the initial plane.
   */
+  restore();
+
   $("#planesbtn").addClass("d-none");
   $(".bitbutton").removeClass("d-none");
   $("#browseplanefield").removeClass("d-none");
@@ -256,6 +280,9 @@ function back() {
   $("#back").addClass("d-none");
   $("#hideImageUpload").addClass("d-none");
   $("#extractResults").addClass("d-none");
+  if (pngPalette) {
+    $("#customColourPalette").removeClass("d-none");
+  }
 }
 
 function openEmbedExtract(type) {
@@ -270,6 +297,7 @@ function openEmbedExtract(type) {
   $(".extractOnly").addClass("d-none");
   $(".embedOnly").addClass("d-none");
   $("#back").removeClass("d-none");
+  $("#customColourPalette").addClass("d-none");
   //Extract specific stuff
   if (type == 'extract') $(".extractOnly").removeClass("d-none");
   else if (type == 'embed') $(".embedOnly").removeClass("d-none"), $("#extractorembed").text("Embed Data");
@@ -431,4 +459,27 @@ function hideStrings() {
   $("#stringsBox").addClass("d-none");
   $("#hideStringsBtn").addClass("d-none");
   $("#viewStringsBtn").removeClass("d-none");
+}
+
+function initBrowseColourPalette() {
+  /*
+    This opens the "Browse colour palette" submenu.
+  */
+  restore();
+  $("#browsePaletteDisplay").removeClass("d-none");
+  $("#browsepalettetext").text(paletteNo+"/"+pngPaletteColours.length);
+  browseColourPalette(paletteNo);
+}
+
+function browseColourPaletteController(progression) {
+  /*
+    This is the interface between the UI and the browseColourPalette function.
+    Input:
+      -progression: The change in colour palette
+  */
+  paletteNo += progression;
+  if (paletteNo > 256) paletteNo -= 257;
+  if (paletteNo < 0) paletteNo += 257;
+  $("#browsepalettetext").text(paletteNo+"/"+pngPaletteColours.length);
+  browseColourPalette(paletteNo);
 }

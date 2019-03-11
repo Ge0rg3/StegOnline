@@ -1,6 +1,8 @@
 //Calculating columns within lsb() takes forever, so we only want to do it once
 var rC, gC, bC, aC, inprogress=false;
 
+const ranbetween = (l, h) => Math.floor(Math.random()*(h-l+1)+l); //Inclusive random number generator
+
 const transforms = {
   "Red plane 0" : ['r',0], //0
   "Red plane 1" : ['r',1], //1
@@ -474,4 +476,37 @@ function viewStrings(stringData, minimumLength) {
       -minimumLength: Mimimum Length of String
   */
   return stringData.match(/\w{5}\b/g);
+}
+
+function randomizeColourmap() {
+  /*
+    Used to randomize the image palette, if it exists.
+    Uses the global "pngPalette" and "pngPaletteColours" variables.
+  */
+  restore();
+  if (ranbetween(0, 1) == 0) {
+    var randPngPaletteColours = pngPaletteColours.map(trio => [ranbetween(0, 255),50,50]);
+  } else {
+    var randPngPaletteColours = pngPaletteColours.map(trio => [ranbetween(0, 255),ranbetween(0, 255),ranbetween(0, 255)]);
+  }
+  var randR = rgbaData.map(index => randPngPaletteColours[index][0]);
+  var randB = rgbaData.map(index => randPngPaletteColours[index][1]);
+  var randG = rgbaData.map(index => randPngPaletteColours[index][2]);
+  generateImage(randR, randB, randG, a);
+}
+
+
+function browseColourPalette(paletteNo) {
+  /*
+    Views data on only one colour palette, and draws to canvas.
+    Uses global "pngPaletteColours" and "pngPalette" variables.
+  */
+  var newPngPaletteColours = pngPaletteColours.map((rgb, index) => index == paletteNo ? [255, 255, 255] : [0, 0, 0]);
+
+  var newR = rgbaData.map(index => newPngPaletteColours[index][0]);
+  var newG = rgbaData.map(index => newPngPaletteColours[index][1]);
+  var newB = rgbaData.map(index => newPngPaletteColours[index][2]);
+
+  generateImage(newR, newG, newB, a);
+
 }
