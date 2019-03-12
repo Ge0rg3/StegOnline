@@ -13,6 +13,7 @@ Upload any image file, and the relevant options will be displayed.
 * There is **no** way to read correct RGBA values of transparent/semi-transparent pixels with the Canvas API, so we use pngtoy. It would be great to have a lightweight version of pngtoy just for obtaining RGBA values.
 * When extracting data through LSB by columns instead of rows, the entire RGBA arrays must be rearranged. Although I temporary cache is stored, the process should be smoother.
 * We need a "Gray bits" feature, as seen on StegSolve.
+* We could detect trailing bits (similarly to StegoVeritas), and display them.
 
 ## General Code Structure
 * index.php: All HTML code of the website

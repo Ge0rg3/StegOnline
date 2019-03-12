@@ -298,6 +298,7 @@ function openEmbedExtract(type) {
   $(".embedOnly").addClass("d-none");
   $("#back").removeClass("d-none");
   $("#customColourPalette").addClass("d-none");
+  hideStrings();
   //Extract specific stuff
   if (type == 'extract') $(".extractOnly").removeClass("d-none");
   else if (type == 'embed') $(".embedOnly").removeClass("d-none"), $("#extractorembed").text("Embed Data");

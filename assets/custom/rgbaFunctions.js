@@ -473,9 +473,15 @@ function viewStrings(stringData, minimumLength) {
     This function returns a list of strings found inside of the image data.
     Input:
       -stringData: A string of binary data
-      -minimumLength: Mimimum Length of String
+      -minimumLength: Mimimum Length of String //TODO
   */
-  return stringData.match(/\w{5}\b/g);
+  var strings = imageStringData.match(/(?:[A-Za-z]|[0-9]|-|\(|\)|\[|\]|_|\ |!|\?|\.){5,}/g);
+  //Sort by length & alphabet
+  strings = strings.sort(function (a, b) {
+    return b.length - a.length || a.localeCompare(b);
+  })
+  return strings;
+
 }
 
 function randomizeColourmap() {
