@@ -23,6 +23,11 @@ Upload any image file, and the relevant options will be displayed.
 * rgbaFunctions.js: The core functions of the program. This should contain no references to the webpage itself.
 * style.css: Our custom styleshet
 
+## Future Plans
+After all basic features are developed, I'm going to start refactoring the entire codebase.
+What started out as a small project has grown into quite a beefy application, which the original code design definitely wasn't designed for.
+We will be porting this project to **Angular**, as it's SPA compatibility is pretty good.
+
 ## Working with transparency in JavaScript
 Read [this](https://stackoverflow.com/questions/39744072/how-to-get-rgb-from-transparent-pixel-in-js) and [this](https://stackoverflow.com/questions/28917518/reading-pixeldata-from-images-in-javascript-returns-unexpected-results-for-semi) first!  
 Essentially, it's impossible to read correct RGBA values of transparent pixels through the Image class in JavaScript.
