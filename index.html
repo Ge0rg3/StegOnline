@@ -90,13 +90,23 @@
       <button type="button" class="btn btn-outline-dark col-md-4 col-sm-12" onclick="openHideImage()">Hide Image in Bit Plane</button>
       <button type="button" class="btn btn-outline-dark col-md-3 col-sm-12" onclick="viewStringController()" id="viewStringsBtn">View Strings</button>
       <button type="button" class="btn btn-danger col-md-3 col-sm-12 d-none" onclick="hideStrings()" id="hideStringsBtn">Hide Strings</button>
+      <button type="button" class="btn btn-outline-dark col-md-3 col-sm-12" onclick="viewRgbaController()" id="viewRgbaBtn">View RGBA Values</button>
+      <button type="button" class="btn btn-danger col-md-3 col-sm-12 d-none" onclick="hideRgba()" id="hideRgbaBtn">Hide RGBA Values</button>
     </div>
 
+    <!-- View Strings box -->
     <div id="stringsBox" class="bubble d-none row" style="text-align: center;">
       <h4 class="col-md-12">Strings:</h4>
       <span id="stringsDataOne" class="col-md-4"></span>
       <span id="stringsDataTwo" class="col-md-4"></span>
       <span id="stringsDataThree" class="col-md-4"></span>
+    </div>
+
+    <!-- View RGBA Values box -->
+    <div id="rgbaBox" class="bubble d-none row" style="text-align: center;">
+      <h4 class="col-md-12">RGBA Values:</h4>
+      <h5 class="col-md-12 warn" id="rgbaValError"></h5>
+      <textarea id="displayRgbaValues" style="width: 100%; height: 20%;"></textarea>
     </div>
 
     <!-- Bit plane Browser -->

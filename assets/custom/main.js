@@ -127,6 +127,7 @@ async function run(imageObj, width, height, src) {
   canvas.width = width;
   canvas.height = height;
   isTransparent = false;
+  pngPalette = false;
   $("#customColourPalette").addClass("d-none");
 
   //Get image data
@@ -152,7 +153,7 @@ async function run(imageObj, width, height, src) {
      }
      if (pngPalette) {
         pngPaletteColours = [];
-        //If given a pallete, then rgbaData just contains an array of index in the palette
+        //If given a palette, then rgbaData just contains an array of index in the palette
         for (let i=0; i < pngPalette.length; i += 3) {
           pngPaletteColours.push([pngPalette[i], pngPalette[i+1], pngPalette[i+2]]);
         }
@@ -162,19 +163,11 @@ async function run(imageObj, width, height, src) {
         a = new Array(r.length).fill(255);
         $("#customColourPalette").removeClass("d-none");
      }
-     else if (isTransparent) {
-       //If the image has transparency, alpha is included in the array
+     else {
        r = rgbaData.filter((val, index) => index % 4 == 0);
        g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
        b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
        a = rgbaData.filter((val, index) => (index-3) % 4 == 0);
-     }
-     else {
-       //If the image has no transparency, alpha is not included in the array
-       r = rgbaData.filter((val, index) => index % 3 == 0);
-       g = rgbaData.filter((val, index) => (index-1) % 3 == 0);
-       b = rgbaData.filter((val, index) => (index-2) % 3 == 0);
-       a = new Array(r.length).fill(255);
      }
      $("#image").append(canvas);
      restore();
@@ -203,6 +196,7 @@ function restore() {
   */
   planeNo = 0;
   hideStrings();
+  hideRgba();
   $(".bitbutton").addClass("d-none");
   $("#browseplanetext").text("");
   $("#planesbtn").removeClass("d-none");
@@ -299,6 +293,7 @@ function openEmbedExtract(type) {
   $("#back").removeClass("d-none");
   $("#customColourPalette").addClass("d-none");
   hideStrings();
+  hideRgba();
   //Extract specific stuff
   if (type == 'extract') $(".extractOnly").removeClass("d-none");
   else if (type == 'embed') $(".embedOnly").removeClass("d-none"), $("#extractorembed").text("Embed Data");
@@ -483,4 +478,33 @@ function browseColourPaletteController(progression) {
   if (paletteNo < 0) paletteNo += 257;
   $("#browsepalettetext").text(paletteNo+"/"+pngPaletteColours.length);
   browseColourPalette(paletteNo);
+}
+
+function viewRgbaController() {
+  /*
+    Acts as interface between rgbaController() and UI.
+  */
+  $("#viewRgbaBtn").addClass("d-none");
+  $("#hideRgbaBtn").removeClass("d-none");
+
+  var err = "";
+  if (rgbaData.length > 25000) err += "<p>Showing first 25000 values...</p>";
+  var toShow = Array.from(rgbaData).slice(0, 25000).map(n => n.toString().padStart(3, '0')).join(' ');
+  if (pngPalette) {
+    err += "<p>Joining RGBA values from Palette Indexes...</p>";
+    toShow = pngPaletteColours.slice(0, 25000).flat().map(n => n.toString().padStart(3, '0')).join(' ');
+  }
+
+  $("#displayRgbaValues").val(toShow);
+  $("#rgbaValError").html(err);
+  $("#rgbaBox").removeClass("d-none");
+}
+
+function hideRgba() {
+  /*
+    Hides the RGBA value box, and replaces the "Hide" button with the "View" button
+  */
+  $("#hideRgbaBtn").addClass("d-none");
+  $("#rgbaBox").addClass("d-none");
+  $("#viewRgbaBtn").removeClass("d-none");
 }

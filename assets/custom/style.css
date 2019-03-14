@@ -104,3 +104,12 @@ button {
   max-height: 20%;
   overflow-y: auto;
 }
+
+.warn {
+  color: orange;
+  font-size: 100%;
+}
+.warn p {
+  padding: 0;
+  margin: 0;
+}
