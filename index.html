@@ -6,6 +6,7 @@
   <link href="assets/external/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="assets/custom/style.css">
   <script src="assets/external/pngtoy.js"></script>
+  <script src="assets/external/download.js"></script>
   <script src="assets/custom/rgbaFunctions.js"></script>
 </head>
 
@@ -127,6 +128,10 @@
     <div id="dataEmbedExtract" class="d-none">
       <h3><span class="extractOnly d-none">Extract</span><span class="embedOnly">Embed</span> Data</h3>
       <h5 class="embedOnly d-none"><i>Warning: All opacity will be lost</i></h5>
+      <p class="embedOnly d-none">
+        This tool is used to hide files inside of images. To hide B/W images in bit planes, see "Hide Image in Bit Plane".
+        Once the image has been generated, press "Save Current Image" to download it.
+      </p>
       <h5>Bits</h5>
       <div class="table-responsive"> <!-- Wrapper for repsponsive table -->
         <table class="table thead-dark table-striped table-bordered table-hover table-sm" cellpadding="0" id="lsbtable">
@@ -343,7 +348,12 @@
     </div> <!-- /hideImage -->
 
   </div> <!-- /container -->
-  <center><div id="image"></div></center> <!-- Image will be added here -->
+  <center>
+    <div id="image"></div> <!-- Image will be added here -->
+    </br/>
+    <button id="downloadImageBtn" class="btn btn-info d-none notdata" onclick="downloadImage()">Save Current Image</button>
+  </center>
+
   <script src="assets/custom/main.js"></script>
 </body>
 </html>

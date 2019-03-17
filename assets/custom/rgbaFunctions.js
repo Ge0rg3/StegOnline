@@ -1,7 +1,10 @@
-//Calculating columns within lsb() takes forever, so we only want to do it once
+//Calculating columns within lsb() takes forever, so we only want to do it once. rC, gC, bC and aC are for caching these.
 var rC, gC, bC, aC, inprogress=false;
 
 const ranbetween = (l, h) => Math.floor(Math.random()*(h-l+1)+l); //Inclusive random number generator
+
+//Sleep helper for async functions
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const transforms = {
   "Red plane 0" : ['r',0], //0
@@ -38,8 +41,6 @@ const transforms = {
   "Alpha plane 7" : ['a',7] //31
 }
 
-//Sleep helper for async functions
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 function generateImage(r, g, b, a) {
   /*
@@ -100,6 +101,7 @@ function full(colour) {
   generateImage(newR, newG, newB, newA);
 }
 
+
 function half(sb) {
   /*
     Displays either only the MSBs or LSBs of the image
@@ -154,6 +156,7 @@ function rgbToHex(r, g, b) {
     return "0x" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
+
 function intToBin(n) {
   /*
     Input: n, an integer
@@ -164,6 +167,7 @@ function intToBin(n) {
   if (bin.length < 8) return ("0".repeat(8-bin.length))+bin;
   return bin;
 }
+
 
 function textToBin(text) {
   /*
@@ -177,6 +181,7 @@ function textToBin(text) {
   }
   return binString;
 }
+
 
 function hexToAscii(hex) {
   /*
@@ -436,6 +441,7 @@ function combineImages() {
   generateImage(colours[0], colours[1], colours[2], hideA);
 }
 
+
 function hideImageInBitPlane(plane, bit) {
   /*
     This function hides a second image inside of a chosen bit plane of an original image.
@@ -468,6 +474,7 @@ function hideImageInBitPlane(plane, bit) {
   generateImage(colours[0], colours[1], colours[2], a);
 }
 
+
 function viewStrings(stringData, minimumLength) {
   /*
     This function returns a list of strings found inside of the image data.
@@ -483,6 +490,7 @@ function viewStrings(stringData, minimumLength) {
   return strings;
 
 }
+
 
 function randomizeColourmap() {
   /*

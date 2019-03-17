@@ -146,28 +146,38 @@ async function run(imageObj, width, height, src) {
      pngtoyObj = pngtoyObj.pngtoy;
      pngData = await pngtoyObj.decode();
      rgbaData = pngData.bitmap;
-     try {
+     //See https://www.w3.org/TR/PNG-Chunks.html for type specs
+     pngType = pngtoyObj.get_IHDR().type; //0: Grayscale, 2: RGB triple, 3: Palette index, 4: Grayscale + alpha, 6: RGBA
+     pngPalette = false;
+     if (pngType == 3) {
        pngPalette = pngtoyObj.get_PLTE().palette
-     } catch (ex) {
-       pngPalette = false;
+       pngPaletteColours = [];
+       //If given a palette, then rgbaData just contains an array of index in the palette
+       for (let i=0; i < pngPalette.length; i += 3) {
+         pngPaletteColours.push([pngPalette[i], pngPalette[i+1], pngPalette[i+2]]);
+       }
+       r = rgbaData.map(index => pngPaletteColours[index][0]);
+       g = rgbaData.map(index => pngPaletteColours[index][1]);
+       b = rgbaData.map(index => pngPaletteColours[index][2]);
+       a = new Array(r.length).fill(255);
+       $("#customColourPalette").removeClass("d-none");
      }
-     if (pngPalette) {
-        pngPaletteColours = [];
-        //If given a palette, then rgbaData just contains an array of index in the palette
-        for (let i=0; i < pngPalette.length; i += 3) {
-          pngPaletteColours.push([pngPalette[i], pngPalette[i+1], pngPalette[i+2]]);
-        }
-        r = rgbaData.map(index => pngPaletteColours[index][0]);
-        g = rgbaData.map(index => pngPaletteColours[index][1]);
-        b = rgbaData.map(index => pngPaletteColours[index][2]);
-        a = new Array(r.length).fill(255);
-        $("#customColourPalette").removeClass("d-none");
+     else if (pngType == 2) {
+       //Regular RGB
+       r = rgbaData.filter((val, index) => index % 3 == 0);
+       g = rgbaData.filter((val, index) => (index-1) % 3 == 0);
+       b = rgbaData.filter((val, index) => (index-2) % 3 == 0);
+       a = new Array(r.length).fill(255);
      }
-     else {
+     else if (pngType == 6) {
+       //RGBA values
        r = rgbaData.filter((val, index) => index % 4 == 0);
        g = rgbaData.filter((val, index) => (index-1) % 4 == 0);
        b = rgbaData.filter((val, index) => (index-2) % 4 == 0);
        a = rgbaData.filter((val, index) => (index-3) % 4 == 0);
+     }
+     else {
+       alert("Png type "+pngType+" is not supported yet :(");
      }
      $("#image").append(canvas);
      restore();
@@ -413,11 +423,13 @@ async function startEmbed() {
     $("#lsbStatus").removeClass("d-none");
     if (minimumRequired < 21) $("#statusText").html("Not enough space to fit data. Please select at least "+minimumRequired+" bits in table.<br/>Cropping at "+selectedLength*r.length+" bits.");
     else $("#statusText").html("Data too large!<br/>Cropping at "+selectedLength*r.length+" bits.");
-    // $("#statusText").html("Not enough space to fit data... Cropping after "+selectedLength+" bits.");
+    $("#embedbtn").prop("disabled", false);
+    return;
   }
   await hidelsb(toHide, tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder'], tableData['padBits']);
   $("#embedbtn").prop("disabled", false);
   $("#image").removeClass("d-none");
+  $("#downloadImageBtn").removeClass("d-none");
 }
 
 
@@ -507,4 +519,8 @@ function hideRgba() {
   $("#hideRgbaBtn").addClass("d-none");
   $("#rgbaBox").addClass("d-none");
   $("#viewRgbaBtn").removeClass("d-none");
+}
+
+function downloadImage() {
+
 }
