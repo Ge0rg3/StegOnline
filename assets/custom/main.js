@@ -423,6 +423,7 @@ async function startEmbed() {
     $("#lsbStatus").removeClass("d-none");
     if (minimumRequired < 21) $("#statusText").html("Not enough space to fit data. Please select at least "+minimumRequired+" bits in table.<br/>Cropping at "+selectedLength*r.length+" bits.");
     else $("#statusText").html("Data too large!<br/>Cropping at "+selectedLength*r.length+" bits.");
+    $("#image").removeClass("d-none");
     $("#embedbtn").prop("disabled", false);
     return;
   }
@@ -522,5 +523,13 @@ function hideRgba() {
 }
 
 function downloadImage() {
-
+  /*
+    We use the download.js library to force download the image.
+    If the image is too large and the use tries to use "Save as" in the context menu, chrome will fail the download.
+    This way, the downloads are stable.
+  */
+  canvas.toBlob(function (blob) {
+    var downloadName = $("#filename").val().split(".").slice(0, -1).concat(['.png']).join('');
+    download(blob, downloadName, 'image/png');
+  }, 'image/png');
 }
