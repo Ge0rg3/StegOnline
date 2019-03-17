@@ -355,6 +355,8 @@ function parseTable() {
   lsbParams['bitOrder'] = $("#bitOrderMSB").val();
   //4) Pad remaining bits
   lsbParams['padBits'] = ($("#padBits").val() == "Yes");
+  //5) Trim trailibg bits
+  lsbParams['trimBits'] = ($("#trimBits").val() == "Yes");
   //Get bit plane order
   var planeOrder = [$("#rgbaOne").val(),$("#rgbaTwo").val(),$("#rgbaThree").val(),$("#rgbaFour").val()];
   let sorted = planeOrder.slice(0).sort();
@@ -377,9 +379,9 @@ function parseTable() {
     lsbParams['selectedBits'].push(totalBits[colour]);
   }
 
-  //5) Text input
+  //6) Text input
   lsbParams['textInput'] = $("#textinput").val();
-  //6) File input - from global var declared within hideFileRead()
+  //7) File input - from global var declared within hideFileRead()
   if (inputBytes) lsbParams['byteInput'] = inputBytes;
   else lsbParams['byteInput'] = false;
 
@@ -394,8 +396,15 @@ async function startExtract() {
     Controller for the extraction process.
   */
   $("#extractbtn").prop("disabled", true);
+  $("#extractResults").addClass("d-none");
   var tableData = parseTable();
-  var hexResult = await extractlsb(tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder']);
+  var hexResult = await extractlsb(tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder'], tableData['trimBits']);
+  if (hexResult == "") {
+    $("#lsbStatus").removeClass("d-none");
+    $("#statusText").html("No data returned! Disable \"<i>Trim Trailing Bits</i>\" to view empty data.");
+    $("#extractbtn").prop("disabled", false);
+    return;
+  }
   var asciiResult = hexToAscii(hexResult).match(/.{1,8}/g).join(' ');
   $("#extractResults").removeClass("d-none");
   $("#hexoutput").val(hexResult);
@@ -532,4 +541,17 @@ function downloadImage() {
     var downloadName = $("#filename").val().split(".").slice(0, -1).concat(['.png']).join('');
     download(blob, downloadName, 'image/png');
   }, 'image/png');
+}
+
+function downloadExtracted() {
+  /*
+    Used to download the extracted data from an image.
+  */
+  var hexData = $("#hexoutput").val();
+  var byteArray = new Uint8Array(hexData.match(/.{2}/g).map(e => parseInt(e, 16)));
+  var blob = new Blob([byteArray], {type: "application/octet-stream"});
+
+  var downloadName = $("#filename").val().split(".").slice(0, -1).concat(['.bin']).join('');
+  download(blob, downloadName, "application/octet-stream");
+
 }

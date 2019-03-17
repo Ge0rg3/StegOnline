@@ -255,6 +255,14 @@
             <option value="No" selected>No</option>
           </select>
         </div>
+
+        <div class="col-md-4 extractOnly d-none">
+          <h5>Trim Trailing Bits</h5>
+          <select class="input-small" id="trimBits">
+            <option value="Yes">Yes</option>
+            <option value="No" selected>No</option>
+          </select>
+        </div>
       </div> <!-- /extractEmbedOptions -->
 
       <div class="embedOnly d-none">
@@ -291,6 +299,9 @@
           <label for="hexoutput">Hex (Accurate):</label>
           <textarea cols="3" rows="3" class="md-textarea form-control" id="hexoutput" readonly></textarea>
         </div>
+        <center>
+          <button id="downloadExtractedBtn" class="btn btn-info" onclick="downloadExtracted()">Download Extracted Data</button>
+        </center>
       </div>
 
     </div> <!-- /dataEmbedExtract -->

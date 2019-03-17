@@ -199,7 +199,7 @@ function hexToAscii(hex) {
 }
 
 
-async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
+async function extractlsb(colours, bits, extractBy='row', bitOrder='msb', trimBits=false) {
   /*
     TODO: Speed up columnar version
 
@@ -278,6 +278,11 @@ async function extractlsb(colours, bits, extractBy='row', bitOrder='msb') {
   if (bin.length > 0) {
     hex += parseInt(bin, 2).toString(16);
   }
+  //Trim final bits
+  if (trimBits) {
+    hex = hex.replace(/(?:00)+$/,"");
+  }
+
   inprogress = false;
   return hex;
 }
