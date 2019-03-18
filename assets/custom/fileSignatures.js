@@ -1,6 +1,6 @@
 /*
   Regular Expressions for some common file signatures
-  The original signature list used can be found at https://en.wikipedia.org/wiki/List_of_file_signatures
+  Manually compiled from data found at https://en.wikipedia.org/wiki/List_of_file_signatures
 */
 
 //ID - Description - Regex

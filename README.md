@@ -22,6 +22,7 @@ Upload any image file, and the relevant options will be displayed.
 * main.js: Acts as a bridge between the UI and the core Stegonography functions
 * rgbaFunctions.js: The core functions of the program. This should contain no references to the webpage itself.
 * style.css: Our custom styleshet
+* fileSignatures.js: Dictionary of regexps for different magic headers, for identifying file types (currently unused)
 
 ## Future Plans
 After all basic features are developed, I'm going to start refactoring the entire codebase.
