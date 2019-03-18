@@ -6,7 +6,9 @@
   <link href="assets/external/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="assets/custom/style.css">
   <script src="assets/external/pngtoy.js"></script>
+  <script src="assets/external/pngtoy.js"></script>
   <script src="assets/external/download.js"></script>
+  <script src="assets/custom/fileSignatures.js"></script>
   <script src="assets/custom/rgbaFunctions.js"></script>
 </head>
 
@@ -96,7 +98,7 @@
     </div>
 
     <!-- View Strings box -->
-    <div id="stringsBox" class="bubble d-none row" style="text-align: center;">
+    <div id="stringsBox" class="bubble d-none row notdata" style="text-align: center;">
       <h4 class="col-md-12">Strings:</h4>
       <span id="stringsDataOne" class="col-md-4"></span>
       <span id="stringsDataTwo" class="col-md-4"></span>
@@ -104,7 +106,7 @@
     </div>
 
     <!-- View RGBA Values box -->
-    <div id="rgbaBox" class="bubble d-none row" style="text-align: center;">
+    <div id="rgbaBox" class="bubble d-none row notdata" style="text-align: center;">
       <h4 class="col-md-12">RGBA Values:</h4>
       <h5 class="col-md-12 warn" id="rgbaValError"></h5>
       <textarea id="displayRgbaValues" style="width: 100%; height: 20%;"></textarea>
@@ -298,6 +300,10 @@
         <div class="md-form">
           <label for="hexoutput">Hex (Accurate):</label>
           <textarea cols="3" rows="3" class="md-textarea form-control" id="hexoutput" readonly></textarea>
+        </div>
+        <div class="row bubble fileTypes d-none">
+            <b><p style="margin: 0" class="col-md-12">Potential file types identified:</p></b>
+            <span id="fileTypesOutput" class="col-md-12"></span>
         </div>
         <center>
           <button id="downloadExtractedBtn" class="btn btn-info" onclick="downloadExtracted()">Download Extracted Data</button>

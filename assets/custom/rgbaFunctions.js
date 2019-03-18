@@ -529,3 +529,22 @@ function browseColourPalette(paletteNo) {
   generateImage(newR, newG, newB, a);
 
 }
+
+function detectFileTyle(hex) {
+  /*
+    REQUIRES: fileSignatures.js
+    Input a hex, and if possible, determined file type(s) will be returned
+  */
+  var results = [];
+
+  for (let i=0; i < fileSigs.length; i++) {
+    let extension = fileSigs[i][0];
+    let description = fileSigs[i][1];
+    let regexp = fileSigs[i][2];
+    if (hex.match(regexp)) {
+      results.push([extension, description]);
+    }
+  }
+
+  return results;
+}

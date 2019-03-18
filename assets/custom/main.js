@@ -3,6 +3,7 @@ var paletteNo = 0;
 var inputBytes = false;
 var isPng = false;
 var isTransparent = false;
+var potentialFileType = false;
 
 function handleFileSelect(evt) {
   /*
@@ -11,7 +12,7 @@ function handleFileSelect(evt) {
   */
 
   //Reset current settings
-  inputBytes = isPng = false;
+  inputBytes = isPng = potentialFileType = false;
   $("#image").html("");
 
   var f = evt.target.files[0];
@@ -314,6 +315,7 @@ function openHideImage() {
   /*
     Opens the Image Hiding menu
   */
+  $("#customColourPalette").addClass("d-none");
   $(".notdata").addClass("d-none");
   $("#image").addClass("d-none");
   $("#hideImage").removeClass("d-none");
@@ -397,6 +399,7 @@ async function startExtract() {
   */
   $("#extractbtn").prop("disabled", true);
   $("#extractResults").addClass("d-none");
+  $(".fileTypes").addClass("d-none");
   var tableData = parseTable();
   var hexResult = await extractlsb(tableData['selectedColours'], tableData['selectedBits'], tableData['pixelOrder'], tableData['bitOrder'], tableData['trimBits']);
   if (hexResult == "") {
@@ -406,9 +409,20 @@ async function startExtract() {
     return;
   }
   var asciiResult = hexToAscii(hexResult).match(/.{1,8}/g).join(' ');
+  var fileTypes = detectFileTyle(hexResult);
+
   $("#extractResults").removeClass("d-none");
   $("#hexoutput").val(hexResult);
   $("#asciioutput").val(asciiResult);
+  if (fileTypes.length > 0) {
+    potentialFileType = fileTypes[0][0];
+    var fileTypesOut = "";
+    for (let i=0; i < fileTypes.length; i++) {
+      fileTypesOut += fileTypes[i][0] +" : "+fileTypes[i][1]+"</br>";
+    }
+    $("#fileTypesOutput").html(fileTypesOut);
+    $(".fileTypes").removeClass("d-none")
+  }
   $("#extractbtn").prop("disabled", false);
 }
 
@@ -451,6 +465,7 @@ function embedImageInImage() {
   var bit = parseInt($("#hideBitPlaneBit").val());
   hideImageInBitPlane(plane, bit);
   $("#image").removeClass("d-none");
+  $("#downloadImageBtn").removeClass("d-none");
 }
 
 function viewStringController() {
@@ -550,8 +565,9 @@ function downloadExtracted() {
   var hexData = $("#hexoutput").val();
   var byteArray = new Uint8Array(hexData.match(/.{2}/g).map(e => parseInt(e, 16)));
   var blob = new Blob([byteArray], {type: "application/octet-stream"});
+  var downloadExtension = (potentialFileType ? "."+potentialFileType : '.bin')
 
-  var downloadName = $("#filename").val().split(".").slice(0, -1).concat(['.bin']).join('');
+  var downloadName = $("#filename").val().split(".").slice(0, -1).concat([downloadExtension]).join('');
   download(blob, downloadName, "application/octet-stream");
 
 }
