@@ -1,3 +1,5 @@
+### Current task: Port to Angular 7
+
 # StegOnline
 A web-based, accessible and open-source port of StegSolve.
 Upload any image file, and the relevant options will be displayed.
