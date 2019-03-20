@@ -1,1 +1,25 @@
+//Bootstrap import
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+//Page padding
+body {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+//Narrow center (responsive) column
+@media (min-width: 48em) {
+  .container {
+    max-width: 46rem;
+  }
+}
+
+@media screen and (min-width: 48em) {
+  .header, .options {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .header {
+    margin-bottom: 2rem;
+  }
+}
