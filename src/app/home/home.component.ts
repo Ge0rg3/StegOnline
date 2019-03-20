@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import $ from "jquery";
+import * as $ from "jquery";
 
 @Component({
   selector: 'app-home',
@@ -8,28 +8,37 @@ import $ from "jquery";
 })
 export class HomeComponent implements OnInit {
 
+  imageTitle: string;
+  uploadImageText: string;
+  dragOverDropper: boolean;
+
   constructor() { }
 
-  readURL(input) {
-    if (input.files && input.files[0]) {
+  uploadImage(input: any) {
+    //Handle file upload on homescreen
+    if (input.target.files && input.target.files[0]) {
 
-      var reader = new FileReader();
+      var file: File = input.target.files[0];
+      var reader: FileReader = new FileReader();
 
-      reader.onload = function(e) {
-        $('.image-upload-wrap').hide();
-
-        $('.file-upload-image').attr('src', e.target.result);
-        $('.file-upload-content').show();
-
-        $('.image-title').html(input.files[0].name);
+      reader.onload = (event: Event) => {
+        //Fiund data in (reader.result as string)
+        this.uploadImageText = "CHANGE IMAGE";
+        this.imageTitle = file.name;
       };
 
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(file);
     }
   }
 
+  toggleDrag() {
+    //Handle drag over upload box
+    this.dragOverDropper = !this.dragOverDropper;
+  }
 
   ngOnInit() {
+    this.dragOverDropper = false;
+    this.uploadImageText = "UPLOAD IMAGE";
   }
 
 }

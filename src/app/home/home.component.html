@@ -1,14 +1,12 @@
-<div class="file-upload">
-  <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+<div>
+  <button class="add-image-btn" type="button" onclick="$('.add-image-dropper').trigger('click')">{{ uploadImageText }}</button>
 
-  <div class="image-upload-wrap">
-    <input class="file-upload-input" type='file' (change)="readURL($event)" accept="image/*" />
-    <div class="drag-text">
-      <h3>Drag and drop a file or select add Image</h3>
+  <div class="image-dropper-wrap" [class.drag-over-dropper]="dragOverDropper">
+    <input class="add-image-dropper" type='file' (change)="uploadImage($event)" accept="image/*" (dragenter)="toggleDrag()" (dragleave)="toggleDrag()" (drop)="toggleDrag()"/>
+    <div style="text-align: center">
+      <h3 class="text-muted">Drag and drop your image here</h3>
     </div>
   </div>
-  <div class="file-upload-content">
-    <img class="file-upload-image" src="#" alt="your image" />
-  </div>
+  <div *ngIf="imageTitle">{{ imageTitle }}</div>
+
 </div>
-<div class="image-title"></div>
