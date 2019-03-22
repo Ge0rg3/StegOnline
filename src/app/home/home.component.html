@@ -4,9 +4,8 @@
   <div class="image-dropper-wrap" [class.drag-over-dropper]="dragOverDropper">
     <input class="add-image-dropper" type='file' (change)="uploadImage($event)" accept="image/*" (dragenter)="toggleDrag()" (dragleave)="toggleDrag()" (drop)="toggleDrag()"/>
     <div style="text-align: center">
-      <h3 class="text-muted">Drag and drop your image here</h3>
+      <h3 class="text-muted">{{ dragDropText }}</h3>
     </div>
   </div>
-  <div *ngIf="imageTitle">{{ imageTitle }}</div>
 
 </div>
