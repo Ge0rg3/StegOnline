@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ImageService } from '../image.service';
 
 @Component({
@@ -14,7 +13,7 @@ export class HomeComponent implements OnInit {
   dragDropText: string;
   dragOverDropper: boolean;
 
-  constructor(private router: Router, private imageService: ImageService) { }
+  constructor(private imageService: ImageService) { }
 
   uploadImage(input: any) {
     //Handle file upload on homescreen
@@ -27,12 +26,11 @@ export class HomeComponent implements OnInit {
       }
 
       var reader: FileReader = new FileReader();
-      reader.onload = (event: Event) => {
+      reader.onload = async (event: Event) => {
         this.uploadImageText = "CHANGE IMAGE";
         this.dragDropText = `"${file.name}" loaded successfully!`;
         this.imageTitle = file.name;
-        this.imageService.initiateImage(reader.result as string);
-        this.router.navigate(['/image']);
+        this.imageService.initiateImage((reader.result as string), true);
       };
       reader.readAsDataURL(file);
     }
