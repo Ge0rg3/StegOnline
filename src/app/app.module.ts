@@ -4,14 +4,14 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { ImageOptionsComponent } from './imageoptions/imageoptions.component';
-import { ImageCanvasComponent } from './imageoptions/imagecanvas/imagecanvas.component';
+import { ImageMenuComponent } from './imagemenu/imagemenu.component';
+import { ImageCanvasComponent } from './imagemenu/imagecanvas/imagecanvas.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ImageOptionsComponent,
+    ImageMenuComponent,
     ImageCanvasComponent
   ],
   imports: [

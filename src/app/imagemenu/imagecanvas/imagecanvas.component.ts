@@ -4,8 +4,7 @@ import { ImageService } from '../../image.service';
 
 @Component({
   selector: 'app-imagecanvas',
-  templateUrl: './imagecanvas.component.html',
-  styleUrls: ['./imagecanvas.component.scss']
+  template: `<canvas #canvasElement></canvas>`
 })
 export class ImageCanvasComponent implements OnInit {
 
