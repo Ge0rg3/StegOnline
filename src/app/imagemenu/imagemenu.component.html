@@ -1,5 +1,6 @@
 <h2>Image Options</h2><br/>
 
+<!-- Basic Image Manipulation -->
 <div class="bubble">
 	<div class="row justify-content-center">
 		<button type="button" (click)="reset()" class="btn btn-primary col-md-12 col-sm-12 col-lg-12">Reset</button>
@@ -19,9 +20,17 @@
 	</div>
 </div>
 
+<!-- Bit Plane Browser -->
+<div class="bubble">
+	<div class="row justify-content-center">
+		<button type="button" class="btn btn-dark" (click)="showBitPlaneBrowser = !showBitPlaneBrowser" *ngIf="!showBitPlaneBrowser">Browse Bit Planes</button>
+	</div>
+	<bitplane-browser *ngIf="showBitPlaneBrowser"></bitplane-browser>
+</div>
+
 <br/>
 
 <div class="row justify-content-center">
-	<app-imagecanvas [drawImageData]="drawImageData"></app-imagecanvas>
-	<app-saveimage></app-saveimage>
+	<image-canvas [drawImageData]="drawImageData"></image-canvas>
+	<save-image></save-image>
 </div>

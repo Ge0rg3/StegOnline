@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ImageService } from '../../services/image.service';
 
 @Component({
-  selector: 'app-imagecanvas',
+  selector: 'image-canvas',
   template: `<canvas #canvasElement></canvas>`
 })
 export class ImageCanvasComponent implements OnInit {

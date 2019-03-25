@@ -3,7 +3,7 @@ import { ImageService } from '../../services/image.service';
 declare var download; //download.js, imported in angular.json file
 
 @Component({
-  selector: 'app-saveimage',
+  selector: 'save-image',
   template: '<button class="btn btn-info" (click)="saveImage()">Save Current Image</button>'
 })
 export class SaveimageComponent implements OnInit {

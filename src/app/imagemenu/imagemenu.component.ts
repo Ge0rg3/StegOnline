@@ -13,6 +13,7 @@ export class ImageMenuComponent implements OnInit {
   constructor(private router: Router, private imageService: ImageService, private helpers: HelpersService) { }
 
 	drawImageData: ImageData;
+  showBitPlaneBrowser: boolean = false;
 
   ngOnInit() { }
 
