@@ -1,11 +1,19 @@
-<div class="row margin-bottom-5">
-  <button type="button" class="btn btn-outline-danger col-md-3 col-sm-11">Exit</button>
-  <button type="button" class="btn btn-outline-success col-md-3 col-sm-11 ml-auto">Preload Bit Planes</button>
+<!-- Trigger -->
+<div class="row justify-content-center" *ngIf="!showBitPlaneBrowser">
+	<button type="button" class="btn btn-dark" (click)="toggleBrowser()">Browse Bit Planes</button>
 </div>
-<div class="row justify-content-center">
-  <button type="button" class="btn btn-primary col-md-1 col-sm-5">&lt;&lt;</button>
-  <button type="button" class="btn btn-primary col-md-1 col-sm-5">&lt;</button>
-    <div class="col-md-2 text-center margin-top-5"><h5>{{ currentBitPlane }}</h5></div>
-  <button type="button" class="btn btn-primary col-md-1 col-sm-5">&gt;</button>
-  <button type="button" class="btn btn-primary col-md-1 col-sm-5">&gt;&gt;</button>
+
+<!-- Browser -->
+<div *ngIf="showBitPlaneBrowser">
+	<div class="row margin-bottom-5">
+	  <button type="button" class="btn btn-outline-danger col-md-3 col-sm-11" (click)="toggleBrowser()">Exit</button>
+	  <button type="button" class="btn btn-outline-success col-md-3 col-sm-11 ml-auto">Preload Bit Planes</button>
+	</div>
+	<div class="row justify-content-center">
+	  <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="previousColour()">&lt;&lt;</button>
+	  <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="previousBit()">&lt;</button>
+	    <div class="col-md-2 text-center margin-top-5"><h5>{{ currentBitPlane }}</h5></div>
+	  <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="nextBit()">&gt;</button>
+	  <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="nextColour()">&gt;&gt;</button>
+	</div>
 </div>

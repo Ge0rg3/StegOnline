@@ -22,15 +22,14 @@
 
 <!-- Bit Plane Browser -->
 <div class="bubble">
-	<div class="row justify-content-center">
-		<button type="button" class="btn btn-dark" (click)="showBitPlaneBrowser = !showBitPlaneBrowser" *ngIf="!showBitPlaneBrowser">Browse Bit Planes</button>
-	</div>
-	<bitplane-browser *ngIf="showBitPlaneBrowser"></bitplane-browser>
+	<bitplane-browser (bitPlaneDataEmitter)="updateCanvas($event)"></bitplane-browser>
 </div>
 
 <br/>
 
 <div class="row justify-content-center">
-	<image-canvas [drawImageData]="drawImageData"></image-canvas>
+	<image-canvas [inputImageData]="drawImageData"></image-canvas>
+</div>
+<div class="row justify-content-center">
 	<save-image></save-image>
 </div>

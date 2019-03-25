@@ -9,9 +9,9 @@ import { ImageService } from '../../services/image.service';
 export class ImageCanvasComponent implements OnInit {
 
 	@Input()
-	set drawImageData(drawImageData: ImageData) {
-		if (drawImageData) {
-			this.updateCanvas(drawImageData);
+	set inputImageData(imageData: ImageData) {
+		if (imageData) {
+			this.updateCanvas(imageData);
 		}
 	}
 

@@ -13,7 +13,6 @@ export class ImageMenuComponent implements OnInit {
   constructor(private router: Router, private imageService: ImageService, private helpers: HelpersService) { }
 
 	drawImageData: ImageData;
-  showBitPlaneBrowser: boolean = false;
 
   ngOnInit() { }
 
@@ -22,7 +21,15 @@ export class ImageMenuComponent implements OnInit {
 			/*
 				Used to reset the image back to its original colour values
 			*/
-			this.drawImageData = this.imageService.defaultImageData;
+			this.updateCanvas(this.imageService.defaultImageData);
+	}
+
+	updateCanvas(imageData: ImageData) {
+		/*
+			Subcomponents (i.e. bitplane browser) use this to control the canvas.
+			This function acts as an intermediary between these subcomponents and the imagecanvas component.
+		*/
+		this.drawImageData = imageData;
 	}
 
 	fullPlane(plane: number) {
@@ -51,7 +58,7 @@ export class ImageMenuComponent implements OnInit {
 			default:
 				return;
 		}
-		this.drawImageData = this.imageService.createImage(colours[0], colours[1], colours[2], colours[3]);
+		this.updateCanvas(this.imageService.createImage(colours[0], colours[1], colours[2], colours[3]));
 	}
 
 	inverse(inverseAlpha: boolean = false) {
@@ -64,7 +71,7 @@ export class ImageMenuComponent implements OnInit {
 		var invG = this.imageService.g.map(val => 255 - val);
 		var invB = this.imageService.b.map(val => 255 - val);
 		var invA = (inverseAlpha) ? this.imageService.a.map(val => 255 - val) : this.imageService.a;
-		this.drawImageData = this.imageService.createImage(invR, invG, invB, invA);
+		this.updateCanvas(this.imageService.createImage(invR, invG, invB, invA));
 	}
 
 	lsbHalf() {
@@ -75,14 +82,14 @@ export class ImageMenuComponent implements OnInit {
 		var newG = this.imageService.g.map(val => parseInt(this.helpers.intToBin(val).substr(4, 8)+"0000", 2));
 		var newB = this.imageService.b.map(val => parseInt(this.helpers.intToBin(val).substr(4, 8)+"0000", 2));
 		var newA = this.imageService.opaque;
-		this.drawImageData = this.imageService.createImage(newR, newG, newB, newA);
+		this.updateCanvas(this.imageService.createImage(newR, newG, newB, newA));
 	}
 
   removeTransparency() {
     /*
       Replaces the alpha channel with pure 255s
     */
-    this.drawImageData = this.imageService.createImage(this.imageService.r, this.imageService.g, this.imageService.b, this.imageService.opaque);
+    this.updateCanvas(this.imageService.createImage(this.imageService.r, this.imageService.g, this.imageService.b, this.imageService.opaque));
   }
 
 }
