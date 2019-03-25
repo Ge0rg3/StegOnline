@@ -15,12 +15,20 @@ export class ImageService {
   public g: Uint8ClampedArray;
   public b: Uint8ClampedArray;
   public a: Uint8ClampedArray;
+	//Image size
   public width: number;
   public height: number;
+	//Png specific options
   public isPng: boolean;
+	public isTransparent: boolean;
   public pngType: number;
+	//Palette if PNG is parsed via palette
   public pngPalette: Uint8Array;
+	//Default image RGB values
   public defaultImageData: ImageData;
+	//Pure 0/255 filled Uint8ClampedArrays:
+	public opaque: Uint8ClampedArray;
+	public transparent: Uint8ClampedArray;
 
 
   initiateImage(imageData: string, redirect: boolean = false) {
@@ -32,6 +40,7 @@ export class ImageService {
     */
       //If PNG, the we use initiatePNG function.
       this.isPng = false;
+      this.isTransparent = false;
       if (imageData.match("^data:image/png;base64,")) {
         this.isPng = true;
           this.initiatePNG(imageData, redirect);
@@ -56,7 +65,8 @@ export class ImageService {
         self.g = this.rgb.filter((val, index) => (index-1) % 4 == 0);
         self.b = this.rgb.filter((val, index) => (index-2) % 4 == 0);
         self.a = new Uint8ClampedArray(self.r.length).fill(255);
-
+				self.opaque = self.a;
+				self.transparent = new Uint8ClampedArray(self.r.length).fill(0);
         self.defaultImageData = self.createImage();
         if (redirect) self.router.navigate(['/image']);
       }
@@ -108,11 +118,14 @@ export class ImageService {
           self.g = self.rgba.filter((val, index) => (index-1) % 4 == 0);
           self.b = self.rgba.filter((val, index) => (index-2) % 4 == 0);
           self.a = self.rgba.filter((val, index) => (index-3) % 4 == 0);
+					self.isTransparent = (self.a.filter(n => n != 255).length > 0);
         }
         else {
           alert(`Png type "${self.pngType}" not supported yet :(`);
         }
 
+				self.opaque = new Uint8ClampedArray(self.r.length).fill(255);
+				self.transparent = new Uint8ClampedArray(self.r.length).fill(0);
         self.defaultImageData = self.createImage();
         //Redirect to image options if specified
         if (redirect) self.router.navigate(['/image']);

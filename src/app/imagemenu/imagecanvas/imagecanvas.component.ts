@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageService } from '../../image.service';
 
@@ -8,12 +8,20 @@ import { ImageService } from '../../image.service';
 })
 export class ImageCanvasComponent implements OnInit {
 
+	@Input()
+	set drawImageData(drawImageData: ImageData) {
+		if (drawImageData) {
+			this.updateCanvas(drawImageData);
+		}
+	}
+
   @ViewChild('canvasElement') canvasElement: ElementRef;
+
   public ctx: CanvasRenderingContext2D;
+	public canvas: HTMLCanvasElement;
 
   constructor(private router: Router, private imageService: ImageService) { }
 
-  canvas: HTMLCanvasElement;
 
   ngOnInit() {
     //If no image, redirect back to home
@@ -21,17 +29,16 @@ export class ImageCanvasComponent implements OnInit {
       this.router.navigate(['/home']);
       return;
     }
-    var canvas = this.canvasElement.nativeElement;
-    this.ctx = canvas.getContext('2d');
+    this.canvas = this.canvasElement.nativeElement;
+    this.ctx = this.canvas.getContext('2d');
     this.ctx.imageSmoothingEnabled = false;
-    canvas.width = this.imageService.width;
-    canvas.height = this.imageService.height;
+    this.canvas.width = this.imageService.width;
+    this.canvas.height = this.imageService.height;
     this.ctx.putImageData(this.imageService.defaultImageData, 0, 0);
   }
 
-  updateCanvas() {
-    // var imageData = this.imageService.createImage();
-    // this.ctx.putImageData(imageData, 0, 0);
+  updateCanvas(imageObj: ImageData) {
+    this.ctx.putImageData(imageObj, 0, 0);
   }
 
 }

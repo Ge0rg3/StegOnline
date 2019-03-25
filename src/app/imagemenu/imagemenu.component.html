@@ -1,3 +1,24 @@
+<h2>Image Options</h2><br/>
 
+<div class="bubble">
+	<div class="row justify-content-center">
+		<button type="button" (click)="reset()" class="btn btn-primary col-md-12 col-sm-12 col-lg-12">Reset</button>
+	</div>
+	<div class="row justify-content-center">
+		<button type="button" (click)="fullPlane(0)" class="btn btn-outline-danger col-md-2 col-sm-11">Full Red</button>
+		<button type="button" (click)="fullPlane(1)" class="btn btn-outline-success col-md-2 col-sm-11">Full Green</button>
+		<button type="button" (click)="fullPlane(2)" class="btn btn-outline-primary col-md-2 col-sm-11">Full Blue</button>
+		<button type="button" (click)="fullPlane(3)" class="btn btn-outline-dark col-md-2 col-sm-11" *ngIf="imageService.isTransparent">Full Alpha</button>
 
-<app-imagecanvas></app-imagecanvas>
+		<button type="button" (click)="inverse(false)" class="btn btn-outline-secondary col-md-3 col-sm-11">Inverse (RGB)</button>
+		<button type="button" (click)="inverse(true)" class="btn btn-outline-dark col-md-3 col-sm-11" *ngIf="imageService.isTransparent">Inverse (RGBA)</button>
+
+		<button type="button" (click)="lsbHalf()" class="btn btn-outline-dark col-md-2 col-sm-11">LSB Half</button>
+	</div>
+</div>
+
+<br/>
+
+<div class="row justify-content-center">
+	<app-imagecanvas [drawImageData]="drawImageData"></app-imagecanvas>
+</div>
