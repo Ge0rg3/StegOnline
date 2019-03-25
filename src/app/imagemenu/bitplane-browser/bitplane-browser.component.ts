@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ImageService } from '../../services/image.service';
 import { HelpersService } from '../../services/helpers.service';
+import { PanelSettingsService } from '../../services/panel-settings.service';
 
 @Component({
   selector: 'bitplane-browser',
@@ -17,7 +18,7 @@ export class BitPlaneBrowserComponent implements OnInit {
 	currentColour: number = 0;
 	currentPlane: number = 0;
 
-  constructor(private imageService: ImageService, private helpers: HelpersService) { }
+  constructor(private imageService: ImageService, private helpers: HelpersService, private panelSettings: PanelSettingsService) { }
 
   ngOnInit() {
 		//Cannot use init event for canvas interaction -- canvas has not been initialised yet
@@ -28,13 +29,13 @@ export class BitPlaneBrowserComponent implements OnInit {
 		/*
 			Replace Bitplane Browser with "Open Bitplane Browser", or vice versa.
 		*/
-		if (this.showBitPlaneBrowser) {
+		if (this.panelSettings.showBitPlaneBrowser) {
 			this.bitPlaneDataEmitter.emit(this.imageService.defaultImageData);
-			this.showBitPlaneBrowser = false;
+			this.panelSettings.showBitPlaneBrowser = false;
 		}
 		else {
 			this.viewBitPlane(this.currentColour, this.currentPlane);
-			this.showBitPlaneBrowser = true;
+			this.panelSettings.showBitPlaneBrowser = true;
 		}
 	}
 

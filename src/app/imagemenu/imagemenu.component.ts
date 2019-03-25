@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageService } from '../services/image.service';
 import { HelpersService } from '../services/helpers.service';
+import { PanelSettingsService } from '../services/panel-settings.service';
 
 @Component({
   selector: 'app-imagemenu',
@@ -10,7 +11,7 @@ import { HelpersService } from '../services/helpers.service';
 })
 export class ImageMenuComponent implements OnInit {
 
-  constructor(private router: Router, private imageService: ImageService, private helpers: HelpersService) { }
+  constructor(private router: Router, private imageService: ImageService, private helpers: HelpersService, private panelSettings: PanelSettingsService) { }
 
 	drawImageData: ImageData;
 
@@ -21,6 +22,7 @@ export class ImageMenuComponent implements OnInit {
 			/*
 				Used to reset the image back to its original colour values
 			*/
+			this.panelSettings.closePanels();
 			this.updateCanvas(this.imageService.defaultImageData);
 	}
 

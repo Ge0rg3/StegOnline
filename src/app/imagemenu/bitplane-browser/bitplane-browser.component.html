@@ -1,10 +1,10 @@
 <!-- Trigger -->
-<div class="row justify-content-center" *ngIf="!showBitPlaneBrowser">
+<div class="row justify-content-center" *ngIf="!panelSettings.showBitPlaneBrowser">
 	<button type="button" class="btn btn-dark" (click)="toggleBrowser()">Browse Bit Planes</button>
 </div>
 
 <!-- Browser -->
-<div *ngIf="showBitPlaneBrowser">
+<div *ngIf="panelSettings.showBitPlaneBrowser">
 	<div class="row margin-bottom-5">
 	  <button type="button" class="btn btn-outline-danger col-md-3 col-sm-11" (click)="toggleBrowser()">Exit</button>
 	  <button type="button" class="btn btn-outline-success col-md-3 col-sm-11 ml-auto">Preload Bit Planes</button>
