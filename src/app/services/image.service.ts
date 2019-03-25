@@ -29,6 +29,9 @@ export class ImageService {
 	//Pure 0/255 filled Uint8ClampedArrays:
 	public opaque: Uint8ClampedArray;
 	public transparent: Uint8ClampedArray;
+  //Filename/canvas for downloading
+  public fileName: string;
+  public canvas: HTMLCanvasElement;
 
 
   initiateImage(imageData: string, redirect: boolean = false) {

@@ -14,6 +14,8 @@
 		<button type="button" (click)="inverse(true)" class="btn btn-outline-dark col-md-3 col-sm-11" *ngIf="imageService.isTransparent">Inverse (RGBA)</button>
 
 		<button type="button" (click)="lsbHalf()" class="btn btn-outline-dark col-md-2 col-sm-11">LSB Half</button>
+
+		<button type="button" (click)="removeTransparency()" class="btn btn-outline-info col-md-4 col-sm-11" *ngIf="imageService.isTransparent">Remove Transparency</button>
 	</div>
 </div>
 
@@ -21,4 +23,5 @@
 
 <div class="row justify-content-center">
 	<app-imagecanvas [drawImageData]="drawImageData"></app-imagecanvas>
+	<app-saveimage></app-saveimage>
 </div>

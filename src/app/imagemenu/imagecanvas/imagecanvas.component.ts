@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ImageService } from '../../image.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-imagecanvas',
@@ -35,10 +35,12 @@ export class ImageCanvasComponent implements OnInit {
     this.canvas.width = this.imageService.width;
     this.canvas.height = this.imageService.height;
     this.ctx.putImageData(this.imageService.defaultImageData, 0, 0);
+    this.imageService.canvas = this.canvas; //For downloading later
   }
 
   updateCanvas(imageObj: ImageData) {
     this.ctx.putImageData(imageObj, 0, 0);
+    this.imageService.canvas = this.canvas;
   }
 
 }

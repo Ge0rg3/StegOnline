@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ImageService } from '../image.service';
-import { HelpersService } from '../helpers.service';
+import { ImageService } from '../services/image.service';
+import { HelpersService } from '../services/helpers.service';
 
 @Component({
   selector: 'app-imagemenu',
@@ -76,5 +76,12 @@ export class ImageMenuComponent implements OnInit {
 		var newA = this.imageService.opaque;
 		this.drawImageData = this.imageService.createImage(newR, newG, newB, newA);
 	}
+
+  removeTransparency() {
+    /*
+      Replaces the alpha channel with pure 255s
+    */
+    this.drawImageData = this.imageService.createImage(this.imageService.r, this.imageService.g, this.imageService.b, this.imageService.opaque);
+  }
 
 }

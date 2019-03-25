@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageService } from '../image.service';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
         this.uploadImageText = "CHANGE IMAGE";
         this.dragDropText = `"${file.name}" loaded successfully!`;
         this.imageTitle = file.name;
+        this.imageService.fileName = file.name;
         this.imageService.initiateImage((reader.result as string), true);
       };
       reader.readAsDataURL(file);

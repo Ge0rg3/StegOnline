@@ -50,7 +50,8 @@
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
-              "./src/assets/pngtoy.min.js"
+              "./src/assets/pngtoy.min.js",
+              "./node_modules/downloadjs/download.min.js"
             ],
             "es5BrowserSupport": true
           },
