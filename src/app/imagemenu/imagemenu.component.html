@@ -20,6 +20,11 @@
 	</div>
 </div>
 
+<!-- Data Embedding/Extraction -->
+<div class="bubble">
+	<button type="button" class="btn btn-info" (click)="router.navigate(['/extract'])">Extract LSB Data</button>
+</div>
+
 <!-- Bit Plane Browser -->
 <div class="bubble">
 	<bitplane-browser (bitPlaneDataEmitter)="updateCanvas($event)"></bitplane-browser>

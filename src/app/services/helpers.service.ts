@@ -17,4 +17,12 @@ export class HelpersService {
 		return bin;
 	}
 
+  sleep(ms: number) {
+    /*
+      Simply sleeps for n miliseconds.
+      Used to display loading status to page during intensive async functions.
+    */
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 }

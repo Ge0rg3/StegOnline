@@ -43,6 +43,7 @@ export class ImageMenuComponent implements OnInit {
 					2: Blue
 					3: Alpha
 		*/
+    this.panelSettings.closePanels();
 		var colours: Uint8ClampedArray[] = [this.imageService.transparent.slice(0), this.imageService.transparent.slice(0), this.imageService.transparent.slice(0), this.imageService.opaque.slice(0)];
 		switch (plane) {
 			case 0:
@@ -69,6 +70,7 @@ export class ImageMenuComponent implements OnInit {
 			  Input:
 				  true/false: whether or not to also invert the alpha plane
 		*/
+    this.panelSettings.closePanels();
 		var invR = this.imageService.r.map(val => 255 - val);
 		var invG = this.imageService.g.map(val => 255 - val);
 		var invB = this.imageService.b.map(val => 255 - val);
@@ -80,6 +82,7 @@ export class ImageMenuComponent implements OnInit {
 		/*
 			This shows only the LSB half of each pixel
 		*/
+    this.panelSettings.closePanels();
 		var newR = this.imageService.r.map(val => parseInt(this.helpers.intToBin(val).substr(4, 8)+"0000", 2));
 		var newG = this.imageService.g.map(val => parseInt(this.helpers.intToBin(val).substr(4, 8)+"0000", 2));
 		var newB = this.imageService.b.map(val => parseInt(this.helpers.intToBin(val).substr(4, 8)+"0000", 2));
@@ -91,6 +94,7 @@ export class ImageMenuComponent implements OnInit {
     /*
       Replaces the alpha channel with pure 255s
     */
+    this.panelSettings.closePanels();
     this.updateCanvas(this.imageService.createImage(this.imageService.r, this.imageService.g, this.imageService.b, this.imageService.opaque));
   }
 

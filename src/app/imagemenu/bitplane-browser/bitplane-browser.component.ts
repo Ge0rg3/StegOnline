@@ -17,12 +17,14 @@ export class BitPlaneBrowserComponent implements OnInit {
 	showBitPlaneBrowser: boolean = false;
 	currentColour: number = 0;
 	currentPlane: number = 0;
+  isCached: boolean = false;
+  cache = {};
+  loadingStatus: string = "";
 
   constructor(private imageService: ImageService, private helpers: HelpersService, private panelSettings: PanelSettingsService) { }
 
   ngOnInit() {
 		//Cannot use init event for canvas interaction -- canvas has not been initialised yet
-		//We use custom init function instead on button trigger
   }
 
 	toggleBrowser() {
@@ -79,13 +81,37 @@ export class BitPlaneBrowserComponent implements OnInit {
 		if (view) this.viewBitPlane(this.currentColour, this.currentPlane);
 	}
 
-  viewBitPlane(colour: number, plane: number) {
+  async preloadBitPlanes() {
+    /*
+      Used to cache bit planes to reduce loading times.
+    */
+    var count: number = 0;
+    this.isCached = true;
+    for (let colour=0; colour < (this.imageService.isTransparent ? 4 : 3); colour++) {
+      for (let plane=0; plane < 8; plane++) {
+        this.loadingStatus = ((++count)+"/"+(this.imageService.isTransparent ? 32 : 24));
+        await this.helpers.sleep(0);
+        this.cache[colour+""+plane] = this.viewBitPlane(colour, plane, false);
+      }
+    }
+    this.loadingStatus = "Cache Loaded!";
+  }
+
+  viewBitPlane(colour: number, plane: number, view: boolean = true) {
     /*
       Returns imagedata for a desired bit plane
         Input:
           colour: 0, 1, 2 or 3 for Red, Green, Blue or Alpha respectively
           plane: 0, 1, 2, 3, 4, 5, 6 or 7. This is the desired plane to see
+          view: true/false, whether or not to emit output to canvas
     */
+    //Set current bitplane text
+    this.currentBitPlane = (this.colourNames[this.currentColour]+" "+this.currentPlane);
+    //If cached, use that instead
+    if (this.cache[colour+""+plane]) {
+      this.bitPlaneDataEmitter.emit(this.cache[colour+""+plane]);
+      return;
+    }
 		//Get colour
 		var colourArray: Uint8ClampedArray;
 		switch (colour) {
@@ -111,10 +137,11 @@ export class BitPlaneBrowserComponent implements OnInit {
 		//Turn from int to Uint8ClampedArray
 		var convertedPixelValues: Uint8ClampedArray = new Uint8ClampedArray(pixelValues);
 		var finishedData: ImageData = this.imageService.createImage(convertedPixelValues, convertedPixelValues, convertedPixelValues, this.imageService.opaque);
-
-		this.currentBitPlane = (this.colourNames[this.currentColour]+" "+this.currentPlane);
-		this.bitPlaneDataEmitter.emit(finishedData);
-		return;
+    //Emit to canvas / Return for cache
+    if (view) {
+      this.bitPlaneDataEmitter.emit(finishedData);
+    }
+		return finishedData;
   }
 
 }

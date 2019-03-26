@@ -8,6 +8,7 @@ import { ImageMenuComponent } from './imagemenu/imagemenu.component';
 import { ImageCanvasComponent } from './imagemenu/imagecanvas/imagecanvas.component';
 import { SaveimageComponent } from './imagemenu/saveimage/saveimage.component';
 import { BitPlaneBrowserComponent } from './imagemenu/bitplane-browser/bitplane-browser.component';
+import { ExtractMenuComponent } from './extract-menu/extract-menu.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { BitPlaneBrowserComponent } from './imagemenu/bitplane-browser/bitplane-
     ImageMenuComponent,
     ImageCanvasComponent,
     SaveimageComponent,
-    BitPlaneBrowserComponent
+    BitPlaneBrowserComponent,
+    ExtractMenuComponent
   ],
   imports: [
     BrowserModule,
