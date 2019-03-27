@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ImageService } from '../../services/image.service';
-import { HelpersService } from '../../services/helpers.service';
-import { PanelSettingsService } from '../../services/panel-settings.service';
+import { ImageService } from '../../common-services/image.service';
+import { HelpersService } from '../../common-services/helpers.service';
+import { PanelSettingsService } from '../../common-services/panel-settings.service';
 
 @Component({
   selector: 'bitplane-browser',

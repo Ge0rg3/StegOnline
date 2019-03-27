@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../common-services/image.service';
 declare var download; //download.js, imported in angular.json file
 
 @Component({

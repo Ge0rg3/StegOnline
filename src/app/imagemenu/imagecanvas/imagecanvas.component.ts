@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ImageService } from '../../services/image.service';
+import { ImageService } from '../../common-services/image.service';
 
 @Component({
   selector: 'image-canvas',

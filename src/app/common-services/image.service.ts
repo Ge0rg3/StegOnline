@@ -32,6 +32,8 @@ export class ImageService {
   //Filename/canvas for downloading
   public fileName: string;
   public canvas: HTMLCanvasElement;
+  //Common image helper data
+  public rgbaChars: string[] = ['r', 'g', 'b', 'a'];
 
 
   initiateImage(imageData: string, redirect: boolean = false) {
