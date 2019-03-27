@@ -23,8 +23,11 @@ import { BitPlaneBrowserComponent } from './imagemenu/bitplane-browser/bitplane-
 /* Extract Data Menu */
 import { ExtractMenuComponent } from './embed-extract-data/extract-menu/extract-menu.component';
 
-/* Bit Table, for the Extract & Embed Data Menus */
+/* Bit Table (child of Extract/Embed menu components) */
 import { LsbTableComponent } from './embed-extract-data/lsb-table/lsb-table.component';
+
+/* LSB Settings (child of Extract/Embed menu components) */
+import { LsbSettingsComponent } from './embed-extract-data/lsb-settings/lsb-settings.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { LsbTableComponent } from './embed-extract-data/lsb-table/lsb-table.comp
     SaveimageComponent,
     BitPlaneBrowserComponent,
     ExtractMenuComponent,
-    LsbTableComponent
+    LsbTableComponent,
+    LsbSettingsComponent
   ],
   imports: [
     BrowserModule,
