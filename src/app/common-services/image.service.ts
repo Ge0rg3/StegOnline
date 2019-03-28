@@ -9,12 +9,12 @@ export class ImageService {
   constructor(private router: Router) { }
 
   //Basic image details
-  public rgb: Uint8ClampedArray;
-  public rgba: Uint8ClampedArray;
-  public r: Uint8ClampedArray;
-  public g: Uint8ClampedArray;
-  public b: Uint8ClampedArray;
-  public a: Uint8ClampedArray;
+  public rgb: Uint8ClampedArray; //one array with all rgb values
+  public rgba: Uint8ClampedArray; //one array with all rgba values
+  public r: Uint8ClampedArray; //one array with only r values
+  public g: Uint8ClampedArray; //one array with only g values
+  public b: Uint8ClampedArray; //one array with only b values
+  public a: Uint8ClampedArray; //one array with only a values
 	//Image size
   public width: number;
   public height: number;
@@ -96,6 +96,7 @@ export class ImageService {
       // var pngData: any = await pngObj.decode();
       pngObj.decode().then((data) => {
         var pngData: any = data;
+        self.rgb = pngData.bitmap; //We don't actually know
         self.rgba = pngData.bitmap;
         self.width = pngData.width;
         self.height = pngData.height;

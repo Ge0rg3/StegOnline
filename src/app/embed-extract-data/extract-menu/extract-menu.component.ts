@@ -26,6 +26,8 @@ export class ExtractMenuComponent implements OnInit {
     //Run function!
     var hexResult = this.extractService.extract(this.lsbOptions.selectedBits, _pixelOrder, this.lsbOptions.bitOrder, this.lsbOptions.bitPlaneOrder, _trimBits);
 
+    console.log(hexResult);
+
   }
 
 }
