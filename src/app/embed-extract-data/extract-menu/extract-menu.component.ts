@@ -20,11 +20,11 @@ export class ExtractMenuComponent implements OnInit {
       This acts as an intermediary between the option components, the extracting service and the result components.
     */
     //Tweak some variables so they fit the service
-    var _pixelOrder: string = lsbOptions.pixelOrder == "Row" ? "Row" : "Column";
-    var _trimBits: boolean = lsbOptions.trimBits == "Yes" ? true : false;
+    var _pixelOrder: string = this.lsbOptions.pixelOrder == "Row" ? "Row" : "Column";
+    var _trimBits: boolean = this.lsbOptions.trimBits == "Yes" ? true : false;
 
     //Run function!
-    var hexResult = extractService.extract(lsbOptions.selectedBits, _pixelOrder, lsbOptions.bitOrder, lsbOptions.bitPlaneOrder, _trimBits);
+    var hexResult = this.extractService.extract(this.lsbOptions.selectedBits, _pixelOrder, this.lsbOptions.bitOrder, this.lsbOptions.bitPlaneOrder, _trimBits);
 
   }
 
