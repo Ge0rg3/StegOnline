@@ -1,7 +1,7 @@
 <div class="row">
 
   <!-- Pixel Order -->
-  <div class="col-md-3">
+  <div class="col-md-3 col-sm-5">
     <h5>Pixel Order</h5>
     <select [(ngModel)]="lsbOptions.pixelOrder" class="input-small">
       <option>Row</option>
@@ -10,7 +10,7 @@
   </div>
 
   <!-- Bit Order -->
-  <div class="col-md-3">
+  <div class="col-md-3 col-sm-5">
     <h5>Bit Order</h5>
       <select [(ngModel)]="lsbOptions.bitOrder" class="input-small">
         <option>MSB</option>
@@ -19,7 +19,7 @@
   </div>
 
   <!-- Bit Plane Order -->
-  <div class="col-md-3">
+  <div class="col-md-3 col-sm-5">
     <h5>Bit Plane Order</h5>
     <ng-container *ngFor="let col of imageService.rgbaChars; let i = index" [attr.data-index]="i">
       <select [(ngModel)]="lsbOptions.bitPlaneOrder[i]" class="input-small" *ngIf="col != 'a' || imageService.isTransparent">
@@ -31,7 +31,7 @@
   </div>
 
   <!--  Trim Trailing Bits -->
-  <div class="col-md-3" *ngIf="lsbOptions.currentTable == 'extract'">
+  <div class="col-md-3 col-sm-5" *ngIf="lsbOptions.currentTable == 'extract'">
     <h5>Trim Trailing Bits</h5>
     <select [(ngModel)]="lsbOptions.trimBits" class="input-small">
       <option>Yes</option>
@@ -40,7 +40,7 @@
   </div>
 
   <!--  Pad Remaining Bits -->
-  <div class="col-md-3" *ngIf="lsbOptions.currentTable == 'embed'">
+  <div class="col-md-3 col-sm-5" *ngIf="lsbOptions.currentTable == 'embed'">
     <h5>Pad Remaining Bits</h5>
     <select [(ngModel)]="lsbOptions.padBits" class="input-small">
       <option>Yes</option>

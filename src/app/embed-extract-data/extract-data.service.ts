@@ -8,9 +8,11 @@ import { HelpersService } from '../common-services/helpers.service';
 })
 export class ExtractDataService {
 
+  loadingMessage: string = "0%";
+
   constructor(private imageService: ImageService, private helpers: HelpersService) { }
 
-  extract(_selectedBits: {}, pixelOrder: string, bitOrder: string, bitPlaneOrder: string[], trimBits: boolean) {
+  async extract(_selectedBits: {}, pixelOrder: string, bitOrder: string, bitPlaneOrder: string[], trimBits: boolean) {
     /*
       This function houses the complex logic for extacting data from the image.
       It depends on ImageService's [r, g, b and a] arrays.
@@ -43,13 +45,18 @@ export class ExtractDataService {
     //Vars for extraction
     var currentByte: string = "";
     var bitCount: number = 0;
-    var valeusPerPixel: number = (this.imageService.isTransparent ? 4 : 3);
+    var valeusPerPixel: number = ((this.imageService.isTransparent || !this.imageService.isPng) ? 4 : 3);
 
 
     //For Rows:
     if (pixelOrder == "Row") {
       //For each pixel
       for (let i=0; i < this.imageService.r.length; i++) {
+        //Update progress bar (Slower, lets users know that the page isn't stuck)
+        if (i % 50000 == 0) {
+          this.loadingMessage = Math.floor(i*100 / this.imageService.r.length).toString()+"%";
+          await this.helpers.sleep(0);
+        }
         //For each colour (in order)
         for (var colour of bitPlaneOrder) {
           //If selected...
@@ -84,6 +91,11 @@ export class ExtractDataService {
     else if (pixelOrder == "Column") {
       //For each column
       for (let c=0; c < this.imageService.width; c++) {
+        //Update progress bar (slower, but let's user know that page isn't frozen)
+        if (c % 100 == 0) {
+          this.loadingMessage = Math.floor(c / this.imageService.width).toString()+"%";
+          await this.helpers.sleep(0);
+        }
         //For each pixel row
         for (let r=0; r < this.imageService.height; r++) {
           //For each colour
@@ -129,6 +141,5 @@ export class ExtractDataService {
     }
     return hex;
   }
-
 
 }

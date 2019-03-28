@@ -29,6 +29,7 @@ import { LsbTableComponent } from './embed-extract-data/lsb-table/lsb-table.comp
 /* LSB Settings (child of Extract/Embed menu components) */
 import { LsbSettingsComponent } from './embed-extract-data/lsb-settings/lsb-settings.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

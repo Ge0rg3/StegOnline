@@ -17,6 +17,22 @@ export class HelpersService {
 		return bin;
 	}
 
+  hexToAscii(hex: string): string {
+    /*
+      This is used to create the ASCII display.
+      Input: Hex string
+      Output: Ascii text in blocks of 8
+    */
+    let ascii: string = "";
+    for (let i=0; i < hex.length; i+=2) {
+      let charCode: number = parseInt(hex.substr(i, 2), 16);
+      if (charCode > 126 || charCode < 32) ascii += ".";
+      else ascii += String.fromCharCode(charCode);
+    }
+    var spaceSeperated = ascii.match(/.{1,8}/g).join('  ');
+    return spaceSeperated;
+  }
+
   sleep(ms: number) {
     /*
       Simply sleeps for n miliseconds.
