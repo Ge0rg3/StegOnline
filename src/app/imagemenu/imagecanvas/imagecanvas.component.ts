@@ -24,7 +24,11 @@ export class ImageCanvasComponent implements OnInit {
 
 
   ngOnInit() {
-    //If no image, redirect back to home
+		this.customInit();
+  }
+
+	customInit() {
+		//If no image, redirect back to home
     if (!this.imageService.defaultImageData) {
       this.router.navigate(['/home']);
       return;
@@ -36,9 +40,13 @@ export class ImageCanvasComponent implements OnInit {
     this.canvas.height = this.imageService.height;
     this.ctx.putImageData(this.imageService.defaultImageData, 0, 0);
     this.imageService.canvas = this.canvas; //For downloading later
-  }
+	}
 
   updateCanvas(imageObj: ImageData) {
+		if (!this.ctx) {
+			this.customInit();
+			return;
+		}
     this.ctx.putImageData(imageObj, 0, 0);
     this.imageService.canvas = this.canvas;
   }

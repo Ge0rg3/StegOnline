@@ -1,0 +1,32 @@
+<h2>Embed Data</h2>
+<p>
+	Here you can embed files/text inside of your image.
+	Select some bits and adjust the settings appropriately.
+	Please be aware that any opacity will be lost.
+</p>
+
+
+<!-- Bit Selection Table -->
+<lsb-table></lsb-table>
+
+<!-- Options -->
+<lsb-settings></lsb-settings>
+
+<br/>
+
+<!-- Start -->
+<div class="row justify-content-center">
+  <button class="btn btn-success" (click)="startEmbed()">Go</button>
+</div>
+
+
+<!-- Results -->
+<br/>
+<div *ngIf="embedComplete">
+	<h3>Output</h3>
+	<p><b>Use the "Save Image" Button to download the image, as saving through your browser's right-click menu may result in inconsistent data.</b></p>
+</div>
+
+<div [hidden]="!embedComplete" class="row justify-content-center">
+	<canvas #canvasElement></canvas>
+</div>

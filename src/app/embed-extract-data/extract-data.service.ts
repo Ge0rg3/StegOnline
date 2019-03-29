@@ -25,7 +25,7 @@ export class ExtractDataService {
           e.g. ['r', 'g', 'b', 'a'], ['g', 'b', 'r', 'a']
          trimBits: boolean - whether or not to trim excess 0s
       Example use:
-        extract({'r': [1,0], 'b':[0]}, "Row", "MSB", ['b','r','g','a'], true)
+        extract({'r': [1,0], 'b':[0]}, "Row", "MSB", ['b','r','g','a'], true);
     */
     //Custom colour copies
     var colourArrays: {} = {
@@ -53,7 +53,7 @@ export class ExtractDataService {
       //For each pixel
       for (let i=0; i < this.imageService.r.length; i++) {
         //Update progress bar (Slower, lets users know that the page isn't stuck)
-        if (i % 50000 == 0) {
+        if (i % 25000 == 0) {
           this.loadingMessage = Math.floor(i*100 / this.imageService.r.length).toString()+"%";
           await this.helpers.sleep(0);
         }

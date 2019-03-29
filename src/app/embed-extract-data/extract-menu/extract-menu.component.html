@@ -1,12 +1,11 @@
 <h2>Extract Data</h2>
 <p>
-Here you can extract data hidden inside of the image.
-Select some bits and adjust the settings appropriately.
-The final extracted data is checked against some basic file headers, and so the filetype can be automatically determined.
+	Here you can extract data hidden inside of the image.
+	Select some bits and adjust the settings appropriately.
+	The final extracted data is checked against some basic file headers, and so the filetype can be automatically determined.
 <br/>
-Please note that Alpha options are only available if the image contains transparency.
+	Please note that Alpha options are only available if the image contains transparency.
 </p>
-
 
 
 <!-- Bit Selection Table -->
@@ -27,27 +26,31 @@ Please note that Alpha options are only available if the image contains transpar
   <h4>Loading: {{ extractService.loadingMessage }}</h4>
 </div>
 
-<!-- Identified File Type -->
-<div class="bubble" *ngIf="fileTypes.length > 0 && extractComplete">
-  <h5>Identified Filetypes</h5>
-  <p *ngFor="let fileType of fileTypes">
-    {{ fileType[0] + ": " + fileType[1] }}
-  </p>
-</div>
-<div *ngIf="fileTypes.length == 0 && extractComplete">
-  <br/>
-  <p><i>No file types identified.</i></p>
-</div>
 
 <!-- Results -->
 <div *ngIf="extractComplete">
+	<br/>
+	<h3>Results</h3>
+	<p><b>The results below only show the first 1000 bytes. Select "Download" to obtain the full data.</b></p>
+
+	<!-- Identified File Type -->
+	<div class="bubble" *ngIf="fileTypes.length > 0 && extractComplete">
+		<h5>Identified Filetypes</h5>
+		<p *ngFor="let fileType of fileTypes">
+			{{ fileType[0] + ": " + fileType[1] }}
+		</p>
+	</div>
+	<div *ngIf="fileTypes.length == 0 && extractComplete">
+		<p><i>No file types identified.</i></p>
+	</div>
+
   <div class="md-form">
     <label for="asciioutput">Ascii (readable only):</label>
-    <textarea [value]="asciiResult" cols="3" rows="3" class="md-textarea form-control" id="asciioutput" readonly></textarea>
+    <textarea [value]="trimmedAsciiResult" cols="3" rows="3" class="md-textarea form-control" id="asciioutput" readonly></textarea>
   </div>
   <div class="md-form">
     <label for="hexoutput">Hex (Accurate):</label>
-    <textarea [value]="hexResult" cols="3" rows="3" class="md-textarea form-control" id="hexoutput" readonly></textarea>
+    <textarea [value]="trimmedHexResult" cols="3" rows="3" class="md-textarea form-control" id="hexoutput" readonly></textarea>
   </div>
 </div>
 

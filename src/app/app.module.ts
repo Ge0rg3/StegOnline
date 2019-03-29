@@ -20,8 +20,9 @@ import { SaveimageComponent } from './imagemenu/saveimage/saveimage.component';
 /* Bitplane Browser Component (child of ImageMenuComponent) */
 import { BitPlaneBrowserComponent } from './imagemenu/bitplane-browser/bitplane-browser.component';
 
-/* Extract Data Menu */
+/* Extract/Embed Data Menu */
 import { ExtractMenuComponent } from './embed-extract-data/extract-menu/extract-menu.component';
+import { EmbedMenuComponent } from './embed-extract-data/embed-menu/embed-menu.component';
 
 /* Bit Table (child of Extract/Embed menu components) */
 import { LsbTableComponent } from './embed-extract-data/lsb-table/lsb-table.component';
@@ -39,6 +40,7 @@ import { LsbSettingsComponent } from './embed-extract-data/lsb-settings/lsb-sett
     SaveimageComponent,
     BitPlaneBrowserComponent,
     ExtractMenuComponent,
+    EmbedMenuComponent,
     LsbTableComponent,
     LsbSettingsComponent
   ],

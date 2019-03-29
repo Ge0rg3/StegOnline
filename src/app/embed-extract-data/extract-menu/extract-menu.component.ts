@@ -18,10 +18,12 @@ export class ExtractMenuComponent implements OnInit {
 
   extractComplete: boolean = false;
   inProgress: boolean = false;
-  hexResult: string;
-  asciiResult: string;
   fileTypes: string[][] = [];
   identifiedExtension: string = "dat";
+	hexResult: string;
+	asciiResult: string;
+	trimmedHexResult: string;
+	trimmedAsciiResult: string;
 
   ngOnInit() {
     this.lsbOptions.currentTable = 'extract';
@@ -37,6 +39,7 @@ export class ExtractMenuComponent implements OnInit {
     */
     //Show loading text
     this.inProgress = true;
+		this.extractComplete = false;
     this.extractService.loadingMessage = "0%";
     await this.helpers.sleep(0);
     //Tweak some variables so they fit the service
@@ -45,9 +48,11 @@ export class ExtractMenuComponent implements OnInit {
 
     //Run function!
     this.hexResult = await this.extractService.extract(this.lsbOptions.selectedBits, _pixelOrder, this.lsbOptions.bitOrder, this.lsbOptions.bitPlaneOrder, _trimBits);
+		this.trimmedHexResult = this.hexResult.substring(0, 1000);
 
     //Get ASCII representation
     this.asciiResult = this.helpers.hexToAscii(this.hexResult);
+		this.trimmedAsciiResult = this.asciiResult.substring(0, 1000);
 
     //Check filetype
     this.fileTypes = this.fileTypeService.identifyFileType(this.hexResult);
