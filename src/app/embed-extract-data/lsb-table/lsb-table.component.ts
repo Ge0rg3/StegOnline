@@ -13,11 +13,12 @@ export class LsbTableComponent implements OnInit {
   //Display vars
   rowIds: number[] = [7, 6, 5, 4, 3, 2, 1, 0];
   checkBoxes: {} = {};
-  //Option Selection
+  showAlpha: boolean = this.imageService.isTransparent;
 
   constructor(private imageService: ImageService, private lsbOptionsParser: LsbOptionsService) { }
 
   ngOnInit() {
+    if (this.lsbOptionsParser.currentTable == "embed") this.showAlpha = false;
   }
 
   tickCol(colour: string) {
@@ -47,7 +48,7 @@ export class LsbTableComponent implements OnInit {
       Triggered when row header is pressed.
     */
     for (let colour of this.imageService.rgbaChars) {
-      if (colour != 'a' || this.imageService.isTransparent) {
+      if (colour != 'a' || this.showAlpha) {
         if (this.checkBoxes[colour+rowId]) {
           //Uncheck box
           this.checkBoxes[colour+rowId] = false;

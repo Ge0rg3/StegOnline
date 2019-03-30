@@ -33,6 +33,19 @@ export class HelpersService {
     return spaceSeperated;
   }
 
+  textToBin(input: string | string[]): string {
+    /*
+      Turns a string of text/data into binary.
+      Each character will be padded to 8 bits.
+    */
+    let binString: string = "";
+    for (let i=0; i < input.length; i++) {
+      let binPart = input[i].charCodeAt(0).toString(2);
+      binString += "0".repeat(8-binPart.length) + binPart;
+    }
+    return binString;
+  }
+
   sleep(ms: number) {
     /*
       Simply sleeps for n miliseconds.

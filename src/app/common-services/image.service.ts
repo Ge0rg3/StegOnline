@@ -9,7 +9,6 @@ export class ImageService {
   constructor(private router: Router) { }
 
   //Basic image details
-  public rgb: Uint8ClampedArray; //one array with all rgb values
   public rgba: Uint8ClampedArray; //one array with all rgba values
   public r: Uint8ClampedArray; //one array with only r values
   public g: Uint8ClampedArray; //one array with only g values
@@ -65,12 +64,12 @@ export class ImageService {
         self.height = imageObj.height;
         ctx.drawImage(imageObj, 0, 0);
         //Extract values from canvas
-        self.rgb = ctx.getImageData(0, 0, imageObj.width, imageObj.height).data;
-        self.r = this.rgb.filter((val, index) => index % 4 == 0);
-        self.g = this.rgb.filter((val, index) => (index-1) % 4 == 0);
-        self.b = this.rgb.filter((val, index) => (index-2) % 4 == 0);
+        self.rgba = ctx.getImageData(0, 0, imageObj.width, imageObj.height).data;
+        self.r = self.rgba.filter((val, index) => index % 4 == 0);
+        self.g = self.rgba.filter((val, index) => (index-1) % 4 == 0);
+        self.b = self.rgba.filter((val, index) => (index-2) % 4 == 0);
         self.a = new Uint8ClampedArray(self.r.length).fill(255);
-				self.opaque = self.a;
+        self.opaque = self.a;
 				self.transparent = new Uint8ClampedArray(self.r.length).fill(0);
         self.defaultImageData = self.createImage();
         if (redirect) self.router.navigate(['/image']);
@@ -96,7 +95,6 @@ export class ImageService {
       // var pngData: any = await pngObj.decode();
       pngObj.decode().then((data) => {
         var pngData: any = data;
-        self.rgb = pngData.bitmap; //We don't actually know
         self.rgba = pngData.bitmap;
         self.width = pngData.width;
         self.height = pngData.height;
@@ -112,12 +110,25 @@ export class ImageService {
           self.g = self.rgba.map(index => pngPaletteColours[index][1]);
           self.b = self.rgba.map(index => pngPaletteColours[index][2]);
           self.a = new Uint8ClampedArray(self.r.length).fill(255);
+          //Generate full RGBA array
+          var tempRgba = [];
+          for (let i=0; i < self.r.length; i++) {
+            tempRgba.push(self.r[i], self.g[i], self.b[i], self.a[i]);
+          }
+          self.rgba = new Uint8ClampedArray(tempRgba);
         }
         else if (self.pngType == 2) { //Regular RGB
           self.r = self.rgba.filter((val, index) => index % 3 == 0);
           self.g = self.rgba.filter((val, index) => (index-1) % 3 == 0);
           self.b = self.rgba.filter((val, index) => (index-2) % 3 == 0);
           self.a = new Uint8ClampedArray(self.r.length).fill(255);
+          //Generate full RGBA array
+          var tempRgba = [];
+          for (let i=0; i < self.r.length; i++) {
+            tempRgba.push(self.r[i], self.g[i], self.b[i], self.a[i]);
+          }
+          self.rgba = new Uint8ClampedArray(tempRgba);
+
         }
         else if (self.pngType == 6) { // RGBA values
           self.r = self.rgba.filter((val, index) => index % 4 == 0);

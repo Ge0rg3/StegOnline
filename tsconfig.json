@@ -19,6 +19,7 @@
     ],
     "lib": [
       "es2018",
+      "esnext.array",
       "dom"
     ]
   }

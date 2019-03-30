@@ -45,8 +45,6 @@ export class ExtractDataService {
     //Vars for extraction
     var currentByte: string = "";
     var bitCount: number = 0;
-    var valeusPerPixel: number = ((this.imageService.isTransparent || !this.imageService.isPng) ? 4 : 3);
-
 
     //For Rows:
     if (pixelOrder == "Row") {
@@ -89,7 +87,7 @@ export class ExtractDataService {
 
     //For columns
     else if (pixelOrder == "Column") {
-      //For each column
+      //For each pixel column
       for (let c=0; c < this.imageService.width; c++) {
         //Update progress bar (slower, but let's user know that page isn't frozen)
         if (c % 100 == 0) {
@@ -99,14 +97,14 @@ export class ExtractDataService {
         //For each pixel row
         for (let r=0; r < this.imageService.height; r++) {
           //For each colour
-          var index: number = (r*this.imageService.width*valeusPerPixel)+(c*valeusPerPixel);
+          var index: number = (r*this.imageService.width*4)+(c*4);
 
           for (var colour of bitPlaneOrder) {
             if (Object.keys(selectedBits).indexOf(colour) != -1) {
               //Work out which colour we're loooking at
               var colourIndex: number = this.imageService.rgbaChars.indexOf(colour);
               //Get this colour's binary value
-              var pixelBinary: string[] = this.helpers.intToBin((this.imageService.isTransparent ? this.imageService.rgba : this.imageService.rgb)[index+colourIndex]).split('');
+              var pixelBinary: string[] = this.helpers.intToBin(this.imageService.rgba[index+colourIndex]).split('');
               //Extract only inputted bits
               var extractedBits: string[] = pixelBinary.filter((val, index) => selectedBits[colour].indexOf(7-index) != -1);
               //Reverse if asked for

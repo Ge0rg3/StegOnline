@@ -14,6 +14,27 @@
 
 <br/>
 
+<!-- Data input -->
+<div>
+	<h4>Input Data:</h4>
+	Type:&nbsp;
+	<select [(ngModel)]="inputType" class="input-small">
+		<option>Text</option>
+		<option>File</option>
+	</select>
+</div>
+<div [hidden]="inputType != 'Text'">
+	<br/>
+	<div class="md-form">
+		<textarea [(ngModel)]="textInput" class="md-textarea form-control"></textarea>
+	</div>
+</div>
+<div [hidden]="inputType != 'File'">
+	<br/>
+	<input type="file" (change)="uploadFile($event)">
+</div>
+
+
 <!-- Start -->
 <div class="row justify-content-center">
   <button class="btn btn-success" (click)="startEmbed()">Go</button>

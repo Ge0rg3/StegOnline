@@ -9,11 +9,13 @@ export class EmbedDataService {
 
   constructor(private imageService: ImageService, private helpers: HelpersService) { }
 
-	async embed(_selectedBits: {}, pixelOrder: string, bitOrder: string, bitPlaneOrder: string[], padBits: boolean) {
+	async embed(toHide: string, _selectedBits: {}, pixelOrder: string, bitOrder: string, bitPlaneOrder: string[], padBits: boolean) {
 		/*
 			This function houses the complex logic for embedding data into an image.
 			It depends on ImageService's [r, g, b and a] arrays.
 			Inputs:
+        toHide: string - a string of binary data
+          e.g. "10100101010101010"
 				selectedBits : object literal - containing chosen bits for each colour.
 					e.g. {'r':[0]}, {'r':[2, 1, 0], 'b':[2,1,0], 'g':[0]}
 				pixelOrder: string - containing either "Row" or "Column", for the direction of extraction.
@@ -22,7 +24,7 @@ export class EmbedDataService {
 				 e.g. ['r', 'g', 'b', 'a'], ['g', 'b', 'r', 'a']
 				padBits: boolean - whether or not to pad chosen planes with 0s after data has finished
 			Example Use:
-				embed({'r': [1,0], 'g':[], 'b':[0], 'a':[]}, "Row", "MSB", ['b','r','g','a'], false);
+				embed("10100101010101010", {'r': [1,0], 'g':[], 'b':[0], 'a':[]}, "Row", "MSB", ['b','r','g','a'], false);
 		*/
 		//Custom colour copies
     var colourArrays: {} = {
@@ -44,7 +46,6 @@ export class EmbedDataService {
 			}
 		}
 		//Vars for embedding
-		var toHide: string = "0110100001100101011011000110110001101111001000000111010001101000011010010111001100100000011010010111001100100000011011100110111101110100011010000110100101101110011001110010000001100010011101010111010000100000011000010010000001110100011001010111001101110100001000000011101000101001".repeat(10);
 		if (padBits) toHide += "0".repeat((this.imageService.r.length*Object.values(selectedBits).flat().length) - toHide.length);
 		var toHidePos: number = 0;
 
@@ -52,12 +53,15 @@ export class EmbedDataService {
 		if (pixelOrder == "Row") {
 			//For each pixel
 			for (let i=0; i < this.imageService.r.length; i++) {
+        if (toHidePos > toHide.length) break;
 				//For each colour
 				for (var colour of bitPlaneOrder) {
+          if (toHidePos > toHide.length) break;
 					//If selected...
 					if (Object.keys(selectedBits).indexOf(colour) != -1) {
 						//Get binary string for pixel
 						var pixelBinary: string[] = this.helpers.intToBin(colourArrays[colour][i]).split('');
+            //Edit pixel with new value
 						for (var hideIndex of selectedBits[colour]) {
 							if (toHidePos < toHide.length) {
 								pixelBinary[7-hideIndex] = toHide[toHidePos++];
@@ -68,7 +72,40 @@ export class EmbedDataService {
 				}
 			}
 		}
-		return this.imageService.createImage(colourArrays['r'], colourArrays['g'], colourArrays['b'], colourArrays['a']);
+
+    //For Columns:
+    else if (pixelOrder == "Column") {
+      var valeusPerPixel: number = ((this.imageService.isTransparent || !this.imageService.isPng) ? 4 : 3);
+      //For each pixel column
+      for (let c=0; c < this.imageService.width; c++) {
+        if (toHidePos > toHide.length) break;
+        //For each pixel row
+        for (let r=0; r < this.imageService.height; r++) {
+          if (toHidePos > toHide.length) break;
+          var index: number = (r*this.imageService.width*valeusPerPixel)+(c*valeusPerPixel);
+
+          //For each colour
+          for (var colour of bitPlaneOrder) {
+            if (Object.keys(selectedBits).indexOf(colour) != -1) {
+              //Work out which colour we're loooking at
+              var colourIndex: number = this.imageService.rgbaChars.indexOf(colour);
+
+              //Get colour's binary value
+              var pixelBinary: string[] = this.helpers.intToBin(this.imageService.rgba[index+colourIndex]).split('');
+              //Edit pixel with new value
+              for (var hideIndex of selectedBits[colour]) {
+  							if (toHidePos < toHide.length) {
+  								pixelBinary[7-hideIndex] = toHide[toHidePos++];
+  							}
+  						}
+              //Update pixel value
+              this.imageService.rgba[index+colourIndex] = parseInt(pixelBinary.join(''), 2);
+            }
+          }
+        }
+      }
+    }
+		return this.imageService.createImage(colourArrays['r'], colourArrays['g'], colourArrays['b'], this.imageService.opaque);
 	}
 
 }

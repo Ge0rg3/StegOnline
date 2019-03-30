@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ImageService } from '../../common-services/image.service';
+import { HelpersService } from '../../common-services/helpers.service';
 import { LsbOptionsService } from '../lsb-options.service';
 import { EmbedDataService } from '../embed-data.service';
 
@@ -10,10 +11,12 @@ import { EmbedDataService } from '../embed-data.service';
 })
 export class EmbedMenuComponent implements OnInit {
 
-  constructor(private imageService: ImageService, private lsbOptions: LsbOptionsService, private embedService: EmbedDataService) { }
+  constructor(private imageService: ImageService, private helpers: HelpersService, private lsbOptions: LsbOptionsService, private embedService: EmbedDataService) { }
 
+  fileBinary: string;
+  textInput: string;
 	embedComplete: boolean = false;
-	drawImageData: ImageData = this.imageService.defaultImageData;
+  inputType: string = "Text";
 
 	@ViewChild('canvasElement') public canvasElement: ElementRef;
 
@@ -26,8 +29,9 @@ export class EmbedMenuComponent implements OnInit {
 			This function acts as an intermediary between the Embed Service's embed function, the options input and the image output.
 		*/
 
+    var binary: string = this.inputType == "Text" ? this.helpers.textToBin(this.textInput) : this.fileBinary;
 		//Get new image
-		var outputImage: ImageData = await this.embedService.embed({'r': [7,6], 'g':[], 'b':[], 'a':[]}, "Row", "LSB", ['r','g','b','a'], true);
+		var outputImage: ImageData = await this.embedService.embed(binary, this.lsbOptions.selectedBits, this.lsbOptions.pixelOrder, this.lsbOptions.bitOrder, this.lsbOptions.bitPlaneOrder, (this.lsbOptions.padBits == "Yes"));
 
 		//Display new image on canvas
 		let canvas = this.canvasElement.nativeElement;
@@ -39,5 +43,23 @@ export class EmbedMenuComponent implements OnInit {
 
 		this.embedComplete = true;
 	}
+
+  uploadFile(input: any) {
+    /*
+      This is used to handle the file upload feature.
+      The binary string taken from the file is stored in the toEmbed attribute
+    */
+    if (input.target.files[0]) {
+      var file: File = input.target.files[0];
+      var byteReader: FileReader = new FileReader();
+      byteReader.onload = (event: Event) => {
+        var inputData: Uint8Array = new Uint8Array(byteReader.result as ArrayBuffer);
+        var inputBytes: string[] = Array.from(inputData).map(b => String.fromCharCode(b));
+        this.fileBinary = this.helpers.textToBin(inputBytes);
+      }
+      byteReader.readAsArrayBuffer(input.target.files[0]);
+    }
+
+  }
 
 }
