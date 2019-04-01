@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { ImageService } from '../../common-services/image.service';
 import { HelpersService } from '../../common-services/helpers.service';
 import { LsbOptionsService } from '../lsb-options.service';
@@ -11,36 +12,71 @@ import { EmbedDataService } from '../embed-data.service';
 })
 export class EmbedMenuComponent implements OnInit {
 
-  constructor(private imageService: ImageService, private helpers: HelpersService, private lsbOptions: LsbOptionsService, private embedService: EmbedDataService) { }
+  constructor(private router: Router, private imageService: ImageService, private helpers: HelpersService, private lsbOptions: LsbOptionsService, private embedService: EmbedDataService) { }
+
+  embedComplete: boolean = false;
+  inProgress: boolean = false;
+  error: string;
 
   fileBinary: string;
   textInput: string;
-	embedComplete: boolean = false;
   inputType: string = "Text";
 
 	@ViewChild('canvasElement') public canvasElement: ElementRef;
 
   ngOnInit() {
 		this.lsbOptions.currentTable = 'embed';
+    // //If no image loaded, redirect back.
+    if (!this.imageService.defaultImageData) {
+      this.router.navigate(['/home']);
+    }
   }
 
 	async startEmbed() {
 		/*
 			This function acts as an intermediary between the Embed Service's embed function, the options input and the image output.
 		*/
+    this.error = "";
 
+    //Check data was entered
     var binary: string = this.inputType == "Text" ? this.helpers.textToBin(this.textInput) : this.fileBinary;
+    if (!binary) {
+      this.error = "No data entered!";
+      return;
+    }
+
+    //Compare size of data to number of cells chosen
+    var numberOfBitsChosen = Object.values(this.lsbOptions.selectedBits).flat().length;
+    var spaceRequested = binary.length;
+    var maxSpaceWithRequestedBits = numberOfBitsChosen*this.imageService.r.length;
+    if (spaceRequested > maxSpaceWithRequestedBits) {
+      var requiredSpace = Math.ceil(spaceRequested / this.imageService.r.length);
+      if (requiredSpace > 24) {
+        this.error = `Not enough space: The requested data is too large for the image to store. This image can hold a maximum of ${24*this.imageService.r.length} bits.`
+      } else {
+        this.error = `Not enough space: Please choose at least ${requiredSpace} cells to fully embed this data.`;
+      }
+      this.error += ` For now, I'm cropping at ${maxSpaceWithRequestedBits} bits.`;
+    }
+
+    //Show loading text
+    this.inProgress = true;
+    this.embedComplete = false;
+    this.embedService.loadingMessage = "0%";
+    await this.helpers.sleep(0);
+
 		//Get new image
 		var outputImage: ImageData = await this.embedService.embed(binary, this.lsbOptions.selectedBits, this.lsbOptions.pixelOrder, this.lsbOptions.bitOrder, this.lsbOptions.bitPlaneOrder, (this.lsbOptions.padBits == "Yes"));
 
 		//Display new image on canvas
-		let canvas = this.canvasElement.nativeElement;
-		let ctx = canvas.getContext('2d');
+		this.embedService.embeddedCanvas = this.canvasElement.nativeElement;
+		let ctx = this.embedService.embeddedCanvas.getContext('2d');
 		ctx.imageSmoothingEnabled = false;
-		canvas.width = this.imageService.width;
-		canvas.height = this.imageService.height;
+		this.embedService.embeddedCanvas.width = this.imageService.width;
+		this.embedService.embeddedCanvas.height = this.imageService.height;
 		ctx.putImageData(outputImage, 0, 0);
 
+		this.inProgress = false;
 		this.embedComplete = true;
 	}
 

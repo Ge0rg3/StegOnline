@@ -30,6 +30,9 @@ import { LsbTableComponent } from './embed-extract-data/lsb-table/lsb-table.comp
 /* LSB Settings (child of Extract/Embed menu components) */
 import { LsbSettingsComponent } from './embed-extract-data/lsb-settings/lsb-settings.component';
 
+/* Download Buttons (child of Extract/Embed menu components) */
+import { DownloadEmbeddedComponent } from './embed-extract-data/downloadembedded/downloadembedded.component';
+
 
 @NgModule({
   declarations: [
@@ -42,7 +45,8 @@ import { LsbSettingsComponent } from './embed-extract-data/lsb-settings/lsb-sett
     ExtractMenuComponent,
     EmbedMenuComponent,
     LsbTableComponent,
-    LsbSettingsComponent
+    LsbSettingsComponent,
+    DownloadEmbeddedComponent
   ],
   imports: [
     BrowserModule,

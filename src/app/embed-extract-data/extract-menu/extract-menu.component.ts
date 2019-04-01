@@ -18,6 +18,7 @@ export class ExtractMenuComponent implements OnInit {
 
   extractComplete: boolean = false;
   inProgress: boolean = false;
+
   fileTypes: string[][] = [];
   identifiedExtension: string = "dat";
 	hexResult: string;
@@ -42,17 +43,18 @@ export class ExtractMenuComponent implements OnInit {
 		this.extractComplete = false;
     this.extractService.loadingMessage = "0%";
     await this.helpers.sleep(0);
+
     //Tweak some variables so they fit the service
     var _pixelOrder: string = this.lsbOptions.pixelOrder == "Row" ? "Row" : "Column";
     var _trimBits: boolean = this.lsbOptions.trimBits == "Yes" ? true : false;
 
     //Run function!
     this.hexResult = await this.extractService.extract(this.lsbOptions.selectedBits, _pixelOrder, this.lsbOptions.bitOrder, this.lsbOptions.bitPlaneOrder, _trimBits);
-		this.trimmedHexResult = this.hexResult.substring(0, 1000);
+		this.trimmedHexResult = this.hexResult.substring(0, 2500);
 
     //Get ASCII representation
     this.asciiResult = this.helpers.hexToAscii(this.hexResult);
-		this.trimmedAsciiResult = this.asciiResult.substring(0, 1000);
+		this.trimmedAsciiResult = this.asciiResult.substring(0, 2500);
 
     //Check filetype
     this.fileTypes = this.fileTypeService.identifyFileType(this.hexResult);

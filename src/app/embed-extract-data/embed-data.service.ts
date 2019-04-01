@@ -9,6 +9,9 @@ export class EmbedDataService {
 
   constructor(private imageService: ImageService, private helpers: HelpersService) { }
 
+  loadingMessage: string = "0%";
+  embeddedCanvas: HTMLCanvasElement;
+
 	async embed(toHide: string, _selectedBits: {}, pixelOrder: string, bitOrder: string, bitPlaneOrder: string[], padBits: boolean) {
 		/*
 			This function houses the complex logic for embedding data into an image.
@@ -40,7 +43,8 @@ export class EmbedDataService {
 		if (_selectedBits['b'].length > 0) selectedBits['b'] = _selectedBits['b'];
 		if (_selectedBits['a'].length > 0) selectedBits['a'] = _selectedBits['a'];
 		//Convert to LSB if asked
-		if (bitOrder == 'LSB') {
+    //Note: This may seem incorrect, but we have to look at it from the point of view of an extractor.
+		if (bitOrder == 'MSB') {
 			for (var char of Object.keys(selectedBits)) {
 				selectedBits[char] = selectedBits[char].reverse();
 			}
@@ -50,9 +54,14 @@ export class EmbedDataService {
 		var toHidePos: number = 0;
 
 		//For Rows:
-		if (pixelOrder == "Row") {
+    if (pixelOrder == "Row") {
 			//For each pixel
 			for (let i=0; i < this.imageService.r.length; i++) {
+        //Update progress bar (Slower, lets users know that the page isn't stuck)
+        if (i % 25000 == 0) {
+          this.loadingMessage = Math.floor(toHidePos*100 / toHide.length).toString()+"%";
+          await this.helpers.sleep(0);
+        }
         if (toHidePos > toHide.length) break;
 				//For each colour
 				for (var colour of bitPlaneOrder) {
@@ -71,13 +80,20 @@ export class EmbedDataService {
 					}
 				}
 			}
+      return this.imageService.createImage(colourArrays['r'], colourArrays['g'], colourArrays['b'], this.imageService.opaque);
 		}
 
     //For Columns:
     else if (pixelOrder == "Column") {
       var valeusPerPixel: number = ((this.imageService.isTransparent || !this.imageService.isPng) ? 4 : 3);
+      var copiedRgba = this.imageService.rgba.slice(0);
       //For each pixel column
       for (let c=0; c < this.imageService.width; c++) {
+        //Update progress bar (slower, but let's user know that page isn't frozen)
+        if (c % 100 == 0) {
+          this.loadingMessage = Math.floor(toHidePos*100 / toHide.length).toString()+"%";
+          await this.helpers.sleep(0);
+        }
         if (toHidePos > toHide.length) break;
         //For each pixel row
         for (let r=0; r < this.imageService.height; r++) {
@@ -91,7 +107,7 @@ export class EmbedDataService {
               var colourIndex: number = this.imageService.rgbaChars.indexOf(colour);
 
               //Get colour's binary value
-              var pixelBinary: string[] = this.helpers.intToBin(this.imageService.rgba[index+colourIndex]).split('');
+              var pixelBinary: string[] = this.helpers.intToBin(copiedRgba[index+colourIndex]).split('');
               //Edit pixel with new value
               for (var hideIndex of selectedBits[colour]) {
   							if (toHidePos < toHide.length) {
@@ -99,13 +115,13 @@ export class EmbedDataService {
   							}
   						}
               //Update pixel value
-              this.imageService.rgba[index+colourIndex] = parseInt(pixelBinary.join(''), 2);
+              copiedRgba[index+colourIndex] = parseInt(pixelBinary.join(''), 2);
             }
           }
         }
       }
+      var rgbaData: Uint8ClampedArray = new Uint8ClampedArray(copiedRgba);
+      return new ImageData(rgbaData, this.imageService.width, this.imageService.height);
     }
-		return this.imageService.createImage(colourArrays['r'], colourArrays['g'], colourArrays['b'], this.imageService.opaque);
 	}
-
 }

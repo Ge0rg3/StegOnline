@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
       var reader: FileReader = new FileReader();
       reader.onload = async (event: Event) => {
         this.uploadImageText = "CHANGE IMAGE";
-        this.dragDropText = `"${file.name}" loaded successfully!`;
+        this.dragDropText = `Loading "${file.name}"...`;
         this.imageTitle = file.name;
         this.imageService.fileName = file.name;
         this.imageService.initiateImage((reader.result as string), true);

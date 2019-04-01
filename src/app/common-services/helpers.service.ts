@@ -33,7 +33,7 @@ export class HelpersService {
     return spaceSeperated;
   }
 
-  textToBin(input: string | string[]): string {
+  textToBin(input: string | string[] = ""): string {
     /*
       Turns a string of text/data into binary.
       Each character will be padded to 8 bits.

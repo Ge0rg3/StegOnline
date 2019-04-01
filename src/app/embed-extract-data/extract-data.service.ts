@@ -91,7 +91,7 @@ export class ExtractDataService {
       for (let c=0; c < this.imageService.width; c++) {
         //Update progress bar (slower, but let's user know that page isn't frozen)
         if (c % 100 == 0) {
-          this.loadingMessage = Math.floor(c / this.imageService.width).toString()+"%";
+          this.loadingMessage = Math.floor(c*100 / this.imageService.width).toString()+"%";
           await this.helpers.sleep(0);
         }
         //For each pixel row
