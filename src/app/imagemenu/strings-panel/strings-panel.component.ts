@@ -3,9 +3,9 @@ import { ImageService } from '../../common-services/image.service';
 
 @Component({
   selector: 'strings-panel',
-  templateUrl: './strings.component.html'
+  templateUrl: './strings-panel.component.html'
 })
-export class StringsComponent implements OnInit {
+export class StringsPanelComponent implements OnInit {
 
   constructor(private imageService: ImageService) { }
 	//The two columns of strings

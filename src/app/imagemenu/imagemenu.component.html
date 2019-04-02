@@ -31,10 +31,13 @@
 <div class="bubble row justify-content-center">
 	<button type="button" class="btn btn-danger" (click)="toggleStringsPanel()" *ngIf="panelSettings.showStrings">Hide Strings</button>
 	<button type="button" class="btn btn-secondary" (click)="toggleStringsPanel()" *ngIf="!panelSettings.showStrings">Show Strings</button>
+	<button type="button" class="btn btn-danger" (click)="toggleRgbaPanel()" *ngIf="panelSettings.showRgba">Hide RGBA Values</button>
+	<button type="button" class="btn btn-secondary" (click)="toggleRgbaPanel()" *ngIf="!panelSettings.showRgba">Show RGBA Values</button>
 </div>
 
 <!-- File Info Panels -->
 <strings-panel *ngIf="panelSettings.showStrings"></strings-panel>
+<rgba-panel *ngIf="panelSettings.showRgba"></rgba-panel>
 
 <!-- Bit Plane Browser -->
 <div class="bubble">

@@ -38,13 +38,19 @@ export class ImageMenuComponent implements OnInit {
 		/*
 			Used to show/hide the strings panel.
 		*/
-		if (this.panelSettings.showStrings) {
-			this.panelSettings.closePanels();
-		} else {
-			this.panelSettings.showStrings = true;
-		}
+		var setFlag = this.panelSettings.showStrings;
+		this.reset();
+		if (!setFlag) this.panelSettings.showStrings = true;
 	}
 
+	toggleRgbaPanel() {
+		/*
+			Used to show/hide the Rgba panel.
+		*/
+		var setFlag = this.panelSettings.showRgba;
+		this.reset();
+		if (!setFlag) this.panelSettings.showRgba = true;
+	}
 
 	fullPlane(plane: number) {
 		/*

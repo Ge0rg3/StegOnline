@@ -38,7 +38,10 @@ import { DownloadEmbeddedComponent } from './embed-extract-data/downloadembedded
 import { EmbedImageComponent } from './embed-image/embed-image.component';
 
 /* Strings panel inside of imagemenu */
-import { StringsComponent } from './imagemenu/strings/strings.component';
+import { StringsPanelComponent } from './imagemenu/strings-panel/strings-panel.component';
+
+/* Rgba panel inside of imagemenu */
+import { RgbaPanelComponent } from './imagemenu/rgba-panel/rgba-panel.component';
 
 
 @NgModule({
@@ -55,7 +58,8 @@ import { StringsComponent } from './imagemenu/strings/strings.component';
     LsbSettingsComponent,
     DownloadEmbeddedComponent,
     EmbedImageComponent,
-    StringsComponent
+    StringsPanelComponent,
+    RgbaPanelComponent
   ],
   imports: [
     BrowserModule,
