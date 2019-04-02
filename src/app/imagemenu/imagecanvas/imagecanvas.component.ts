@@ -24,7 +24,9 @@ export class ImageCanvasComponent implements OnInit {
 
 
   ngOnInit() {
-		this.customInit();
+    if (this.ctx) return; //This means that it has already been init'd
+    this.customInit();
+    this.ctx.putImageData(this.imageService.defaultImageData, 0, 0);
   }
 
 	customInit() {
@@ -38,14 +40,12 @@ export class ImageCanvasComponent implements OnInit {
     this.ctx.imageSmoothingEnabled = false;
     this.canvas.width = this.imageService.width;
     this.canvas.height = this.imageService.height;
-    this.ctx.putImageData(this.imageService.defaultImageData, 0, 0);
     this.imageService.canvas = this.canvas; //For downloading later
 	}
 
   updateCanvas(imageObj: ImageData) {
 		if (!this.ctx) {
 			this.customInit();
-			return;
 		}
     this.ctx.putImageData(imageObj, 0, 0);
     this.imageService.canvas = this.canvas;

@@ -7,8 +7,7 @@ import { EmbedDataService } from '../embed-data.service';
 
 @Component({
   selector: 'app-embed-menu',
-  templateUrl: './embed-menu.component.html',
-  styleUrls: ['./embed-menu.component.scss']
+  templateUrl: './embed-menu.component.html'
 })
 export class EmbedMenuComponent implements OnInit {
 

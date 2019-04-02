@@ -4,8 +4,7 @@ import { LsbOptionsService } from '../lsb-options.service';
 
 @Component({
   selector: 'lsb-settings',
-  templateUrl: './lsb-settings.component.html',
-  styleUrls: ['./lsb-settings.component.scss']
+  templateUrl: './lsb-settings.component.html'
 })
 export class LsbSettingsComponent implements OnInit {
 

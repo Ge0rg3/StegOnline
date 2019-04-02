@@ -10,7 +10,6 @@ declare var download; //download.js, imported in angular.json file
 @Component({
   selector: 'app-extract-menu',
   templateUrl: './extract-menu.component.html',
-  styleUrls: ['./extract-menu.component.scss']
 })
 export class ExtractMenuComponent implements OnInit {
 

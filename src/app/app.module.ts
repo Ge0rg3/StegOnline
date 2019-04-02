@@ -33,6 +33,9 @@ import { LsbSettingsComponent } from './embed-extract-data/lsb-settings/lsb-sett
 /* Download Buttons (child of Extract/Embed menu components) */
 import { DownloadEmbeddedComponent } from './embed-extract-data/downloadembedded/downloadembedded.component';
 
+/* Embed page for hiding images in bit planes */
+import { EmbedImageComponent } from './embed-image/embed-image.component';
+
 
 @NgModule({
   declarations: [
@@ -46,7 +49,8 @@ import { DownloadEmbeddedComponent } from './embed-extract-data/downloadembedded
     EmbedMenuComponent,
     LsbTableComponent,
     LsbSettingsComponent,
-    DownloadEmbeddedComponent
+    DownloadEmbeddedComponent,
+    EmbedImageComponent
   ],
   imports: [
     BrowserModule,
