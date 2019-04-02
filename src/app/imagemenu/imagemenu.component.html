@@ -27,6 +27,11 @@
 	<button type="button" class="btn btn-info" (click)="router.navigate(['/embedimage'])">Embed B/W Image in Bit Plane</button>
 </div>
 
+<!-- File Info -->
+<div class="bubble row justify-content-center">
+	<button type="button" class="btn btn-secondary">View Strings</button>
+</div>
+
 <!-- Bit Plane Browser -->
 <div class="bubble">
 	<bitplane-browser (bitPlaneDataEmitter)="updateCanvas($event)"></bitplane-browser>

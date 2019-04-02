@@ -13,7 +13,7 @@ export class ImageMenuComponent implements OnInit {
 
   constructor(private router: Router, private imageService: ImageService, private helpers: HelpersService, private panelSettings: PanelSettingsService) { }
 
-	drawImageData: ImageData;
+  showStrings: boolean = false;
 
   ngOnInit() { }
 

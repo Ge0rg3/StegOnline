@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+
 /* Homepage with Upload option */
 import { HomeComponent } from './home/home.component';
 
@@ -36,6 +37,9 @@ import { DownloadEmbeddedComponent } from './embed-extract-data/downloadembedded
 /* Embed page for hiding images in bit planes */
 import { EmbedImageComponent } from './embed-image/embed-image.component';
 
+/* Strings panel inside of imagemenu */
+import { StringsComponent } from './imagemenu/strings/strings.component';
+
 
 @NgModule({
   declarations: [
@@ -50,7 +54,8 @@ import { EmbedImageComponent } from './embed-image/embed-image.component';
     LsbTableComponent,
     LsbSettingsComponent,
     DownloadEmbeddedComponent,
-    EmbedImageComponent
+    EmbedImageComponent,
+    StringsComponent
   ],
   imports: [
     BrowserModule,
