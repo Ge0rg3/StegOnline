@@ -25,16 +25,24 @@ export class HomeComponent implements OnInit {
         return;
       }
 
+			//Initiate RGB stuff
       var reader: FileReader = new FileReader();
-      reader.onload = async (event: Event) => {
+      reader.onload = async () => {
         this.uploadImageText = "CHANGE IMAGE";
         this.dragDropText = `Loading "${file.name}"...`;
         this.imageTitle = file.name;
         this.imageService.fileName = file.name;
         this.imageService.initiateImage((reader.result as string), true);
       };
-      reader.readAsDataURL(file);
+
+			//Get strings
+			var stringReader: FileReader = new FileReader();
+			stringReader.onloadend = async () => {
+				this.imageService.bytes = (stringReader.result as string);
+				reader.readAsDataURL(file);
+			}
     }
+		stringReader.readAsBinaryString(file);
   }
 
   toggleDrag() {

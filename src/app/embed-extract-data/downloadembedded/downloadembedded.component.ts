@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { EmbedDataService } from '../embed-data.service';
 import { ImageService } from '../../common-services/image.service';
 declare var download; //download.js, imported in angular.json file
@@ -9,9 +10,13 @@ declare var download; //download.js, imported in angular.json file
 })
 export class DownloadEmbeddedComponent implements OnInit {
 
-  constructor(private embedService: EmbedDataService, private imageService: ImageService) { }
+  constructor(private embedService: EmbedDataService, private imageService: ImageService, private router: Router) { }
 
   ngOnInit() {
+		// //If no image loaded, redirect back.
+		if (!this.imageService.defaultImageData) {
+			this.router.navigate(['/home']);
+		}
   }
 
   download() {

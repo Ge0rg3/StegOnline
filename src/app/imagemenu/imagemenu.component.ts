@@ -13,7 +13,7 @@ export class ImageMenuComponent implements OnInit {
 
   constructor(private router: Router, private imageService: ImageService, private helpers: HelpersService, private panelSettings: PanelSettingsService) { }
 
-  showStrings: boolean = false;
+	drawImageData: ImageData;
 
   ngOnInit() { }
 
@@ -33,6 +33,18 @@ export class ImageMenuComponent implements OnInit {
 		*/
 		this.drawImageData = imageData;
 	}
+
+	toggleStringsPanel() {
+		/*
+			Used to show/hide the strings panel.
+		*/
+		if (this.panelSettings.showStrings) {
+			this.panelSettings.closePanels();
+		} else {
+			this.panelSettings.showStrings = true;
+		}
+	}
+
 
 	fullPlane(plane: number) {
 		/*

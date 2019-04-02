@@ -22,11 +22,12 @@ export class ImageCanvasComponent implements OnInit {
 
   constructor(private router: Router, private imageService: ImageService) { }
 
-
   ngOnInit() {
     if (this.ctx) return; //This means that it has already been init'd
     this.customInit();
-    this.ctx.putImageData(this.imageService.defaultImageData, 0, 0);
+		if (this.imageService.defaultImageData) {
+			this.ctx.putImageData(this.imageService.defaultImageData, 0, 0);
+		}
   }
 
 	customInit() {
