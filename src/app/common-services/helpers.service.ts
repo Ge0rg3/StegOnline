@@ -54,4 +54,11 @@ export class HelpersService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+	ranbetween(l: number, h: number) {
+		/*
+			Returns a random number between to integers (inclusive).
+		*/
+		return Math.floor(Math.random()*(h-l+1)+l);
+	}
+
 }

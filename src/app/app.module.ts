@@ -43,6 +43,12 @@ import { StringsPanelComponent } from './imagemenu/strings-panel/strings-panel.c
 /* Rgba panel inside of imagemenu */
 import { RgbaPanelComponent } from './imagemenu/rgba-panel/rgba-panel.component';
 
+/* PNG panel inside of imagemenu */
+import { PngChunksPanelComponent } from './imagemenu/pngchunks-panel/pngchunks-panel.component';
+
+/* Png Palette Browser inside of imagemenu */
+import { PngPaletteBrowserComponent } from './imagemenu/pngpalette-browser/pngpalette-browser.component';
+
 
 @NgModule({
   declarations: [
@@ -59,7 +65,9 @@ import { RgbaPanelComponent } from './imagemenu/rgba-panel/rgba-panel.component'
     DownloadEmbeddedComponent,
     EmbedImageComponent,
     StringsPanelComponent,
-    RgbaPanelComponent
+    RgbaPanelComponent,
+    PngChunksPanelComponent,
+    PngPaletteBrowserComponent
   ],
   imports: [
     BrowserModule,

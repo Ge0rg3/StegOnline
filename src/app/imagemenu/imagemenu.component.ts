@@ -52,6 +52,15 @@ export class ImageMenuComponent implements OnInit {
 		if (!setFlag) this.panelSettings.showRgba = true;
 	}
 
+	togglePngInfoPanel() {
+		/*
+			Used to show/hide the PngInfo panel.
+		*/
+		var setFlag = this.panelSettings.showPngInfo;
+		this.reset();
+		if (!setFlag) this.panelSettings.showPngInfo = true;
+	}
+
 	fullPlane(plane: number) {
 		/*
 			Used to view only one colour plane on the canvas:

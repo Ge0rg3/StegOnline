@@ -10,6 +10,7 @@ export class PanelSettingsService {
 	showBitPlaneBrowser: boolean = false;
   showStrings: boolean = false;
   showRgba: boolean = false;
+  showPngInfo: boolean = false;
 
 	closePanels(): void {
 		/*
@@ -18,6 +19,7 @@ export class PanelSettingsService {
 		this.showBitPlaneBrowser = false;
     this.showStrings = false;
 		this.showRgba = false;
+		this.showPngInfo = false;
 	}
 
 }

@@ -1,0 +1,11 @@
+<div class="bubble" style="max-height: 400px; overflow-y: auto">
+	<h3>Png Chunks</h3>
+	<div *ngFor="let chunk of imageService.chunks">
+		<b>{{ chunk.name }}</b>
+		<br/>
+		<span *ngFor="let key of chunkKeys">
+			{{ key }} : {{ chunk[key] }}
+			<br/>
+		</span>
+	</div>
+</div>

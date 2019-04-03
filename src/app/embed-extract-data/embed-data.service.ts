@@ -52,6 +52,7 @@ export class EmbedDataService {
 		//Vars for embedding
 		if (padBits) toHide += "0".repeat((this.imageService.r.length*Object.values(selectedBits).flat().length) - toHide.length);
 		var toHidePos: number = 0;
+		bitPlaneOrder = bitPlaneOrder.filter(char => char != 'a');
 
 		//For Rows:
     if (pixelOrder == "Row") {
