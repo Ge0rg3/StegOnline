@@ -42,8 +42,12 @@ export class EmbedDataService {
 		if (_selectedBits['g'].length > 0) selectedBits['g'] = _selectedBits['g'];
 		if (_selectedBits['b'].length > 0) selectedBits['b'] = _selectedBits['b'];
 		if (_selectedBits['a'].length > 0) selectedBits['a'] = _selectedBits['a'];
+		//Sort bits
+		for (var char of Object.keys(selectedBits)) {
+			selectedBits[char] = selectedBits[char].sort();
+		}
 		//Convert to LSB if asked
-    //Note: This may seem incorrect, but we have to look at it from the point of view of an extractor.
+		//Note: This may look odd, but we must think of this from the point of view of an extractor
 		if (bitOrder == 'MSB') {
 			for (var char of Object.keys(selectedBits)) {
 				selectedBits[char] = selectedBits[char].reverse();
@@ -86,7 +90,6 @@ export class EmbedDataService {
 
     //For Columns:
     else if (pixelOrder == "Column") {
-      var valeusPerPixel: number = ((this.imageService.isTransparent || !this.imageService.isPng) ? 4 : 3);
       var copiedRgba = this.imageService.rgba.slice(0);
       //For each pixel column
       for (let c=0; c < this.imageService.width; c++) {
@@ -99,7 +102,7 @@ export class EmbedDataService {
         //For each pixel row
         for (let r=0; r < this.imageService.height; r++) {
           if (toHidePos > toHide.length) break;
-          var index: number = (r*this.imageService.width*valeusPerPixel)+(c*valeusPerPixel);
+          var index: number = (r*this.imageService.width*4)+(c*4);
 
           //For each colour
           for (var colour of bitPlaneOrder) {
