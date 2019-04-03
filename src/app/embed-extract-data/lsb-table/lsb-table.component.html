@@ -1,0 +1,24 @@
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-sm" cellpadding="0" id="lsbtable">
+      <thead>
+        <tr>
+          <th (click)="tickAll()"></th>
+          <ng-container *ngFor="let col of imageService.rgbaChars">
+            <th *ngIf="col != 'a' || showAlpha" (click)="tickCol(col)">
+              {{ col | uppercase }}
+            </th>
+          </ng-container>
+        </tr>
+        </thead>
+        <tr *ngFor="let rowId of rowIds">
+          <th class="thead-dark" (click)="tickRow(rowId)">{{ rowId }}</th>
+          <ng-container *ngFor="let col of imageService.rgbaChars">
+            <td *ngIf="col != 'a' || showAlpha">
+              <label>
+                <input (change)="bitChange($event, col, rowId)" [(ngModel)]="checkBoxes[col + rowId]" type="checkbox" id="{{ col + rowId }}">
+              </label>
+            </td>
+          </ng-container>
+        </tr>
+    </table>
+  </div>

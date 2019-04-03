@@ -1,39 +1,27 @@
-# StegOnline
-A web-based, accessible and open-source port of StegSolve.
-Upload any image file, and the relevant options will be displayed.
+# Stegonline
 
-### Current task: Port to Angular 7
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
 
-## Features:
-* Browse through the 32 bit planes of the image
-* Extract data using LSB steganography techniques
-* Embed data in any bit pattern
-* Hide one image inside of another's bit planes
+## Development server
 
-## How can I contribute?
-* An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver would be a good addition ([interesting solution](https://www.cs.bgu.ac.il/~ben-shahar/Teaching/Computational-Vision/StudentProjects/ICBV131/ICBV-2013-1-KatyaGroisman/FinalProjectReport.pdf)).
-* There is **no** way to read correct RGBA values of transparent/semi-transparent pixels with the Canvas API, so we use pngtoy. It would be great to have a lightweight version of pngtoy just for obtaining RGBA values.
-* When extracting data through LSB by columns instead of rows, the entire RGBA arrays must be rearranged. Although I temporary cache is stored, the process should be smoother.
-* We need a "Gray bits" feature, as seen on StegSolve.
-* We could detect trailing bits (similarly to StegoVeritas), and display them.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## General Code Structure
-* index.php: All HTML code of the website
-* assets/custom: Custom scripts/stylesheets
-* assets/external: External scripts/stylesheets (bootstrap, jquery, pngtoy)
-* main.js: Acts as a bridge between the UI and the core Stegonography functions
-* rgbaFunctions.js: The core functions of the program. This should contain no references to the webpage itself.
-* style.css: Our custom styleshet
-* fileSignatures.js: Dictionary of regexps for different magic headers, for identifying file types (currently unused)
+## Code scaffolding
 
-## Future Plans
-After all basic features are developed, I'm going to start refactoring the entire codebase.
-What started out as a small project has grown into quite a beefy application, which the original code design definitely wasn't designed for.
-We will be porting this project to **Angular**, as it's SPA compatibility is pretty good.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Working with transparency in JavaScript
-Read [this](https://stackoverflow.com/questions/39744072/how-to-get-rgb-from-transparent-pixel-in-js) and [this](https://stackoverflow.com/questions/28917518/reading-pixeldata-from-images-in-javascript-returns-unexpected-results-for-semi) first!  
-Essentially, it's impossible to read correct RGBA values of transparent pixels through the Image class in JavaScript.
-To work around this, I used the pngtoy library, which manually parses the file bitmap to find accurate RGBA values.
-Take [this challenge](https://xapax.github.io/blog/assets/pragyanctf/transmission.png) for example. Although there's actually a hidden image revealed when you set all Alpha values to 255, regular JavaScript image parsing would just show all transparent pixels as black.
-pngtoy was a hard library to find, as it has in fact been deleted by it's original creator (Epistmex). As such, I'm using a copy hosted [here](https://github.com/neshume/pngtoy).
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

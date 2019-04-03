@@ -1,0 +1,64 @@
+<back></back>
+<h2>Extract Data</h2>
+<p>
+	Here you can extract data hidden inside of the image.
+	Select some bits and adjust the settings appropriately.
+	The final extracted data is checked against some basic file headers, and so the filetype can be automatically determined.
+<br/>
+	Please note that Alpha options are only available if the image contains transparency.
+</p>
+
+
+<!-- Bit Selection Table -->
+<lsb-table></lsb-table>
+
+<!-- Options -->
+<lsb-settings></lsb-settings>
+
+<br/>
+
+<!-- Start -->
+<div class="row justify-content-center" *ngIf="!inProgress">
+  <button class="btn btn-success" (click)="startExtract()">Go</button>
+</div>
+
+<!-- In Progress -->
+<div class="row justify-content-center" *ngIf="inProgress">
+  <h4>Loading: {{ extractService.loadingMessage }}</h4>
+</div>
+
+
+<!-- Results -->
+<div *ngIf="extractComplete">
+	<br/>
+	<h3>Results</h3>
+
+	<!-- Identified File Type -->
+	<div class="bubble" *ngIf="fileTypes.length > 0 && extractComplete">
+		<h5>Identified Filetypes</h5>
+		<p *ngFor="let fileType of fileTypes">
+			{{ fileType[0] + ": " + fileType[1] }}
+		</p>
+	</div>
+	<div *ngIf="fileTypes.length == 0 && extractComplete">
+		<p><i>No file types identified.</i></p>
+	</div>
+
+	<p><b>The results below only show the first 2500 bytes. Select "Download" to obtain the full data.</b></p>
+
+  <div class="md-form">
+    <label for="asciioutput">Ascii (readable only):</label>
+    <textarea [value]="trimmedAsciiResult" cols="3" rows="3" class="md-textarea form-control" id="asciioutput" readonly></textarea>
+  </div>
+  <div class="md-form">
+    <label for="hexoutput">Hex (Accurate):</label>
+    <textarea [value]="trimmedHexResult" cols="3" rows="3" class="md-textarea form-control" id="hexoutput" readonly></textarea>
+  </div>
+</div>
+
+<br/>
+
+<!-- Download Extracted Data -->
+<div *ngIf="extractComplete" class="row justify-content-center">
+  <button class="btn btn-info" (click)="downloadData()">Download Extracted Data</button>
+</div>

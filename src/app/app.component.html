@@ -1,0 +1,26 @@
+<div class="container">
+
+   <!-- Header -->
+   <div class="header clearfix">
+     <nav>
+       <ul class="nav nav-pills float-right">
+         <li class="row-item">
+           <a [class.active]="router.url == '/upload'" class="nav-link navbtn" href="/upload">Upload</a>
+         </li>
+         <li class="row-item" [hidden]="!imageService.rgba">
+           <a [class.active]="router.url == '/image'" class="nav-link navbtn" href="javascript:void(0)" (click)="router.navigate(['/image'])">Image Home</a>
+         </li>
+         <li class="row-item">
+           <a class="nav-link" href="https://github.com/Ge0rg3/StegOnline/blob/master/README.md">About</a>
+         </li>
+         <li class="row-item">
+           <a class="nav-link" href="https://github.com/Ge0rg3/StegOnline#how-can-i-contribute">Contribute</a>
+         </li>
+       </ul>
+     </nav>
+     <h3 class="text-muted" (click)="router.navigate(['/image'])">StegOnline</h3>
+   </div>
+
+   <router-outlet></router-outlet>
+
+</div>

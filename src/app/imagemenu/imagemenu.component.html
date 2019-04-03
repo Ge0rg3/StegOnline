@@ -1,0 +1,60 @@
+<h2>Image Options</h2><br/>
+
+<!-- Basic Image Manipulation -->
+<div class="bubble">
+	<div class="row justify-content-center">
+		<button type="button" (click)="reset()" class="btn btn-primary col-md-12 col-sm-12 col-lg-12">Reset</button>
+	</div>
+	<div class="row justify-content-center">
+		<button type="button" (click)="fullPlane(0)" class="btn btn-outline-danger col-md-2 col-sm-11">Full Red</button>
+		<button type="button" (click)="fullPlane(1)" class="btn btn-outline-success col-md-2 col-sm-11">Full Green</button>
+		<button type="button" (click)="fullPlane(2)" class="btn btn-outline-primary col-md-2 col-sm-11">Full Blue</button>
+		<button type="button" (click)="fullPlane(3)" class="btn btn-outline-dark col-md-2 col-sm-11" *ngIf="imageService.isTransparent">Full Alpha</button>
+
+		<button type="button" (click)="inverse(false)" class="btn btn-outline-secondary col-md-3 col-sm-11">Inverse (RGB)</button>
+		<button type="button" (click)="inverse(true)" class="btn btn-outline-dark col-md-3 col-sm-11" *ngIf="imageService.isTransparent">Inverse (RGBA)</button>
+
+		<button type="button" (click)="lsbHalf()" class="btn btn-outline-dark col-md-2 col-sm-11">LSB Half</button>
+
+		<button type="button" (click)="removeTransparency()" class="btn btn-outline-info col-md-4 col-sm-11" *ngIf="imageService.isTransparent">Remove Transparency</button>
+	</div>
+</div>
+
+<!-- Data Embedding/Extraction -->
+<div class="bubble row justify-content-center">
+	<button type="button" class="btn btn-info" (click)="router.navigate(['/extract'])">Extract Files/Data</button>
+	<button type="button" class="btn btn-info" (click)="router.navigate(['/embed'])">Embed Files/Data</button>
+	<button type="button" class="btn btn-info" (click)="router.navigate(['/embedimage'])">Embed B/W Image in Bit Plane</button>
+</div>
+
+<!-- PNG Palette (if exists) -->
+<pngpalette-details (pngPaletteDataEmitter)="updateCanvas($event)" *ngIf="imageService.pngType == 3"></pngpalette-details>
+
+<!-- File Info -->
+<div class="bubble row justify-content-center">
+	<button type="button" class="btn btn-secondary" (click)="toggleStringsPanel()" *ngIf="!panelSettings.showStrings">Show Strings</button>
+	<button type="button" class="btn btn-danger" (click)="toggleStringsPanel()" *ngIf="panelSettings.showStrings">Hide Strings</button>
+	<button type="button" class="btn btn-secondary" (click)="toggleRgbaPanel()" *ngIf="!panelSettings.showRgba">Show RGBA Values</button>
+	<button type="button" class="btn btn-danger" (click)="toggleRgbaPanel()" *ngIf="panelSettings.showRgba">Hide RGBA Values</button>
+	<button type="button" class="btn btn-secondary" (click)="togglePngInfoPanel()" *ngIf="!panelSettings.showPngInfo && imageService.isPng">Show PNG Info</button>
+	<button type="button" class="btn btn-danger" (click)="togglePngInfoPanel()" *ngIf="panelSettings.showPngInfo && imageService.isPng">Hide PNG Info</button>
+</div>
+
+<!-- File Info Panels -->
+<strings-panel *ngIf="panelSettings.showStrings"></strings-panel>
+<rgba-panel *ngIf="panelSettings.showRgba"></rgba-panel>
+<pngchunks-panel *ngIf="panelSettings.showPngInfo"></pngchunks-panel>
+
+<!-- Bit Plane Browser -->
+<div class="bubble">
+	<bitplane-browser (bitPlaneDataEmitter)="updateCanvas($event)"></bitplane-browser>
+</div>
+
+<br/>
+
+<div class="row justify-content-center">
+	<image-canvas [inputImageData]="drawImageData"></image-canvas>
+</div>
+<div class="row justify-content-center">
+	<save-image></save-image>
+</div>

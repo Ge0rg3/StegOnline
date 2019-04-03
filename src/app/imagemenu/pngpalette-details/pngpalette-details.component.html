@@ -1,0 +1,22 @@
+<!-- Switches -->
+<div class="bubble row justify-content-center text-center">
+  <p class="error col-md-12 col-sm-12">This image contains a custom colour palette (bitmap)!</p>
+  <button type="button" class="btn btn-outline-dark" (click)="randomizePalette()">Randomize Palette</button>
+  <button type="button" class="btn btn-outline-dark" (click)="togglePaletteBrowser()" *ngIf="!panelSettings.showPaletteBrowser">Browse Colour Palette</button>
+  <button type="button" class="btn btn-danger" (click)="togglePaletteBrowser()" *ngIf="panelSettings.showPaletteBrowser">Hide Colour Palette Browser</button>
+</div>
+
+<!-- Browser Panel -->
+<div class="bubble text-center" *ngIf="panelSettings.showPaletteBrowser">
+  <h5>Colour Palette (Bitmap) Browser</h5>
+  <div class="row justify-content-center margin-bottom-5">
+    <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="back(10)">&lt;&lt;</button>
+    <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="back(1)">&lt;</button>
+      <div class="col-md-3 text-center margin-top-5"><h5>{{ currentPaletteNo }} / {{ maxPaletteNo }}</h5></div>
+    <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="forward(1)">&gt;</button>
+    <button type="button" class="btn btn-primary col-md-1 col-sm-5" (click)="forward(10)">&gt;&gt;</button>
+  </div>
+	<div class="row justify-content-center">
+			<i>Current Colour: {{ currentColours }}</i>
+	</div>
+</div>

@@ -1,0 +1,22 @@
+table th {
+  text-align: center;
+  color: white;
+  border-color: #454d55;
+  background-color: #343a40;
+  cursor: copy;
+}
+table td {
+  padding: 0;
+}
+td label {
+  padding: 5px 0 5px;
+  display: block;
+  margin: 0;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+td input {
+  cursor: pointer;
+}

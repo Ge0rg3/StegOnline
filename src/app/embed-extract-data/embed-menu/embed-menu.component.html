@@ -1,0 +1,69 @@
+<back></back>
+<h2>Embed Data</h2>
+<p>
+	Here you can embed files/text inside of your image.
+	Select some bits and adjust the settings appropriately.
+	Please be aware that any opacity will be lost.
+</p>
+
+
+<!-- Bit Selection Table -->
+<lsb-table></lsb-table>
+
+<!-- Options -->
+<lsb-settings></lsb-settings>
+
+<br/>
+
+<!-- Data input -->
+<div>
+	<back></back>
+	<h4>Input Data:</h4>
+	Type:&nbsp;
+	<select [(ngModel)]="inputType" class="input-small">
+		<option>Text</option>
+		<option>File</option>
+	</select>
+</div>
+<div [hidden]="inputType != 'Text'">
+	<br/>
+	<div class="md-form">
+		<textarea [(ngModel)]="textInput" class="md-textarea form-control"></textarea>
+	</div>
+</div>
+<div [hidden]="inputType != 'File'">
+	<br/>
+	<input type="file" (change)="uploadFile($event)">
+</div>
+
+<!-- Start -->
+<div class="row justify-content-center">
+  <button class="btn btn-success" (click)="startEmbed()">Go</button>
+</div>
+
+<!-- Errors -->
+<div class="bubble" *ngIf="error">
+	<h5>Error:</h5>
+	<p class="error">{{ error }}</p>
+</div>
+
+<!-- In Progress -->
+<div class="row justify-content-center" *ngIf="inProgress">
+  <h4>Loading: {{ embedService.loadingMessage }}</h4>
+</div>
+
+
+<!-- Results -->
+<br/>
+<div [hidden]="!embedComplete">
+	<h3>Output</h3>
+	<p><b>Use the "Save Image" Button to download the image, as saving through your browser's right-click menu may result in inconsistent data.</b></p>
+</div>
+
+<div [hidden]="!embedComplete" class="row justify-content-center">
+	<canvas #canvasElement></canvas>
+</div>
+
+<div class="text-center">
+	<download-embedded [hidden]="!embedComplete"></download-embedded>
+</div>
