@@ -5,7 +5,7 @@
      <nav>
        <ul class="nav nav-pills float-right">
          <li class="row-item">
-           <a [class.active]="router.url == '/upload'" class="nav-link navbtn" href="/upload">Upload</a>
+           <a [class.active]="router.url == '/upload'" class="nav-link navbtn" href="upload">Upload</a>
          </li>
          <li class="row-item" [hidden]="!imageService.rgba">
            <a [class.active]="router.url == '/image'" class="nav-link navbtn" href="javascript:void(0)" (click)="router.navigate(['/image'])">Image Home</a>
