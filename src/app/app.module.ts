@@ -47,7 +47,7 @@ import { RgbaPanelComponent } from './imagemenu/rgba-panel/rgba-panel.component'
 import { PngChunksPanelComponent } from './imagemenu/pngchunks-panel/pngchunks-panel.component';
 
 /* Png Palette Browser inside of imagemenu */
-import { PngPaletteBrowserComponent } from './imagemenu/pngpalette-browser/pngpalette-browser.component';
+import { PngPaletteDetailsComponent } from './imagemenu/pngpalette-details/pngpalette-details.component';
 
 
 @NgModule({
@@ -67,7 +67,7 @@ import { PngPaletteBrowserComponent } from './imagemenu/pngpalette-browser/pngpa
     StringsPanelComponent,
     RgbaPanelComponent,
     PngChunksPanelComponent,
-    PngPaletteBrowserComponent
+    PngPaletteDetailsComponent
   ],
   imports: [
     BrowserModule,

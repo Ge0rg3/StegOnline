@@ -28,9 +28,7 @@
 </div>
 
 <!-- PNG Palette (if exists) -->
-<div class="bubble" *ngIf="imageService.pngType == 3">
-	<pngpalette-browser (pngPaletteDataEmitter)="updateCanvas($event)"></pngpalette-browser>
-</div>
+<pngpalette-details (pngPaletteDataEmitter)="updateCanvas($event)" *ngIf="imageService.pngType == 3"></pngpalette-details>
 
 <!-- File Info -->
 <div class="bubble row justify-content-center">

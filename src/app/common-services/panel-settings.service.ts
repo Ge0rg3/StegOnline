@@ -11,6 +11,7 @@ export class PanelSettingsService {
   showStrings: boolean = false;
   showRgba: boolean = false;
   showPngInfo: boolean = false;
+  showPaletteBrowser: boolean = false;
 
 	closePanels(): void {
 		/*
@@ -20,6 +21,7 @@ export class PanelSettingsService {
     this.showStrings = false;
 		this.showRgba = false;
 		this.showPngInfo = false;
+    this.showPaletteBrowser= false;
 	}
 
 }

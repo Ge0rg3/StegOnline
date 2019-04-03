@@ -33,9 +33,10 @@ export class BitPlaneBrowserComponent implements OnInit {
 		*/
 		if (this.panelSettings.showBitPlaneBrowser) {
 			this.bitPlaneDataEmitter.emit(this.imageService.defaultImageData);
-			this.panelSettings.showBitPlaneBrowser = false;
+			this.panelSettings.closePanels();
 		}
 		else {
+      this.panelSettings.closePanels();
 			this.viewBitPlane(this.currentColour, this.currentPlane);
 			this.panelSettings.showBitPlaneBrowser = true;
 		}
