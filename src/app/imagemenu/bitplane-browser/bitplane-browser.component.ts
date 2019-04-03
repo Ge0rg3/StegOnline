@@ -5,8 +5,7 @@ import { PanelSettingsService } from '../../common-services/panel-settings.servi
 
 @Component({
   selector: 'bitplane-browser',
-  templateUrl: './bitplane-browser.component.html',
-  styleUrls: ['./bitplane-browser.component.scss']
+  templateUrl: './bitplane-browser.component.html'
 })
 export class BitPlaneBrowserComponent implements OnInit {
 

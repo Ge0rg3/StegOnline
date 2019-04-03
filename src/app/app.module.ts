@@ -6,8 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 
-/* Homepage with Upload option */
-import { HomeComponent } from './home/home.component';
+/* Original Upload Page */
+import { UploadComponent } from './upload/upload.component';
 
 /* Image option menu */
 import { ImageMenuComponent } from './imagemenu/imagemenu.component';
@@ -48,12 +48,13 @@ import { PngChunksPanelComponent } from './imagemenu/pngchunks-panel/pngchunks-p
 
 /* Png Palette Browser inside of imagemenu */
 import { PngPaletteDetailsComponent } from './imagemenu/pngpalette-details/pngpalette-details.component';
+import { BackComponent } from './back/back.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    UploadComponent,
     ImageMenuComponent,
     ImageCanvasComponent,
     SaveimageComponent,
@@ -67,7 +68,8 @@ import { PngPaletteDetailsComponent } from './imagemenu/pngpalette-details/pngpa
     StringsPanelComponent,
     RgbaPanelComponent,
     PngChunksPanelComponent,
-    PngPaletteDetailsComponent
+    PngPaletteDetailsComponent,
+    BackComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+<back></back>
 <h2>Extract Data</h2>
 <p>
 	Here you can extract data hidden inside of the image.
@@ -31,7 +32,6 @@
 <div *ngIf="extractComplete">
 	<br/>
 	<h3>Results</h3>
-	<p><b>The results below only show the first 2500 bytes. Select "Download" to obtain the full data.</b></p>
 
 	<!-- Identified File Type -->
 	<div class="bubble" *ngIf="fileTypes.length > 0 && extractComplete">
@@ -43,6 +43,8 @@
 	<div *ngIf="fileTypes.length == 0 && extractComplete">
 		<p><i>No file types identified.</i></p>
 	</div>
+
+	<p><b>The results below only show the first 2500 bytes. Select "Download" to obtain the full data.</b></p>
 
   <div class="md-form">
     <label for="asciioutput">Ascii (readable only):</label>

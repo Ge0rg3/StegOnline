@@ -15,7 +15,11 @@ export class ImageMenuComponent implements OnInit {
 
 	drawImageData: ImageData;
 
-  ngOnInit() { }
+  ngOnInit() {
+		if (!this.imageService.defaultImageData) {
+			this.router.navigate(['/upload']);
+		}
+	}
 
 
 	reset() {

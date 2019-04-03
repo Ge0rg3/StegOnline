@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ImageService } from './common-services/image.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,6 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'stegonline';
 
-	constructor(private router: Router) {};
+	constructor(private router: Router, private imageService: ImageService) {};
 
 }

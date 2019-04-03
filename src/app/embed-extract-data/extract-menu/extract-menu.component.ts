@@ -29,7 +29,7 @@ export class ExtractMenuComponent implements OnInit {
     this.lsbOptions.currentTable = 'extract';
     //If no image loaded, redirect back.
     if (!this.imageService.defaultImageData) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/upload']);
     }
   }
 

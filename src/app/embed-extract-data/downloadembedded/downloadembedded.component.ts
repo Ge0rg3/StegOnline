@@ -15,7 +15,7 @@ export class DownloadEmbeddedComponent implements OnInit {
   ngOnInit() {
 		// //If no image loaded, redirect back.
 		if (!this.imageService.defaultImageData) {
-			this.router.navigate(['/home']);
+			this.router.navigate(['/upload']);
 		}
   }
 

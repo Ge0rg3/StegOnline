@@ -33,7 +33,7 @@ export class ImageCanvasComponent implements OnInit {
 	customInit() {
 		//If no image, redirect back to home
     if (!this.imageService.defaultImageData) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/upload']);
       return;
     }
     this.canvas = this.canvasElement.nativeElement;

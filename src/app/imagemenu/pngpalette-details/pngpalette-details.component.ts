@@ -13,12 +13,13 @@ export class PngPaletteDetailsComponent implements OnInit {
 
   maxPaletteNo: number
   currentPaletteNo: number;
+	currentColours: string;
 
   constructor(private imageService: ImageService, private helpers: HelpersService, private panelSettings: PanelSettingsService) { }
 
   ngOnInit() {
     this.currentPaletteNo = 1;
-    this.maxPaletteNo = this.imageService.pngPaletteColourIndexes.length;
+    this.maxPaletteNo = this.imageService.pngPaletteColourArrayGroups.length;
   }
 
   togglePaletteBrowser() {
@@ -27,7 +28,10 @@ export class PngPaletteDetailsComponent implements OnInit {
     */
     var flag = this.panelSettings.showPaletteBrowser;
     this.panelSettings.closePanels();
-    if (!flag) this.panelSettings.showPaletteBrowser = true;
+    if (!flag) {
+			this.panelSettings.showPaletteBrowser = true;
+			this.pngPaletteDataEmitter.emit(this.viewColour(this.currentPaletteNo));
+		}
   }
 
 	randomizePalette() {
@@ -39,13 +43,13 @@ export class PngPaletteDetailsComponent implements OnInit {
 		//Either red or completely random
 		var randPngPaletteColours: number[][];
 		if (this.helpers.ranbetween(0, 1) == 0) {
-			randPngPaletteColours = this.imageService.pngPaletteColourIndexes.map(trio => [this.helpers.ranbetween(0, 255),50,50]);
+			randPngPaletteColours = this.imageService.pngPaletteColourArrayGroups.map(trio => [this.helpers.ranbetween(0, 255),50,50]);
 		} else {
-			randPngPaletteColours = this.imageService.pngPaletteColourIndexes.map(trio => [this.helpers.ranbetween(0, 255),this.helpers.ranbetween(0, 255),this.helpers.ranbetween(0, 255)]);
+			randPngPaletteColours = this.imageService.pngPaletteColourArrayGroups.map(trio => [this.helpers.ranbetween(0, 255),this.helpers.ranbetween(0, 255),this.helpers.ranbetween(0, 255)]);
 		}
-		var randR: Uint8ClampedArray = this.imageService.pngPaletteColourArray.map(index => randPngPaletteColours[index][0]);
-		var randB: Uint8ClampedArray = this.imageService.pngPaletteColourArray.map(index => randPngPaletteColours[index][1]);
-		var randG: Uint8ClampedArray = this.imageService.pngPaletteColourArray.map(index => randPngPaletteColours[index][2]);
+		var randR: Uint8ClampedArray = this.imageService.pngPaletteIndexes.map(index => randPngPaletteColours[index][0]);
+		var randB: Uint8ClampedArray = this.imageService.pngPaletteIndexes.map(index => randPngPaletteColours[index][1]);
+		var randG: Uint8ClampedArray = this.imageService.pngPaletteIndexes.map(index => randPngPaletteColours[index][2]);
 		var drawImageData: ImageData = this.imageService.createImage(randR, randG, randB, this.imageService.opaque);
 
 		this.pngPaletteDataEmitter.emit(drawImageData);
@@ -57,10 +61,12 @@ export class PngPaletteDetailsComponent implements OnInit {
       Input:
         -The index of the colour in the pngPaletteColourIndexes array
     */
-    var newPngPaletteColours: number[][] = Array.from(this.imageService.pngPaletteColourArray).map(index => index == n ? [0, 0, 0] : [255, 255, 255]);
-    var newR = new Uint8ClampedArray(newPngPaletteColours.map(val => val[0]));
-    var newG = new Uint8ClampedArray(newPngPaletteColours.map(val => val[1]));
-    var newB = new Uint8ClampedArray(newPngPaletteColours.map(val => val[2]));
+    var newPngPaletteColours: number[][] = Array.from(this.imageService.pngPaletteColourArray).map((val, index) => index == n ? [255, 255, 255] : [0, 0, 0]);
+    var newR = new Uint8ClampedArray(this.imageService.pngPaletteIndexes.map(val => newPngPaletteColours[val][0]));
+    var newG = new Uint8ClampedArray(this.imageService.pngPaletteIndexes.map(val => newPngPaletteColours[val][1]));
+    var newB = new Uint8ClampedArray(this.imageService.pngPaletteIndexes.map(val => newPngPaletteColours[val][2]));
+
+		this.currentColours = this.imageService.pngPaletteColourArrayGroups[n].join(', ');
 
     return this.imageService.createImage(newR, newG, newB, this.imageService.opaque);
   }

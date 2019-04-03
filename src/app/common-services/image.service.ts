@@ -24,9 +24,9 @@ export class ImageService {
 	public pngToyObj: any;
 	public chunks: any;
 	//Palette if PNG is parsed via palette
-	public pngPaletteColourArray: Uint8ClampedArray; //One array with all actual RGB values in the palette
-  public pngPaletteIndexes: Uint8Array; //One connected array of palette indexes
-	public pngPaletteColourIndexes: number[][]; //Three arrays, for R, G & B indexes
+	public pngPaletteIndexes: Uint8ClampedArray; //One connected array containing the palette index for each pixel
+  public pngPaletteColourArray: Uint8Array; //One connected array containing the palette RGB values
+	public pngPaletteColourArrayGroups: number[][]; //Lists of RGB colours (pngPalleteColourArray split into its RGB groups)
 	//Default image RGB values
   public defaultImageData: ImageData;
 	//Pure 0/255 filled Uint8ClampedArrays:
@@ -110,15 +110,15 @@ export class ImageService {
         //Work out rgba data format -- see https://www.w3.org/TR/PNG-Chunks.html for type specs
         self.pngType = pngObj.get_IHDR().type; //0: Grayscale, 2: RGB triple, 3: Palette index, 4: Grayscale + alpha, 6: RGBA
         if (self.pngType == 3) { // Palette
-					self.pngPaletteColourArray = pngData.bitmap;
-          self.pngPaletteIndexes = pngObj.get_PLTE().palette;
-          self.pngPaletteColourIndexes = [];
-          for (let i=0; i < self.pngPaletteIndexes.length; i += 3) {
-            self.pngPaletteColourIndexes.push([self.pngPaletteIndexes[i], self.pngPaletteIndexes[i+1], self.pngPaletteIndexes[i+2]]);
+					self.pngPaletteIndexes = pngData.bitmap;
+          self.pngPaletteColourArray = pngObj.get_PLTE().palette;
+          self.pngPaletteColourArrayGroups = [];
+          for (let i=0; i < self.pngPaletteColourArray.length; i += 3) {
+            self.pngPaletteColourArrayGroups.push([self.pngPaletteColourArray[i], self.pngPaletteColourArray[i+1], self.pngPaletteColourArray[i+2]]);
           }
-          self.r = self.pngPaletteColourArray.map(index => self.pngPaletteColourIndexes[index][0]);
-          self.g = self.pngPaletteColourArray.map(index => self.pngPaletteColourIndexes[index][1]);
-          self.b = self.pngPaletteColourArray.map(index => self.pngPaletteColourIndexes[index][2]);
+          self.r = self.pngPaletteIndexes.map(index => self.pngPaletteColourArrayGroups[index][0]);
+          self.g = self.pngPaletteIndexes.map(index => self.pngPaletteColourArrayGroups[index][1]);
+          self.b = self.pngPaletteIndexes.map(index => self.pngPaletteColourArrayGroups[index][2]);
           self.a = new Uint8ClampedArray(self.r.length).fill(255);
           //Generate full RGBA array
           var tempRgba = [];

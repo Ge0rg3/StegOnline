@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ImageService } from '../common-services/image.service';
 import { HelpersService } from '../common-services/helpers.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'embed-image',
@@ -21,9 +22,12 @@ export class EmbedImageComponent implements OnInit {
   //Array containing r[], g[], b[] & a[]
   rgb: Uint8ClampedArray[];
 
-  constructor(private imageService: ImageService, private helpers: HelpersService) { }
+  constructor(private imageService: ImageService, private helpers: HelpersService, private router: Router) { }
 
   ngOnInit() {
+		if (!this.imageService.defaultImageData) {
+			this.router.navigate(['/upload']);
+		}
   }
 
   async startEmbedImage() {
