@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ChecklistComponent implements OnInit {
 
 	images: {};
-	contributeSteps: string = "";
+	contributeSteps: string = "https://github.com/Ge0rg3/StegOnline/blob/master/src/app/checklist/checklist.component.html";
 
   constructor() { }
 
