@@ -16,6 +16,7 @@ A web-based, enhanced and open-source port of StegSolve. Upload any image file, 
 * An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver (see [here](https://www.cs.bgu.ac.il/~ben-shahar/Teaching/Computational-Vision/StudentProjects/ICBV131/ICBV-2013-1-KatyaGroisman/FinalProjectReport.pdf))
 * Stego Checklist page
 * Add support for other [PNG types](http://www.libpng.org/pub/png/book/chapter08.html#png.ch08.div.5) (at the moment we only support RGB, RGBA and bitmap) 
+* Better automated filetype regex / More filetypes recognized in the [IdentifyFileTypeService](https://github.com/Ge0rg3/StegOnline/blob/master/src/app/common-services/identify-file-type.service.ts). 
 
 ## Installation
 #### Dev Environment
@@ -42,6 +43,10 @@ Options +FollowSymLinks
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.html [L,QSA]
 ```
+
+## Contribution
+Contributions would be highly appreciated, as maintaining a large program takes a lot of effort.  
+See the "Future Plans" section for feature ideas <3
 
 ## Working with transparency in JavaScript
 Since the Canvas API doesn't properly parse the Alpha channel ([ref](https://stackoverflow.com/questions/39744072/how-to-get-rgb-from-transparent-pixel-in-js), [ref](https://stackoverflow.com/questions/28917518/reading-pixeldata-from-images-in-javascript-returns-unexpected-results-for-semi)), we use PngToy for all PNGs. This also allows us to view other relevant information, such as chunk info and bitmap data. Unfortunately, the original PngToy library was deleted by the owner, so I'm using a copy hosted [here](https://github.com/neshume/pngtoy).
