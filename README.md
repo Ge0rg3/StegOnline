@@ -16,7 +16,9 @@ A web-based, enhanced and open-source port of StegSolve. Upload any image file, 
 * An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver (see [here](https://www.cs.bgu.ac.il/~ben-shahar/Teaching/Computational-Vision/StudentProjects/ICBV131/ICBV-2013-1-KatyaGroisman/FinalProjectReport.pdf))
 * Stego Checklist page
 * Add support for other [PNG types](http://www.libpng.org/pub/png/book/chapter08.html#png.ch08.div.5) (at the moment we only support RGB, RGBA and bitmap) 
-* Better automated filetype regex / More filetypes recognized in the [IdentifyFileTypeService](https://github.com/Ge0rg3/StegOnline/blob/master/src/app/common-services/identify-file-type.service.ts). 
+* Better automated filetype regex / More filetypes recognized in the [IdentifyFileTypeService](https://github.com/Ge0rg3/StegOnline/blob/master/src/app/common-services/identify-file-type.service.ts) service
+* Better strings regex (see [current](https://github.com/Ge0rg3/StegOnline/blob/master/src/app/imagemenu/strings-panel/strings-panel.component.ts#L19) code)
+* More steps inside the CTF Checklist page
 
 ## Installation
 #### Dev Environment

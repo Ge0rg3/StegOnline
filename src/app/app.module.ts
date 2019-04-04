@@ -49,6 +49,7 @@ import { PngChunksPanelComponent } from './imagemenu/pngchunks-panel/pngchunks-p
 /* Png Palette Browser inside of imagemenu */
 import { PngPaletteDetailsComponent } from './imagemenu/pngpalette-details/pngpalette-details.component';
 import { BackComponent } from './back/back.component';
+import { ChecklistComponent } from './checklist/checklist.component';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import { BackComponent } from './back/back.component';
     RgbaPanelComponent,
     PngChunksPanelComponent,
     PngPaletteDetailsComponent,
-    BackComponent
+    BackComponent,
+    ChecklistComponent
   ],
   imports: [
     BrowserModule,

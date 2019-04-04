@@ -1,0 +1,157 @@
+<h2>CTF Image Steganography Checklist</h2>
+<p>
+	Each example image contains a flag.
+</p>
+<p class="margin-top-minus10">
+	<i>This checklist needs more work! Please contribute <a href="{{ contributeSteps }}">here</a>.</i>
+	<!-- Contribution note: View Bootstrap code classes here: https://getbootstrap.com/docs/4.0/content/code/ -->
+</p>
+
+<hr /><br />
+
+<div>
+
+	<h4>1. Strings</h4>
+	<p>
+		View all strings in the file with <kbd>strings -n 7 -t x filename.png</kbd>.
+	</p>
+	<p>
+		We use <kbd>-n 7</kbd> for strings of length 7+, and <kbd>-t x</kbd> to view- their position in the file.
+	</p>
+	<p>
+		Alternatively, you can view strings on this site once an image has been uploaded.
+	</p>
+	<p><a href="{{ images.strings }}" download>Custom Example</a></p>
+	<br /><br />
+
+
+	<h4>2. Exif</h4>
+	<p>
+			Check all image metadata. I would recommend <a href="http://exif.regex.info/exif.cgi">Jeffrey's Image Metadata Viewer</a> for in-depth analysis.
+	</p>
+	<p><a href="{{ images.exif }}" download>Custom Example</a></p>
+	<br /><br />
+
+
+	<h4>3. Binwalk</h4>
+	<p>
+		We use binwalk to check image's for hidden embedded files.
+	</p>
+	<p>
+		My preferred syntax is <kbd>binwalk -Me filename.png</kbd>.
+		<kbd>-Me</kbd> is used to recursively extract any files.
+	</p>
+	<p><a href="{{ images.binwalk }}" download>Custom Example</a></p>
+	<br /><br />
+
+
+	<h4>4. pngcheck</h4>
+	<p>
+		We can use pngcheck to look for optional/correct broken chunks. This is vital if the image appears corrupt.
+	</p>
+	<p>
+		Run <kbd>pngcheck -vtp7f filename.png</kbd> to view all info.
+	</p>
+	<p>
+		<kbd>v</kbd> is for verbose, <kbd>t</kbd> and <kbd>7</kbd> display tEXt chunks, <kbd>p</kbd> displays contents of some other optional chunks and <kbd>f</kbd> forces continuation after major errors are encountered.
+	</p>
+	Related write-ups:
+	<ul>
+		<li><a href="https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/forensics/png-uncorrupt">PlaidCTF 2015</a></li>
+		<li><a href="https://github.com/ctfs/write-ups-2015/tree/master/seccon-quals-ctf-2015/stegano/steganography-2">SECCON Quals 2015</a></li>
+	</ul>
+	<br /><br />
+
+
+	<h4>5. Explore Colour & Bit Planes</h4>
+	<p>
+		Images can be hidden inside of the colour/bit planes.
+		Upload your image to this site <a href="upload">here</a>. On the image menu page, explore all options in the top panel (i.e. Full Red, Inverse, LSB etc).
+	</p>
+	<p>
+		Go to "Browse Bit Planes", and browse through all available planes.
+	</p>
+	<p>
+		If there appears to be some static at the top of any planes, try extracting the data from them in the "Extract Files/Data" menu.
+	</p>
+	Related write-ups:
+	<ul>
+		<li><a href="https://www.doyler.net/security-not-included/image-steganography-microctf-2017">MicroCTF 2017</a></li>
+		<li><a href="https://github.com/krx/CTF-Writeups/blob/master/CSAW%2016%20Quals/for250%20-%20Watchword/jk_actual_writeup.md">CSAW Quals 2016</a></li>
+		<li><a href="https://github.com/ctfs/write-ups-2014/tree/master/asis-ctf-quals-2014/blocks">ASIS Cyber Security Contest Quals 2014</a></li>
+		<li><a href="https://mokhdzanifaeq.github.io/2016/12/14/cybersocks-regional-2016-color-writeup/">Cybersocks Regional 2016</a></li>
+	</ul>
+	<br /><br />
+
+
+	<h4>6. Extract LSB Data</h4>
+	<p>
+		As mentioned in step 5, there could be some static in bit planes. If so, navigate to the "Extract Files/Data" page, and select the relevant bits.
+	</p>
+	<p><a href="{{ images.lsb }}" download>Custom Example</a></p>
+	<br /><br />
+
+
+	<h4>7. Check RGB Values</h4>
+	<p>
+		ASCII Characters/other data can be hidden in the RGB(A) values of an image.
+	</p>
+	<p>
+		Upload your image <a href="upload">here</a>, and preview the RGBA values. Try converting them to text, and see if any flag is found. It might be worth looking at just the R/G/B/A values on their own.
+	</p>
+	Related write-ups:
+	<ul>
+		<li><a href="https://github.com/ctfs/write-ups-2015/tree/master/mma-ctf-2015/stego/miyako-350">MMA-CTF-2015</a></li>
+	</ul>
+	<br /><br />
+
+
+	<h4>8. Found a password? (Or not)</h4>
+	<p>
+		If you've found a password, the goto application to check should be <a href="http://steghide.sourceforge.net/">steghide</a>. Bear in mind that steghide can be used without a password, too.
+	</p>
+	<p>
+		You can extract data by running <kbd>steghide extract -sf filename.png</kbd>.
+	</p>
+	<p>
+		It might also be worth checking some other tools:
+	</p>
+	<ul>
+			<li><a href="https://www.openstego.com/">OpenStego</a></li>
+			<li><a href="https://github.com/Baldanos/Stegpy">Stegpy</a></li>
+			<li><a href="https://outguess.rbcafe.com/">Outguess</a></li>
+			<li><a href="http://linux01.gwdg.de/~alatham/stego.html">jphide</a></li>
+	</ul>
+	Related write-ups:
+	<ul>
+		<li><a href="http://blog.teambroast.com/2017/03/pragyan-star-wars-steganography-100.html">Pragyan CTF 2017</a></li>
+		<li><a href="https://github.com/mzfr/ctf-writeups/tree/master/xiomara-2019/Forensics/Steghide">Xiomara 2019</a></li>
+		<li><a href="https://github.com/ctfs/write-ups-2015/tree/master/csaw-ctf-2015/forensics/airport-200">CSAW Quals 2015</a></li>
+		<li><a href="https://blog.compass-security.com/2017/11/write-up-blackalps-y-not-ctf/">BlackAlps Y-NOT-CTF (JFK Challenge)</a></li>
+
+	</ul>
+	<br /><br />
+
+
+	<h4>9. Browse Colour Palette</h4>
+	<p>
+		If the PNG is in <a href="https://www.w3.org/TR/PNG-Chunks.html for type specs">type 3</a>, you should look through the colour palette.
+	</p>
+	<p>
+		This site has a feature for randomizing the colour palette, which may reveal the flag. You can also browse through each colour in the palette, if the flag is the same colour.
+	</p>
+	<p>
+		It may also be worth looking at the palette indexes themselves, as a string may be visible from there.
+	</p>
+	Related write-ups:
+	<ul>
+		<li><a href="https://github.com/ctfs/write-ups-2014/tree/master/plaid-ctf-2014/doge-stege">Plain CTF 2014</a></li>
+	</ul>
+	<br /><br />
+
+	<hr />
+	<p><i>Please contribute more steps <a href="{{ contributeSteps }}">here</a>.</i></p>
+	<br />
+
+
+</div>
