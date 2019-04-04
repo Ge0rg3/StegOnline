@@ -12,7 +12,8 @@ const routes: Routes = [
   { path: 'image', component: ImageMenuComponent },
   { path: 'extract', component: ExtractMenuComponent },
   { path: 'embed', component: EmbedMenuComponent },
-  { path: 'embedimage', component: EmbedImageComponent }
+  { path: 'embedimage', component: EmbedImageComponent },
+	{ path: '**', redirectTo: '/upload' } // If 404, redirect back to upload screen
 ];
 
 @NgModule({
