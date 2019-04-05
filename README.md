@@ -12,6 +12,7 @@ A web-based, enhanced and open-source port of StegSolve. Upload any image file, 
 * Built as an Angular7 SPA, and no data is stored/transferred.
 
 ## Future Plans
+* Max filesize warning to stop tab crashes on massive files
 * Gray Bits feature
 * An [Autostereogram](https://en.wikipedia.org/wiki/Autostereogram) solver (see [here](https://www.cs.bgu.ac.il/~ben-shahar/Teaching/Computational-Vision/StudentProjects/ICBV131/ICBV-2013-1-KatyaGroisman/FinalProjectReport.pdf))
 * Automated LSB Detection (via entropy and filetype detection, on common LSB paths)
