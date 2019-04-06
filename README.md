@@ -1,6 +1,7 @@
 # StegOnline
 
 A web-based, enhanced and open-source port of StegSolve. Upload any image file, and the relevant options will be displayed.
+View a live demo at [https://georgeom.net/StegOnline](https://georgeom.net/StegOnline).
 
 ## Features:
 * Browse through the 32 bit planes of the image
