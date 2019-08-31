@@ -11,7 +11,14 @@
 
 <div>
 
-	<h4>1. Strings</h4>
+	<h4>1. File</h4>
+	<p>
+		Just to be sure what file you are facing with, check his type with <kbd>type filename.png</kbd>.
+	</p>
+	<br /><br />
+
+
+	<h4>2. Strings</h4>
 	<p>
 		View all strings in the file with <kbd>strings -n 7 -t x filename.png</kbd>.
 	</p>
@@ -25,7 +32,7 @@
 	<br /><br />
 
 
-	<h4>2. Exif</h4>
+	<h4>3. Exif</h4>
 	<p>
 			Check all image metadata. I would recommend <a href="http://exif.regex.info/exif.cgi">Jeffrey's Image Metadata Viewer</a> for in-depth analysis.
 	</p>
@@ -33,7 +40,7 @@
 	<br /><br />
 
 
-	<h4>3. Binwalk</h4>
+	<h4>4. Binwalk</h4>
 	<p>
 		We use binwalk to check image's for hidden embedded files.
 	</p>
@@ -45,7 +52,7 @@
 	<br /><br />
 
 
-	<h4>4. pngcheck</h4>
+	<h4>5. pngcheck</h4>
 	<p>
 		We can use pngcheck to look for optional/correct broken chunks. This is vital if the image appears corrupt.
 	</p>
@@ -63,7 +70,7 @@
 	<br /><br />
 
 
-	<h4>5. Explore Colour & Bit Planes</h4>
+	<h4>6. Explore Colour & Bit Planes</h4>
 	<p>
 		Images can be hidden inside of the colour/bit planes.
 		Upload your image to this site <a href="upload">here</a>. On the image menu page, explore all options in the top panel (i.e. Full Red, Inverse, LSB etc).
@@ -84,7 +91,7 @@
 	<br /><br />
 
 
-	<h4>6. Extract LSB Data</h4>
+	<h4>7. Extract LSB Data</h4>
 	<p>
 		As mentioned in step 5, there could be some static in bit planes. If so, navigate to the "Extract Files/Data" page, and select the relevant bits.
 	</p>
@@ -92,7 +99,7 @@
 	<br /><br />
 
 
-	<h4>7. Check RGB Values</h4>
+	<h4>8. Check RGB Values</h4>
 	<p>
 		ASCII Characters/other data can be hidden in the RGB(A) values of an image.
 	</p>
@@ -106,7 +113,7 @@
 	<br /><br />
 
 
-	<h4>8. Found a password? (Or not)</h4>
+	<h4>9. Found a password? (Or not)</h4>
 	<p>
 		If you've found a password, the goto application to check should be <a href="http://steghide.sourceforge.net/">steghide</a>. Bear in mind that steghide can be used without a password, too.
 	</p>
@@ -133,7 +140,7 @@
 	<br /><br />
 
 
-	<h4>9. Browse Colour Palette</h4>
+	<h4>10. Browse Colour Palette</h4>
 	<p>
 		If the PNG is in <a href="https://www.w3.org/TR/PNG-Chunks.html for type specs">type 3</a>, you should look through the colour palette.
 	</p>
