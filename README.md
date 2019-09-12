@@ -1,4 +1,6 @@
 # StegOnline
+[![Known Vulnerabilities](https://snyk.io/test/github/Ge0rg3/StegOnline/badge.svg)](https://snyk.io/test/github/Ge0rg3/StegOnline)
+![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-3.png, "WTFPL")
 
 A web-based, enhanced and open-source port of StegSolve. Upload any image file, and the relevant options will be displayed.
 View a live demo at [https://georgeom.net/StegOnline](https://georgeom.net/StegOnline).
