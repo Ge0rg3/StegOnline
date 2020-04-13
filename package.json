@@ -23,7 +23,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "downloadjs": "^1.4.7",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
