@@ -3,7 +3,7 @@
 ![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-3.png, "WTFPL")
 
 A web-based, enhanced and open-source port of StegSolve. Upload any image file, and the relevant options will be displayed.
-View a live demo at [https://georgeom.net/StegOnline](https://georgeom.net/StegOnline).
+View a live demo at [http://stegonline.georgeom.net/](http://stegonline.georgeom.net/).
 
 ## Features:
 * Browse through the 32 bit planes of the image
