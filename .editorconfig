@@ -12,3 +12,9 @@ trim_trailing_whitespace = true
 max_line_length = off
 trim_trailing_whitespace = false
 9d893c49427ffe90e62187e44b8b0efea5e1b4cb
+cd ~/Documents #Or wherever you want to store it
+git clone https://github.com/Ge0rg3/StegOnline.git
+cd StegOnline
+(sudo) npm install -g @angular/cli
+(sudo) npm install -i
+(sudo) ng build --prod --base-href=/StegOnline/ --aot=false --build-optimizer=false --output-path=/var/www/html/StegOnline
